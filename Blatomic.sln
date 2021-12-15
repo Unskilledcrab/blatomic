@@ -3,16 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32002.185
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blatomic.WebAssembly.Server", "Blatomic.WebAssembly\Server\Blatomic.WebAssembly.Server.csproj", "{934C5E60-DBE5-4AE0-B8F7-89771709DF49}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blatomic.WebAssembly.Server", "Blatomic.WebAssembly\Server\Blatomic.WebAssembly.Server.csproj", "{934C5E60-DBE5-4AE0-B8F7-89771709DF49}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blatomic.WebAssembly.Client", "Blatomic.WebAssembly\Client\Blatomic.WebAssembly.Client.csproj", "{A8E22A78-371B-4424-92A0-2A849F706BA2}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blatomic", "Blatomic.Components\Blatomic.csproj", "{D8D34D32-2DC6-45C6-A3F8-8B11DD38577A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blatomic.WebAssembly.Client", "Blatomic.WebAssembly\Client\Blatomic.WebAssembly.Client.csproj", "{A8E22A78-371B-4424-92A0-2A849F706BA2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{555F4215-7FDE-4916-9A24-BC954E0B8D8D}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blatomic", "Blatomic\Blatomic.csproj", "{B2928ADB-1406-4C28-84C0-25B1C9409A98}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,10 +28,10 @@ Global
 		{A8E22A78-371B-4424-92A0-2A849F706BA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A8E22A78-371B-4424-92A0-2A849F706BA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A8E22A78-371B-4424-92A0-2A849F706BA2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D8D34D32-2DC6-45C6-A3F8-8B11DD38577A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D8D34D32-2DC6-45C6-A3F8-8B11DD38577A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D8D34D32-2DC6-45C6-A3F8-8B11DD38577A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D8D34D32-2DC6-45C6-A3F8-8B11DD38577A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2928ADB-1406-4C28-84C0-25B1C9409A98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2928ADB-1406-4C28-84C0-25B1C9409A98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2928ADB-1406-4C28-84C0-25B1C9409A98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2928ADB-1406-4C28-84C0-25B1C9409A98}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
