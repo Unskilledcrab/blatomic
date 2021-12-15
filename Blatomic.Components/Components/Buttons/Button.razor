@@ -1,0 +1,83 @@
+﻿@inherits BaseComponent
+
+<button type="@Type" class="@css" style="@style" disabled="@isDisabled" @onclick="@ClickHandler">
+    @InnerContent()
+</button>
+
+@code {
+    private bool isDisabled => IsDisabled || (IsLoading && DisableWhenLoading);
+    private string disabledStyle => isDisabled ? "cursor-not-allowed" : string.Empty;
+
+    [Parameter] public RenderFragment? LoadingTemplate { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter] public EventCallback OnClickedAsync { get; set; }
+    [Parameter] public ButtonType Type { get; set; }
+    [Parameter] public HoverEffect HoverEffect { get; set; }
+    [Parameter] public bool IsLoading { get; set; }
+    [Parameter] public bool IsDisabled { get; set; }
+    [Parameter] public bool DisableWhenLoading { get; set; } = true;
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        cssBuilder.Add("inline-flex")
+                  .Add("items-center")
+                  .Add("px-4")
+                  .Add("py-2")
+                  .Add("font-semibold")
+                  .Add("leading-5")
+                  .Add("text-sm")
+                  .Add("text-white")
+                  .Add("rounded-full")
+                  // These will eventually go out of here
+                  //.Add("bg-indigo-500")
+                  //.Add("hover:bg-indigo-400")
+                  //.Add("hover:ring-blue-500")
+                  //
+                  .Add("transition")
+                  .Add(disabledStyle);
+
+        cssBuilder.AddHover(HoverEffect);
+    }
+
+    private async Task ClickHandler()
+    {
+        if (IsLoading)
+        {
+            return;
+        }
+
+        try
+        {
+            IsLoading = true;
+            await OnClickedAsync.InvokeAsync();
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+
+    private RenderFragment? InnerContent()
+    {
+        if (IsLoading)
+        {
+            if (LoadingTemplate != null)
+            {
+                return LoadingTemplate;
+            }
+            return LoadingFragment();
+        }
+
+        return ChildContent;
+    }
+
+    private RenderFragment LoadingFragment()
+    {
+        return
+    @<span class="inline-flex">@Loader.ButtonLoader @ChildContent</span>
+    ;
+    }
+}
