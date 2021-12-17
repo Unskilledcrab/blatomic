@@ -1,7 +1,4 @@
-﻿using Blatomic.Base;
-using Blatomic.Extensions;
-
-namespace Blatomic.Effects
+﻿namespace Blatomic.Effects
 {
     public enum HoverEffect
     {
@@ -18,20 +15,16 @@ namespace Blatomic.Effects
         /// <param name="builder"></param>
         /// <param name="hoverEffect"></param>
         /// <returns></returns>
-        public static StyleBuilder AddHover(this StyleBuilder builder, HoverEffect hoverEffect)
+        public static string HoverStyle(this HoverEffect hoverEffect)
         {
             switch (hoverEffect)
             {
                 case HoverEffect.Shadow:
-                    builder.Add("shadow")
-                           .Add("hover:shadow-lg");
-                    break;
+                    return "shadow hover:shadow-2xl";
                 case HoverEffect.Ring:
-                    builder.Add("hover:ring")
-                           .Add("hover:ring-offset-2");
-                    break;
+                    return "hover:ring hover:ring-offset-2";
             };
-            return builder;
+            return string.Empty;
         }
     }
 }

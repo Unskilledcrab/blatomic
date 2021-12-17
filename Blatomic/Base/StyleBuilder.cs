@@ -15,36 +15,25 @@ public class StyleBuilder
         delimeter = delimiter;
     }
 
-    public void AddStyle(string stylesToAdd)
+    public string Build()
     {
-        if (stylesToAdd.IsNullOrEmpty())
+        if (dirty)
         {
-            return;
+            cachedStyle = string.Join(delimeter, styles);
+            dirty = false;
         }
 
-        foreach (var style in FormatStyle(stylesToAdd))
-        {
-            if (styles.Add(style))
-            {
-                dirty = true;
-            }
-        }
+        return cachedStyle;
+    }
+
+    public bool AddStyle(string stylesToAdd)
+    {
+        return UpdateStyle(stylesToAdd, false);
     }    
 
-    public void RemoveStyle(string stylesToRemove)
+    public bool RemoveStyle(string stylesToRemove)
     {
-        if (stylesToRemove.IsNullOrEmpty())
-        {
-            return;
-        }
-
-        foreach (var style in FormatStyle(stylesToRemove))
-        {
-            if (styles.Remove(style))
-            {
-                dirty = true;
-            }
-        } 
+        return UpdateStyle(stylesToRemove, true);
     }
 
     private IEnumerable<string> FormatStyle(string style)
@@ -61,14 +50,30 @@ public class StyleBuilder
         return style.Split(delimeter);        
     }
 
-    public string Build()
+    private bool UpdateStyle(string stylesToAdd, bool shouldRemove)
     {
-        if (dirty)
+        if (stylesToAdd.IsNullOrEmpty())
         {
-            cachedStyle = string.Join(delimeter, styles);
-            dirty = false;
+            return false;
         }
 
-        return cachedStyle;
+        foreach (var style in FormatStyle(stylesToAdd))
+        {
+            if (shouldRemove)
+            {
+                if (styles.Remove(style))
+                {
+                    dirty = true;
+                }
+            }
+            else
+            {
+                if (styles.Add(style))
+                {
+                    dirty = true;
+                }
+            }
+        }
+        return dirty;
     }
 }

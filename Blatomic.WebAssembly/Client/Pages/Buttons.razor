@@ -1,0 +1,23 @@
+﻿@page "/buttons"
+
+<PageTitle>Buttons</PageTitle>
+
+<Button Css="bg-indigo-500 hover:bg-indigo-400 hover:ring-blue-500"
+        HoverEffect="HoverEffect.Ring"
+        OnClickedAsync="@OnClickAsync">
+    Test Button
+</Button>
+<Button Css="bg-indigo-500 hover:bg-indigo-400"
+        HoverEffect="HoverEffect.Shadow"
+        RoundedStyle="RoundedStyle.Full"
+        OnClickedAsync="@OnClickAsync">
+    Test Button
+</Button>
+
+@code {
+    private async Task OnClickAsync()
+    {
+        // Simulate doing something
+        await Task.Delay(30000);
+    }
+}

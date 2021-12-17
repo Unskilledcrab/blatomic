@@ -1,5 +1,5 @@
 ﻿@code {
-    private static RenderFragment<string> BaseLoader = classes => __builder =>
+    public static RenderFragment<string> BaseLoader = classes => __builder =>
     {
         <svg class="animate-spin @classes" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -9,6 +9,6 @@
     
     public static RenderFragment ButtonLoader = __builder =>
     {
-        @BaseLoader("-ml-2 mr-2 h-5 w-5");
+        @BaseLoader("-ml-2 mr-2 h-4 w-4");
     };
 }

@@ -13,33 +13,23 @@
 
     [Parameter] public EventCallback OnClickedAsync { get; set; }
     [Parameter] public ButtonType Type { get; set; }
-    [Parameter] public HoverEffect HoverEffect { get; set; }
     [Parameter] public bool IsLoading { get; set; }
     [Parameter] public bool IsDisabled { get; set; }
     [Parameter] public bool DisableWhenLoading { get; set; } = true;
 
-    protected override void OnParametersSet()
+    protected override void OnInitialized()
     {
-        base.OnParametersSet();
+        base.OnInitialized();
 
-        cssBuilder.Add("inline-flex")
-                  .Add("items-center")
-                  .Add("px-4")
-                  .Add("py-2")
-                  .Add("font-semibold")
-                  .Add("leading-5")
-                  .Add("text-sm")
-                  .Add("text-white")
-                  .Add("rounded-full")
-                  // These will eventually go out of here
-                  //.Add("bg-indigo-500")
-                  //.Add("hover:bg-indigo-400")
-                  //.Add("hover:ring-blue-500")
-                  //
-                  .Add("transition")
-                  .Add(disabledStyle);
-
-        cssBuilder.AddHover(HoverEffect);
+        AddCssStyle("inline-flex");
+        AddCssStyle("items-center");
+        AddCssStyle("px-4");
+        AddCssStyle("py-2");
+        AddCssStyle("font-semibold");
+        AddCssStyle("leading-5");
+        AddCssStyle("text-sm");
+        AddCssStyle("text-white");
+        AddCssStyle("transition");
     }
 
     private async Task ClickHandler()
@@ -52,10 +42,12 @@
         try
         {
             IsLoading = true;
+            AddCssStyle(disabledStyle);
             await OnClickedAsync.InvokeAsync();
         }
         finally
         {
+            RemoveCssStyle(disabledStyle);
             IsLoading = false;
         }
     }
@@ -77,7 +69,7 @@
     private RenderFragment LoadingFragment()
     {
         return
-    @<span class="inline-flex">@Loader.ButtonLoader @ChildContent</span>
+    @<span class="inline-flex items-center">@Loader.ButtonLoader @ChildContent</span>
     ;
     }
 }
