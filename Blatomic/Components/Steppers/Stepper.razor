@@ -1,0 +1,79 @@
+﻿<CascadingValue Value="this">
+    <div class="flex justify-around items-center bg-gray-100 p-4">
+        @for (var i = 0; i < steps.Count; i++)
+        {
+            <div>
+                <div class="rounded-full">@(i + 1)</div>
+                <div>@steps[i].Title</div>
+            </div>
+        }
+    </div>
+    <div>
+        @ContentArea
+        @ChildContent
+    </div>
+    <div class="flex @buttonJustify items-center bg-gray-100 p-4">
+        @if (currentStepIndex != 0)
+        {
+            <div class="justify-self-start">
+            <Button OnClickedAsync="PreviousStep"
+                RoundedStyle="RoundedStyle.XL"
+                Css="@ButtonColors">
+                Previous
+            </Button>
+            </div>
+        }
+        @if (currentStepIndex != steps.Count - 1)
+        {
+            <div class="justify-self-end">
+            <Button OnClickedAsync="NextStep"
+                RoundedStyle="RoundedStyle.XL"
+                Css="@ButtonColors">
+                Next
+            </Button>
+            </div>
+        }
+    </div>
+</CascadingValue>
+
+@code {
+    [Parameter] public string? ButtonColors { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    private string buttonJustify => currentStepIndex == 0 ? "justify-end" : "justify-between";
+    private int currentStepIndex = 0;
+    private List<Step> steps = new();
+    private RenderFragment? ContentArea { get; set; }
+    private Task<bool> IsStepValid => steps[currentStepIndex].OnValidateStep(steps[currentStepIndex].Data);
+
+    private async Task NextStep()
+    {
+        if (await IsStepValid)
+        {
+            currentStepIndex++;
+            RenderStep();
+        }
+    }
+
+    private void PreviousStep()
+    {
+        currentStepIndex--;
+        RenderStep();
+    }
+
+    private void RenderStep()
+    {
+        var currentStep = steps[currentStepIndex];
+        ContentArea = currentStep.ChildContent;
+    }
+
+    public void AddStep(Step step)
+    {
+        steps.Add(step);
+        if (currentStepIndex == steps.Count - 1)
+        {
+            RenderStep();
+        }
+        StateHasChanged();
+    }
+}

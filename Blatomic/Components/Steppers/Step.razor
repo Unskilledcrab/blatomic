@@ -1,0 +1,14 @@
+﻿@code {
+    [CascadingParameter] Stepper? Stepper { get; set; }
+
+    [Parameter] public object? Data { get; set; }
+    [Parameter] public string Title { get; set; } = string.Empty;
+    [Parameter] public Func<object, Task<bool>> OnValidateStep { get; set; } = (result) => Task.FromResult(true);
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Stepper?.AddStep(this);
+        base.OnInitialized();
+    }
+}

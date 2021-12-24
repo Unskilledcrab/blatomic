@@ -19,8 +19,10 @@
         {
             switch (hoverEffect)
             {
+                case 0:
+                    return string.Empty;
                 case HoverEffect.Shadow:
-                    return "shadow hover:shadow-2xl";
+                    return "hover:shadow-2xl";
                 case HoverEffect.Ring:
                     return "hover:ring hover:ring-offset-2";
             };

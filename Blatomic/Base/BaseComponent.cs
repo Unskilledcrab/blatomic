@@ -56,7 +56,6 @@ public abstract class BaseComponent : ComponentBase
             StateHasChanged();
         }
     }
-
     private void UpdateStyle(StyleBuilder builder, string previousStyle, string updatedStyle)
     {
         if (previousStyle != updatedStyle)
@@ -71,12 +70,10 @@ public abstract class BaseComponent : ComponentBase
     {
         AddStyle(cssBuilder, style);
     }
-
     public void RemoveCssStyle(string style)
     {
         RemoveStyle(cssBuilder, style);
     }
-
     public void UpdateCssStyle(string previousStyle, string updatedStyle)
     {
         UpdateStyle(cssBuilder, previousStyle, updatedStyle);
@@ -86,12 +83,10 @@ public abstract class BaseComponent : ComponentBase
     {
         AddStyle(styleBuilder, style);
     }
-
     public void RemoveInlineStyle(string style)
     {
         RemoveStyle(styleBuilder, style);
     }
-
     public void UpdateInlineStyle(string previousStyle, string updatedStyle)
     {
         UpdateStyle(styleBuilder, previousStyle, updatedStyle);

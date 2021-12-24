@@ -14,6 +14,14 @@
     Test Button
 </Button>
 
+<NotificationContainer ShowNotification="true">
+    <Button Css="bg-indigo-500 hover:bg-indigo-400 hover:ring-blue-500"
+            HoverEffect="HoverEffect.Ring"
+            OnClickedAsync="@OnClickAsync">
+        Test Button
+    </Button>
+</NotificationContainer>
+
 @code {
     private async Task OnClickAsync()
     {
