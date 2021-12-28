@@ -6,7 +6,6 @@
 
 @code {
     private bool isDisabled => IsDisabled || (IsLoading && DisableWhenLoading);
-    private string disabledStyle => isDisabled ? "cursor-wait" : string.Empty;
 
     [Parameter] public RenderFragment? LoadingTemplate { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }
@@ -32,6 +31,41 @@
         AddCssStyle("transition");
     }
 
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        UpdateDisabledStyle();
+    }
+
+    private void UpdateDisabledStyle()
+    {
+        if (IsLoading)
+        {
+            AddCssStyle("cursor-wait");
+        }
+        else
+        {
+            RemoveCssStyle("cursor-wait");            
+        }
+        if (isDisabled)
+        {
+            AddCssStyle("opacity-75");
+            if (!IsLoading)
+            {
+                AddCssStyle("cursor-not-allowed");
+            }
+        }
+        else
+        {
+            if (!IsLoading)
+            {
+                RemoveCssStyle("cursor-not-allowed");
+            }
+            RemoveCssStyle("opacity-75");
+        }
+    }
+
     private async Task ClickHandler()
     {
         if (IsLoading)
@@ -42,12 +76,12 @@
         try
         {
             IsLoading = true;
-            AddCssStyle(disabledStyle);
+            UpdateDisabledStyle();
             await OnClickedAsync.InvokeAsync();
         }
         finally
         {
-            RemoveCssStyle(disabledStyle);
+            UpdateDisabledStyle();
             IsLoading = false;
         }
     }

@@ -1,15 +1,15 @@
 ﻿<CascadingValue Value="this">
-    <div class="flex items-center bg-gray-100 p-4">
+    <div class="flex items-start bg-gray-100 p-4">
         @for (var i = 0; i < steps.Count; i++)
         {
             var stepCount = i;
             <a class="flex-initial flex flex-col items-center cursor-pointer" @onclick="@(() => GoToStep(stepCount))">
-                <div class="rounded-full h-8 w-8 p-1 text-center align-middle transition @(i <= currentStepIndex ? "bg-green-300" : "bg-gray-200")">@(i + 1)</div>
+                <div class="rounded-full h-8 w-8 p-1 text-center align-middle transition duration-500 @(i <= currentStepIndex ? "bg-green-300" : "bg-gray-200")">@(i + 1)</div>
                 <div>@steps[i].Title</div>
             </a>
             @if (i < steps.Count - 1)
             {
-                <div class="grow border-2 -mt-6 transition @(i < currentStepIndex ? "border-green-300" : "border-gray-200")"></div>
+                <div class="grow border-2 mt-3 transition duration-1000  @(i < currentStepIndex ? "border-green-300" : "border-gray-200")"></div>
             }
         }
     </div>
@@ -31,8 +31,9 @@
         @if (currentStepIndex != steps.Count - 1)
         {
             <div class="justify-self-end">
-                <Button OnClickedAsync="NextStep"
+                <Button OnClickedAsync="@(() => NextStep())"
                     RoundedStyle="RoundedStyle.XL"
+                    IsDisabled="!IsStepComplete"
                     Css="@ButtonColors">
                     Next
                 </Button>
@@ -49,9 +50,9 @@
     private int currentStepIndex = 0;
     private List<Step> steps = new();
     private RenderFragment? ContentArea { get; set; }
-    private Task<bool> IsStepValid => steps is null ? Task.FromResult(false) : steps[currentStepIndex].OnValidateStep(steps[currentStepIndex].Data);        
+    private bool IsStepComplete => steps == null || currentStepIndex >= steps.Count ? false : steps[currentStepIndex].IsStepComplete;        
 
-    public async Task GoToStep(int step)
+    public void GoToStep(int step)
     {
         if (step < 0 || step >= steps.Count)
         {
@@ -59,7 +60,10 @@
         }
         while (currentStepIndex < step)
         {
-            await NextStep();
+            if(!NextStep())
+            {
+                break;   
+            }
         }
         if (currentStepIndex > step)
         {
@@ -68,13 +72,15 @@
         }
     }
 
-    private async Task NextStep()
+    private bool NextStep()
     {
-        if (await IsStepValid)
+        if (IsStepComplete)
         {
             currentStepIndex++;
             RenderStep();
+            return true;
         }
+        return false;
     }
 
     private void PreviousStep()
@@ -87,6 +93,7 @@
     {
         var currentStep = steps[currentStepIndex];
         ContentArea = currentStep.ChildContent;
+        StateHasChanged();
     }
 
     public void AddStep(Step step)

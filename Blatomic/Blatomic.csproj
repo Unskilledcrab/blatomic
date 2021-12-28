@@ -16,6 +16,10 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.1" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="wwwroot\css\" />
+	</ItemGroup>
+
 	<Target Name="CheckForNpm" BeforeTargets="NpmInstall">
 		<Exec Command="npm -v" ContinueOnError="true">
 			<Output TaskParameter="ExitCode" PropertyName="ErrorCode" />

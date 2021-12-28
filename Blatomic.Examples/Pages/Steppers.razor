@@ -13,53 +13,56 @@
                 </p>
             </div>
         </Step>
-        <Step Title="Speak Spanish?">
+        <Step Title="Speak Spanish?" IsStepComplete="@canProceed">
             <div class="p-4">
                 <p>
+                    No fighting
+                    We got the refugees up in here (no fighting)
+                    No fighting
+                    Shakira, Shakira
                     … I never really knew that she could dance like this (hey)
                     She make a man wants to speak Spanish
                     ¿Cómo se llama? (Sí), bonita (sí)
                     Mi casa, su casa (Shakira, Shakira)
                 </p>
+                <NotificationContainer ShowNotification="true">
+                    <Button Css="bg-indigo-500 hover:bg-indigo-400 hover:ring-blue-500"
+                            HoverEffect="HoverEffect.Ring"
+                            OnClickedAsync="@(() => canProceed = true)">
+                        Proceed?
+                    </Button>
+                </NotificationContainer>
             </div>
         </Step>
         <Step>
             <div class="p-4">
                 <p>
-                    … Oh, baby, when you talk like that
-                    You make a woman go mad
-                    So be wise (sí) and keep on (sí)
-                    Reading the signs of my body (uno, dos, tres, cuatro)
+                    No fighting
                 </p>
             </div>
         </Step>
         <Step Title="Si">
             <div class="p-4">
                 <p>
-                    … Oh, baby, when you talk like that
-                    You make a woman go mad
-                    So be wise (sí) and keep on (sí)
-                    Reading the signs of my body (uno, dos, tres, cuatro)
+                    We got the refugees up in here (no fighting)
                 </p>
             </div>
         </Step>
         <Step Title="Shakira">
             <div class="p-4">
                 <p>
-                    … Oh, baby, when you talk like that
-                    You make a woman go mad
-                    So be wise (sí) and keep on (sí)
-                    Reading the signs of my body (uno, dos, tres, cuatro)
+                    No fighting
+                    Shakira, Shakira
                 </p>
             </div>
         </Step>
         <Step Title="Shakira">
             <div class="p-4">
                 <p>
-                    … Oh, baby, when you talk like that
-                    You make a woman go mad
-                    So be wise (sí) and keep on (sí)
-                    Reading the signs of my body (uno, dos, tres, cuatro)
+                    … I never really knew that she could dance like this (hey)
+                    She make a man wants to speak Spanish
+                    ¿Cómo se llama? (Sí), bonita (sí)
+                    Mi casa, su casa (Shakira, Shakira)
                 </p>
             </div>
         </Step>
@@ -77,5 +80,5 @@
 </div>
 
 @code {
-
+    private bool canProceed = false;
 }
