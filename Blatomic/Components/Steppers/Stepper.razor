@@ -1,11 +1,16 @@
 ﻿<CascadingValue Value="this">
-    <div class="flex justify-around items-center bg-gray-100 p-4">
+    <div class="flex items-center bg-gray-100 p-4">
         @for (var i = 0; i < steps.Count; i++)
         {
-            <div>
-                <div class="rounded-full">@(i + 1)</div>
+            var stepCount = i;
+            <a class="flex-initial flex flex-col items-center cursor-pointer" @onclick="@(() => GoToStep(stepCount))">
+                <div class="rounded-full h-8 w-8 p-1 text-center align-middle transition @(i <= currentStepIndex ? "bg-green-300" : "bg-gray-200")">@(i + 1)</div>
                 <div>@steps[i].Title</div>
-            </div>
+            </a>
+            @if (i < steps.Count - 1)
+            {
+                <div class="grow border-2 -mt-6 transition @(i < currentStepIndex ? "border-green-300" : "border-gray-200")"></div>
+            }
         }
     </div>
     <div>
@@ -16,21 +21,21 @@
         @if (currentStepIndex != 0)
         {
             <div class="justify-self-start">
-            <Button OnClickedAsync="PreviousStep"
-                RoundedStyle="RoundedStyle.XL"
-                Css="@ButtonColors">
-                Previous
-            </Button>
+                <Button OnClickedAsync="PreviousStep"
+                    RoundedStyle="RoundedStyle.XL"
+                    Css="@ButtonColors">
+                    Previous
+                </Button>
             </div>
         }
         @if (currentStepIndex != steps.Count - 1)
         {
             <div class="justify-self-end">
-            <Button OnClickedAsync="NextStep"
-                RoundedStyle="RoundedStyle.XL"
-                Css="@ButtonColors">
-                Next
-            </Button>
+                <Button OnClickedAsync="NextStep"
+                    RoundedStyle="RoundedStyle.XL"
+                    Css="@ButtonColors">
+                    Next
+                </Button>
             </div>
         }
     </div>
@@ -44,7 +49,24 @@
     private int currentStepIndex = 0;
     private List<Step> steps = new();
     private RenderFragment? ContentArea { get; set; }
-    private Task<bool> IsStepValid => steps[currentStepIndex].OnValidateStep(steps[currentStepIndex].Data);
+    private Task<bool> IsStepValid => steps is null ? Task.FromResult(false) : steps[currentStepIndex].OnValidateStep(steps[currentStepIndex].Data);        
+
+    public async Task GoToStep(int step)
+    {
+        if (step < 0 || step >= steps.Count)
+        {
+            return;
+        }
+        while (currentStepIndex < step)
+        {
+            await NextStep();
+        }
+        if (currentStepIndex > step)
+        {
+            currentStepIndex = step;
+            RenderStep();
+        }
+    }
 
     private async Task NextStep()
     {

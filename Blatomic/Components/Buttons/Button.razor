@@ -6,7 +6,7 @@
 
 @code {
     private bool isDisabled => IsDisabled || (IsLoading && DisableWhenLoading);
-    private string disabledStyle => isDisabled ? "cursor-not-allowed" : string.Empty;
+    private string disabledStyle => isDisabled ? "cursor-wait" : string.Empty;
 
     [Parameter] public RenderFragment? LoadingTemplate { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }
