@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "watch": "npx tailwindcss -i ./input.css -o ./wwwroot/css/blatomic_examples.css --watch",
+    "buildcss": "npx tailwindcss -o ./wwwroot/css/blatomic_examples.min.css --minify"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.2.6",
+    "tailwindcss": "^3.0.2"
+  }
+}
