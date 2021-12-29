@@ -1,0 +1,13 @@
+﻿@attribute [CascadingTypeParameter(nameof(TData))]
+@typeparam TData
+
+<CascadingValue Value="this">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    public TData? DragData { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+} 

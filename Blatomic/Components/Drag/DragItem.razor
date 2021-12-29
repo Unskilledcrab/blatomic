@@ -1,0 +1,24 @@
+﻿@typeparam TData
+
+<div draggable="true" @ondragstart="HandleDragStart">
+    @ChildContent
+</div>
+
+@code {
+    [Parameter]
+    public TData? DragData { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [CascadingParameter]
+    public DragContext<TData>? Context { get; set; }
+
+    private void HandleDragStart(DragEventArgs e)
+    {
+        if (Context is not null)
+        {
+            Context.DragData ??= DragData;
+        }
+    }
+}

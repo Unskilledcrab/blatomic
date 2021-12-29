@@ -1,5 +1,12 @@
 ﻿namespace Blatomic.Effects
 {
+
+    public class RoundedEffect : BaseEffect<RoundedStyle>
+    {
+        public override string GetStyle => Effect.RoundedStyle();
+    }
+
+
     public enum RoundedStyle
     {
         None,

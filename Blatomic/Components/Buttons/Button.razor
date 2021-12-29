@@ -58,11 +58,11 @@
         }
         else
         {
+            RemoveCssStyle("opacity-75");
             if (!IsLoading)
             {
                 RemoveCssStyle("cursor-not-allowed");
             }
-            RemoveCssStyle("opacity-75");
         }
     }
 
@@ -78,6 +78,7 @@
             IsLoading = true;
             UpdateDisabledStyle();
             await OnClickedAsync.InvokeAsync();
+            StateHasChanged();
         }
         finally
         {

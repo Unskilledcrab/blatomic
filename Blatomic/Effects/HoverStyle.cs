@@ -1,6 +1,12 @@
 ﻿namespace Blatomic.Effects
 {
-    public enum HoverEffect
+
+    public class HoverEffect : BaseEffect<HoverStyle>
+    {
+        public override string GetStyle => Effect.HoverStyle();
+    }
+
+    public enum HoverStyle
     {
         None,
         Shadow,
@@ -15,15 +21,15 @@
         /// <param name="builder"></param>
         /// <param name="hoverEffect"></param>
         /// <returns></returns>
-        public static string HoverStyle(this HoverEffect hoverEffect)
+        public static string HoverStyle(this HoverStyle hoverEffect)
         {
             switch (hoverEffect)
             {
                 case 0:
                     return string.Empty;
-                case HoverEffect.Shadow:
+                case Effects.HoverStyle.Shadow:
                     return "hover:shadow-2xl";
-                case HoverEffect.Ring:
+                case Effects.HoverStyle.Ring:
                     return "hover:ring hover:ring-offset-2";
             };
             return string.Empty;

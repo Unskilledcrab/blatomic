@@ -27,8 +27,8 @@
                 </p>
                 <NotificationContainer ShowNotification="true">
                     <Button Css="bg-indigo-500 hover:bg-indigo-400 hover:ring-blue-500"
-                            HoverEffect="HoverEffect.Ring"
-                            OnClickedAsync="@(() => canProceed = true)">
+                            HoverStyle="HoverStyle.Ring"
+                            OnClickedAsync="@(() => Proceed())">
                         Proceed?
                     </Button>
                 </NotificationContainer>
@@ -81,4 +81,9 @@
 
 @code {
     private bool canProceed = false;
+
+    private void Proceed()
+    {
+        canProceed = true;
+    }
 }

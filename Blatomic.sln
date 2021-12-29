@@ -10,9 +10,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blatomic", "Blatomic\Blatomic.csproj", "{B2928ADB-1406-4C28-84C0-25B1C9409A98}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blatomic.Server", "Blatomic.Server\Blatomic.Server.csproj", "{1FC44A2B-8667-4EC6-B215-3AD77B342320}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blatomic.Server", "Blatomic.Server\Blatomic.Server.csproj", "{1FC44A2B-8667-4EC6-B215-3AD77B342320}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blatomic.Examples", "Blatomic.Examples\Blatomic.Examples.csproj", "{252405D2-24CF-48A7-AAFD-0BCAD663D7B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blatomic.Examples", "Blatomic.Examples\Blatomic.Examples.csproj", "{252405D2-24CF-48A7-AAFD-0BCAD663D7B4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

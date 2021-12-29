@@ -16,30 +16,29 @@ public abstract class BaseComponent : ComponentBase
     [Parameter] public string Css { get; set; } = string.Empty;
     private string cachedCss { get; set; } = string.Empty;
 
-    [Parameter] public HoverEffect HoverEffect { get; set; }
-    private HoverEffect cachedHoverEffect { get; set; }
+    [Parameter] public HoverStyle HoverStyle { get; set; }
+    private HoverEffect hoverEffect { get; set; } = new();
     [Parameter] public RoundedStyle RoundedStyle { get; set; }
-    private RoundedStyle cachedRoundedStyle { get; set; }
+    private RoundedEffect roundedStyle { get; set; } = new();
 
     protected override void OnParametersSet()
     {
         UpdateInlineStyle(cachedStyles, Styles);
+        cachedStyles = Styles;
         UpdateCssStyle(cachedCss, Css);
+        cachedCss = Css;
 
-        UpdateCssStyle(cachedHoverEffect.HoverStyle(), HoverEffect.HoverStyle());
-        UpdateCssStyle(cachedRoundedStyle.RoundedStyle(), RoundedStyle.RoundedStyle());
-
-        UpdateCache();
+        UpdateEffect(roundedStyle, RoundedStyle);
+        UpdateEffect(hoverEffect, HoverStyle);
 
         base.OnParametersSet();
     }
 
-    private void UpdateCache()
+    private void UpdateEffect<T>(BaseEffect<T> baseEffect, T effect)
     {
-        cachedStyles = Styles;
-        cachedCss = Css;
-        cachedHoverEffect = HoverEffect;
-        cachedRoundedStyle = RoundedStyle;
+        baseEffect.Effect = effect;
+        UpdateCssStyle(baseEffect.CachedStyle, baseEffect.GetStyle);
+        baseEffect.UpdateCache();
     }
 
     private void AddStyle(StyleBuilder builder, string style)

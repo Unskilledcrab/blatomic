@@ -1,0 +1,41 @@
+﻿@page "/dragdrop"
+
+<DragContext TData="string">
+    <div class="flex justify-around">
+        <DragItem DragData="@testData">
+            <div class="p-5">
+                <p>
+                    This is a test draggable item
+                </p>
+                <p>
+                    Data: @testData
+                </p>
+            </div>
+        </DragItem>
+
+        <DropArea Context="Items">
+            <div class="p-5">
+                You can drop items into this area
+                @foreach (var item in Items)
+                {
+                    <DragItem DragData="@item">Data Moved: @item</DragItem>
+                }
+            </div>
+        </DropArea>
+
+        <DropArea Context="Items"
+                  ShouldDropAsync="@((dragItem) => Task.FromResult(false))">
+            <div class="p-5">
+                You cannot drop items onto this area
+                @foreach (var item in Items)
+                {
+                    <div>Data Moved: @item</div>
+                }
+            </div>
+        </DropArea>
+    </div>
+</DragContext>
+
+@code {
+    private string testData = "this is dummy data";
+}
