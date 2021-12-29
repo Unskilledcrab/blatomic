@@ -5,7 +5,10 @@
      ondragover="event.preventDefault();"
      ondragstart="event.dataTransfer.setData('', event.target.id);"
      @ondragenter="HandleDragEnter">
-    @ChildContent(Items)
+
+    <CascadingValue Value="this">
+        @ChildContent(Items)
+    </CascadingValue>
     @if (isShowingDrop)
     {
         <div class="absolute z-10 flex justify-center items-center inset-0 bg-gray-300 opacity-25" @ondragleave="HandleDragLeave" @ondrop="HandleDrop">
@@ -29,6 +32,7 @@
     [CascadingParameter] public DragContext<TData>? Context { get; set; }
 
     [Parameter] public List<TData> Items { get; set; } = new();
+
     [Parameter] public Func<DragArgs<TData>, Task<bool>> ShouldDropAsync { get; set; } = (dropItem) => Task.FromResult(true);
     [Parameter] public Func<DragArgs<TData>, Task> OnDragEnterAsync { get; set; } = (dropItem) => Task.CompletedTask;
     [Parameter] public Func<DragArgs<TData>, Task> OnDragLeaveAsync { get; set; } = (dropItem) => Task.CompletedTask;
@@ -39,6 +43,24 @@
     [Parameter] public RenderFragment<List<TData>>? ChildContent { get; set; }
     [Parameter] public RenderFragment? CanDropTemplate { get; set; } = @Plus.StandardPlus;
     [Parameter] public RenderFragment? CannotDropTemplate { get; set; } = @Ban.StandardBan;
+
+    public void RemoveDragItem(TData dragItem)
+    {
+        if (dragItem is not null)
+        {
+            if (Items.Remove(dragItem))
+            {
+                StateHasChanged();
+            }
+        }
+    }
+    public void AddDragItem(TData dragItem)
+    {
+        if (dragItem is not null)
+        {
+            Items.Remove(dragItem);
+        }
+    }
 
     private void ShowDroppableStyle()
     {
@@ -54,6 +76,11 @@
 
     private async Task HandleDragEnter(DragEventArgs e)
     {
+        if (Context == null || Context.DragData == null)
+        {
+            return;
+        }
+
         var args = e.Create(Context.DragData);
         await OnDragEnterAsync(args);
         ShowDroppableStyle();
@@ -68,6 +95,11 @@
     }
     private async Task HandleDragLeave(DragEventArgs e)
     {
+        if (Context == null || Context.DragData == null)
+        {
+            return;
+        }
+
         var args = e.Create(Context.DragData);
         await OnDragLeaveAsync(e.Create(Context.DragData));
         HideDroppableStyle();
@@ -75,11 +107,17 @@
     }
     private async Task HandleDrop(DragEventArgs e)
     {
+        if (Context == null || Context.DragData == null)
+        {
+            return;
+        }
+
         var args = e.Create(Context.DragData);
         if (await ShouldDropAsync(args))
         {
             await BeforeDropAsync(args);
             Items.Add(Context.DragData);
+            Context?.DragItem?.OnDragComplete();
             await OnDropAsync(args);
         }
         HideDroppableStyle();

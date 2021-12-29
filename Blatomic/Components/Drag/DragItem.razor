@@ -1,24 +1,58 @@
 ﻿@typeparam TData
 
-<div draggable="true" @ondragstart="HandleDragStart">
-    @ChildContent
-</div>
+@if (isShowing)
+{
+    <div class="@dragClass" draggable="true" @ondragend="HandleDragEnd" @ondragstart="HandleDragStart">
+        @ChildContent
+    </div>
+}
 
 @code {
-    [Parameter]
-    public TData? DragData { get; set; }
+    [CascadingParameter] public DragContext<TData>? Context { get; set; }
+    [CascadingParameter] public DropArea<TData>? DropArea { get; set; }
 
-    [Parameter]
-    public RenderFragment? ChildContent { get; set; }
+    [Parameter] public TData? DragData { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public bool Copy { get; set; } = false;
 
-    [CascadingParameter]
-    public DragContext<TData>? Context { get; set; }
+    private string dragClass => isDragging ? "opacity-50" : string.Empty;
+    private bool isShowing = true;
+    private bool isDragging = false;
+    private bool itemDropped = false;
+
+    public void OnDragComplete()
+    {
+        itemDropped = true;
+    }
+
+    private void HandleDragEnd(DragEventArgs e)
+    {
+        if (!Copy && itemDropped)
+        {
+            if (DragData is not null)
+            {
+                DropArea?.RemoveDragItem(DragData);
+            }
+            isShowing = false;
+        }
+        else
+        {
+            isDragging = false;
+        }
+        if (Context is not null)
+        {
+            Context.DragItem = null;
+        }
+        StateHasChanged();
+    }
 
     private void HandleDragStart(DragEventArgs e)
     {
+        isDragging = true;
+        StateHasChanged();
         if (Context is not null)
         {
-            Context.DragData ??= DragData;
+            Context.DragItem ??= this;
         }
     }
 }

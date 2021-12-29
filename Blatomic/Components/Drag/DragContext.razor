@@ -6,8 +6,8 @@
 </CascadingValue>
 
 @code {
-    public TData? DragData { get; set; }
+    public TData? DragData => DragItem is not null ? DragItem.DragData : default(TData);
+    public DragItem<TData>? DragItem { get; set; }
 
-    [Parameter]
-    public RenderFragment? ChildContent { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
 } 

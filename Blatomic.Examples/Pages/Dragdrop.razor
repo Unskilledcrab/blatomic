@@ -2,7 +2,8 @@
 
 <DragContext TData="string">
     <div class="flex justify-around">
-        <DragItem DragData="@testData">
+
+        <DragItem DragData="@testData" Copy="true">
             <div class="p-5">
                 <p>
                     This is a test draggable item
@@ -19,6 +20,16 @@
                 @foreach (var item in Items)
                 {
                     <DragItem DragData="@item">Data Moved: @item</DragItem>
+                }
+            </div>
+        </DropArea>
+
+        <DropArea Context="Items">
+            <div class="p-5">
+                You can drop items into this area
+                @foreach (var item in Items)
+                {
+                    <DragItem Copy="true" DragData="@item">Data Moved: @item</DragItem>
                 }
             </div>
         </DropArea>
