@@ -2,7 +2,22 @@
     [CascadingParameter] Stepper? Stepper { get; set; }
 
     [Parameter] public string Title { get; set; } = string.Empty;
-    [Parameter] public bool IsStepComplete { get; set; } = true;
+
+    private bool isStepComplete = true;
+    [Parameter]
+    public bool IsStepComplete
+    {
+        get { return isStepComplete; }
+        set
+        {
+            if (isStepComplete != value)
+            {
+                isStepComplete = value;
+                Stepper?.Refresh();
+            }
+        }
+    }
+
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
     protected override void OnInitialized()

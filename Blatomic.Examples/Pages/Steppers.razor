@@ -25,7 +25,7 @@
                     ¿Cómo se llama? (Sí), bonita (sí)
                     Mi casa, su casa (Shakira, Shakira)
                 </p>
-                <NotificationContainer ShowNotification="true">
+                <NotificationContainer ShowNotification="@(!canProceed)">
                     <Button Css="bg-indigo-500 hover:bg-indigo-400 hover:ring-blue-500"
                             HoverStyle="HoverStyle.Ring"
                             OnClickedAsync="@(() => Proceed())">
