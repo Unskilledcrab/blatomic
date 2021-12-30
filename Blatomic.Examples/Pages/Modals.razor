@@ -1,0 +1,42 @@
+﻿@page "/modals"
+
+<Button Css="bg-indigo-500 hover:bg-indigo-400"
+        HoverStyle="HoverStyle.Shadow"
+        RoundedStyle="RoundedStyle.Full"
+        OnClickedAsync="() => isShowingMedium = true">
+    Open Modal Medium
+</Button>
+
+<Modal @bind-IsShowing="isShowingMedium" Size="ModalSize.Medium">
+    <Header>
+        Header
+    </Header>
+    <Body>
+        Body
+    </Body>
+    <Footer>
+        Footer
+    </Footer>
+</Modal>
+
+<Button Css="bg-indigo-500 hover:bg-indigo-400"
+        HoverStyle="HoverStyle.Shadow"
+        RoundedStyle="RoundedStyle.Full"
+        OnClickedAsync="() => isShowingFull = true">
+    Open Modal Full
+</Button>
+
+
+<Modal @bind-IsShowing="isShowingFull" Size="ModalSize.Full">
+    <Header>
+        Header
+    </Header>
+    <Body>
+        Body
+    </Body>
+</Modal>
+
+@code {
+    private bool isShowingMedium = false;
+    private bool isShowingFull = false;
+}

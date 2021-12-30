@@ -1,0 +1,34 @@
+﻿@page "/progressbars"
+
+<ProgressBar @bind-Percentage="@progress">@progress</ProgressBar>
+
+<div class="mt-4 flex justify-around">
+    <Button Css="bg-indigo-500 hover:bg-indigo-400" HoverStyle="HoverStyle.Shadow" RoundedStyle="RoundedStyle.Full"
+        OnClickedAsync="() => progress -= 10">
+        Minus 10
+    </Button>
+    <Button Css="bg-indigo-500 hover:bg-indigo-400" HoverStyle="HoverStyle.Shadow" RoundedStyle="RoundedStyle.Full"
+        OnClickedAsync="() => progress -= 5">
+        Minus 5
+    </Button>
+    <Button Css="bg-indigo-500 hover:bg-indigo-400" HoverStyle="HoverStyle.Shadow" RoundedStyle="RoundedStyle.Full"
+        OnClickedAsync="() => progress -= 1">
+        Minus 1
+    </Button>
+    <Button Css="bg-indigo-500 hover:bg-indigo-400" HoverStyle="HoverStyle.Shadow" RoundedStyle="RoundedStyle.Full"
+        OnClickedAsync="() => progress += 1">
+        Plus 1
+    </Button>
+    <Button Css="bg-indigo-500 hover:bg-indigo-400" HoverStyle="HoverStyle.Shadow" RoundedStyle="RoundedStyle.Full"
+        OnClickedAsync="() => progress += 5">
+        Plus 5
+    </Button>
+    <Button Css="bg-indigo-500 hover:bg-indigo-400" HoverStyle="HoverStyle.Shadow" RoundedStyle="RoundedStyle.Full"
+        OnClickedAsync="() => progress += 10">
+        Plus 10
+    </Button>
+</div>
+
+@code {
+    private int progress = 10;
+}
