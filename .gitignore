@@ -349,3 +349,4 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 Blatomic/wwwroot/css/output.min.css
+Blatomic.Examples/wwwroot/css/blatomic_examples.min.css

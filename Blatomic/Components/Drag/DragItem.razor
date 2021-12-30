@@ -29,20 +29,21 @@
     {
         if (!Copy && itemDropped)
         {
-            if (DragData is not null)
+            if (DragData is not null && DropArea is not null)
             {
                 DropArea?.RemoveDragItem(DragData);
             }
-            isShowing = false;
+            else 
+            {
+                isShowing = false;
+            }
         }
-        else
-        {
-            isDragging = false;
-        }
+        
         if (Context is not null)
         {
             Context.DragItem = null;
         }
+        isDragging = false;        
         StateHasChanged();
     }
 
