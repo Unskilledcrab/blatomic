@@ -1,17 +1,15 @@
 ﻿@typeparam TData
 
-<div class="relative @dropClass"
-     style=""
-     ondragover="event.preventDefault();"
-     ondragstart="event.dataTransfer.setData('', event.target.id);"
-     @ondragenter="HandleDragEnter">
+<div class="relative @dropClass" ondragover="event.preventDefault();"
+    ondragstart="event.dataTransfer.setData('', event.target.id);" @ondragenter="HandleDragEnter">
 
     <CascadingValue Value="this">
         @ChildContent(Items)
     </CascadingValue>
     @if (isShowingDrop)
     {
-        <div class="absolute z-10 flex justify-center items-center inset-0 bg-gray-300 opacity-25" @ondragleave="HandleDragLeave" @ondrop="HandleDrop">
+        <div class="absolute z-20 flex justify-center items-center inset-0 bg-gray-300/25"
+        @ondragleave="HandleDragLeave" @ondrop="HandleDrop">
             @if (canDrop)
             {
                 @CanDropTemplate
@@ -33,7 +31,9 @@
 
     [Parameter] public List<TData> Items { get; set; } = new();
 
-    [Parameter] public Func<DragArgs<TData>, Task<bool>> ShouldDropAsync { get; set; } = (dropItem) => Task.FromResult(true);
+    [Parameter]
+    public Func<DragArgs<TData>, Task<bool>> ShouldDropAsync { get; set; } = (dropItem) =>
+    Task.FromResult(true);
     [Parameter] public Func<DragArgs<TData>, Task> OnDragEnterAsync { get; set; } = (dropItem) => Task.CompletedTask;
     [Parameter] public Func<DragArgs<TData>, Task> OnDragLeaveAsync { get; set; } = (dropItem) => Task.CompletedTask;
     [Parameter] public Func<DragArgs<TData>, Task> BeforeDropAsync { get; set; } = (dropItem) => Task.CompletedTask;
@@ -122,4 +122,4 @@
         }
         HideDroppableStyle();
     }
-} 
+}

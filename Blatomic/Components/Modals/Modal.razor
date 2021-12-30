@@ -1,4 +1,4 @@
-﻿<div class="fixed @visible z-40 top-0 left-0 w-full h-full overflow-auto bg-black/50" @onclick="() => BoundIsShowing = !IsShowing">
+﻿<div class="fixed @visible transition-opacity duration-300 z-40 top-0 left-0 w-full h-full overflow-auto bg-black/50" @onclick="() => BoundIsShowing = !IsShowing">
     <div class="@size @margin bg-white shadow-md flex flex-col" @onclick:stopPropagation="true">
         <div class="flex justify-between items-center bg-gray-200 p-4">
             <div>
@@ -23,7 +23,7 @@
 </div>
 
 @code {
-    private string visible => IsShowing ? "block" : "hidden";
+    private string visible => IsShowing ? "visible opacity-100" : "invisible opacity-0";
     private string size => Size.GetStyle();
     private string margin => Size == ModalSize.Full ? "h-full" : "mt-4 rounded-md";
 
