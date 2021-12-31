@@ -22,7 +22,7 @@
         </div>
 
         <DropArea Context="Items">
-            <div class="p-5">
+            <div class="p-5 flex flex-col space-y-2">
                 <p>Items in this area will be moved and not copied to their drop location</p>
                 @foreach (var item in Items)
                 {
@@ -36,7 +36,7 @@
         </DropArea>
 
         <DropArea Context="Items">
-            <div class="p-5">
+            <div class="p-5 flex flex-col space-y-2">
                 <p>Items in this are will be copied to their drop location</p>
                 @foreach (var item in Items)
                 {
@@ -49,8 +49,8 @@
             </div>
         </DropArea>
 
-        <DropArea Context="Items">
-            <div class="p-5">
+        <DropArea Context="Items" @bind-Items="defaultItems">
+            <div class="p-5 flex flex-col space-y-2">
                 <p>Items dropped here cannot be dragged again</p>
                 @foreach (var item in Items)
                 {
@@ -63,7 +63,7 @@
 
         <DropArea Context="Items"
                   ShouldDropAsync="@((dragItem) => dragItem.Data == "Third" ? Task.FromResult(true) : Task.FromResult(false))">
-            <div class="p-5">
+            <div class="p-5 flex flex-col space-y-2">
                 <p>You can only drop the 'Third' item into this location</p>
                 @foreach (var item in Items)
                 {
@@ -82,4 +82,7 @@
     private string testData1 = "First";
     private string testData2 = "Second";
     private string testData3 = "Third";
+
+    private List<string> defaultItems = new() { "1", "2", "3" };
+
 }

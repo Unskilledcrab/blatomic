@@ -6,7 +6,7 @@
     <CascadingValue Value="this">
         @if (ChildContent is not null)
         {
-            @ChildContent(Items)
+            @ChildContent(BoundItems)
         }
     </CascadingValue>
     @if (isShowingDrop)
@@ -32,7 +32,17 @@
 
     [CascadingParameter] public DragContext<TData>? Context { get; set; }
 
+    private List<TData> BoundItems
+    {
+        get => Items;
+        set
+        {
+            Items = value;
+            ItemsChanged.InvokeAsync(value);
+        }
+    }
     [Parameter] public List<TData> Items { get; set; } = new();
+    [Parameter] public EventCallback<List<TData>> ItemsChanged { get; set; }
 
     [Parameter] public Func<DragArgs<TData>, Task<bool>> ShouldDropAsync { get; set; } = (dropItem) => Task.FromResult(true);
     [Parameter] public Func<DragArgs<TData>, Task> OnDragEnterAsync { get; set; } = (dropItem) => Task.CompletedTask;
@@ -49,7 +59,7 @@
     {
         if (dragItem is not null)
         {
-            if (Items.Remove(dragItem))
+            if (BoundItems.Remove(dragItem))
             {
                 StateHasChanged();
             }
@@ -59,7 +69,7 @@
     {
         if (dragItem is not null)
         {
-            Items.Remove(dragItem);
+            BoundItems.Remove(dragItem);
         }
     }
 
@@ -117,7 +127,7 @@
         if (await ShouldDropAsync(args))
         {
             await BeforeDropAsync(args);
-            Items.Add(Context.DragData);
+            BoundItems.Add(Context.DragData);
             Context?.DragItem?.OnDragComplete();
             await OnDropAsync(args);
         }
