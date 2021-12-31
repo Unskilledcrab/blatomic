@@ -2,13 +2,16 @@
 
 <PageTitle>Blatomic Examples</PageTitle>
 
-<div class="page">
+<div class="page @darkClass">
     <div class="sidebar">
         <NavMenu />
     </div>
 
     <main>
         <div class="top-row px-4">
+            <Button OnClickedAsync="(() => darkMode = !darkMode)">
+                @(darkMode ? "Light" : "Dark")
+            </Button>
             <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
         </div>
 
@@ -17,3 +20,8 @@
         </article>
     </main>
 </div>
+
+@code {
+    private string darkClass => darkMode ? "dark" : string.Empty;
+    private bool darkMode = false;
+}

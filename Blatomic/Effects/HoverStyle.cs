@@ -30,7 +30,7 @@
                 case Effects.HoverStyle.Shadow:
                     return "hover:shadow-2xl";
                 case Effects.HoverStyle.Ring:
-                    return "hover:ring hover:ring-offset-2";
+                    return "hover:ring";
             };
             return string.Empty;
         }

@@ -1,12 +1,13 @@
 ﻿@inherits BaseComponent
 
-<button type="@Type" class="@css" style="@style" disabled="@isDisabled" @onclick="@ClickHandler">
+<button type="@Type" class="@Color @css" style="@style" disabled="@isDisabled" @onclick="@ClickHandler">
     @InnerContent()
 </button>
 
 @code {
     private bool isDisabled => IsDisabled || (IsLoading && DisableWhenLoading);
 
+    [Parameter] public string Color { get; set; } = "text-slate-900 bg-slate-100 dark:text-slate-100 dark:bg-slate-900";
     [Parameter] public RenderFragment? LoadingTemplate { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
@@ -27,7 +28,6 @@
         AddCssStyle("font-semibold");
         AddCssStyle("leading-5");
         AddCssStyle("text-sm");
-        AddCssStyle("text-white");
         AddCssStyle("transition");
     }
 

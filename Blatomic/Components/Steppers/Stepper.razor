@@ -34,8 +34,7 @@
         {
             <div class="justify-self-start">
                 <Button OnClickedAsync="PreviousStep"
-                    RoundedStyle="RoundedStyle.XL"
-                    Css="@ButtonColors">
+                    RoundedStyle="RoundedStyle.XL">
                     Previous
                 </Button>
             </div>
@@ -45,8 +44,7 @@
             <div class="justify-self-end">
                 <Button OnClickedAsync="@(() => NextStep())"
                     RoundedStyle="RoundedStyle.XL"
-                    IsDisabled="!IsStepComplete"
-                    Css="@ButtonColors">
+                    IsDisabled="!IsStepComplete">
                     Next
                 </Button>
             </div>
