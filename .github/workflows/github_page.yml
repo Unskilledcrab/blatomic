@@ -3,7 +3,7 @@ name: Deploy to Github Pages
 # Run workflow on every push to the master branch
 on:
   push:
-    branches: [ main ]
+    branches: [ Main ]
 
 jobs:
   deploy-to-github-pages:
@@ -21,7 +21,7 @@ jobs:
     
     # publishes Blazor project to the release-folder
     - name: Publish .NET Core Project
-      run: dotnet publish Blatomic.WASM.csproj -c Release -o release --nologo
+      run: dotnet publish Blatomic.WASM/Blatomic.WASM.csproj -c Release -o release --nologo
     
     # publish to github pages
     - name: Commit wwwroot to GitHub Pages
