@@ -3,44 +3,75 @@
 <DragContext TData="string">
     <div class="flex justify-around">
 
-        <DragItem DragData="@testData" Copy="true">
-            <div class="p-5">
-                <p>
-                    This is a test draggable item
-                </p>
-                <p>
-                    Data: @testData
-                </p>
-            </div>
-        </DragItem>
+        <div class="flex flex-col space-y-5 shrink-0">
+            <DragItem DragData="@testData1" Copy="true">
+                <div class="p-3 bg-blue-400 rounded-full">
+                    Data: @testData1
+                </div>
+            </DragItem>
+            <DragItem DragData="@testData2" Copy="true">
+                <div class="p-3 bg-orange-400 rounded-full">
+                    Data: @testData2
+                </div>
+            </DragItem>
+            <DragItem DragData="@testData3" Copy="true">
+                <div class="p-3 bg-green-400 rounded-full">
+                    Data: @testData3
+                </div>
+            </DragItem>
+        </div>
 
         <DropArea Context="Items">
             <div class="p-5">
-                You can drop items into this area
+                <p>Items in this area will be moved and not copied to their drop location</p>
                 @foreach (var item in Items)
                 {
-                    <DragItem DragData="@item">Data Moved: @item</DragItem>
+                    <DragItem DragData="@item">
+                        <div class="p-3 bg-pink-400 rounded-full">
+                            Data: @item
+                        </div>
+                    </DragItem>
                 }
             </div>
         </DropArea>
 
         <DropArea Context="Items">
             <div class="p-5">
-                You can drop items into this area
+                <p>Items in this are will be copied to their drop location</p>
                 @foreach (var item in Items)
                 {
-                    <DragItem Copy="true" DragData="@item">Data Moved: @item</DragItem>
+                    <DragItem Copy="true" DragData="@item">
+                        <div class="p-3 bg-purple-400 rounded-full">
+                            Data: @item
+                        </div>
+                    </DragItem>
+                }
+            </div>
+        </DropArea>
+
+        <DropArea Context="Items">
+            <div class="p-5">
+                <p>Items dropped here cannot be dragged again</p>
+                @foreach (var item in Items)
+                {
+                        <div class="p-3 bg-gray-400 rounded-full">
+                            Data: @item
+                        </div>
                 }
             </div>
         </DropArea>
 
         <DropArea Context="Items"
-                  ShouldDropAsync="@((dragItem) => Task.FromResult(false))">
+                  ShouldDropAsync="@((dragItem) => dragItem.Data == "Third" ? Task.FromResult(true) : Task.FromResult(false))">
             <div class="p-5">
-                You cannot drop items onto this area
+                <p>You can only drop the 'Third' item into this location</p>
                 @foreach (var item in Items)
                 {
-                    <div>Data Moved: @item</div>
+                    <DragItem DragData="@item">
+                        <div class="p-3 bg-red-400 rounded-full">
+                            Data: @item
+                        </div>
+                    </DragItem>
                 }
             </div>
         </DropArea>
@@ -48,5 +79,7 @@
 </DragContext>
 
 @code {
-    private string testData = "this is dummy data";
+    private string testData1 = "First";
+    private string testData2 = "Second";
+    private string testData3 = "Third";
 }
