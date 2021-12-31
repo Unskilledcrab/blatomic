@@ -19,9 +19,13 @@ jobs:
       with:
         dotnet-version: 6.0.101
     
+    # install the tailwind cli
+    - name: Install Tailwind
+      run: npm install -D tailwindcss
+    
     # publishes Blazor project to the release-folder
     - name: Publish .NET Core Project
-      run: dotnet publish Blatomic.WASM/Blatomic.WASM.csproj -c Release -o release --nologo
+      run: dotnet publish ./Blatomic.WASM/Blatomic.WASM.csproj -c Release -o release
     
     # changes the base-tag in index.html from '/' to 'BlazorGitHubPagesDemo' to match GitHub Pages repository subdirectory
     - name: Change base-tag in index.html from / to blatomic
