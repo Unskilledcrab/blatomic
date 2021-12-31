@@ -41,8 +41,8 @@
     [Parameter] public string DropClass { get; set; } = "outline-2 outline-dashed";
 
     [Parameter] public RenderFragment<List<TData>>? ChildContent { get; set; }
-    [Parameter] public RenderFragment? CanDropTemplate { get; set; } = @Plus.StandardPlus;
-    [Parameter] public RenderFragment? CannotDropTemplate { get; set; } = @Ban.StandardBan;
+    [Parameter] public RenderFragment? CanDropTemplate { get; set; } = @Plus.StandardPlusOutline;
+    [Parameter] public RenderFragment? CannotDropTemplate { get; set; } = @Ban.StandardBanSolid;
 
     public void RemoveDragItem(TData dragItem)
     {

@@ -2,6 +2,7 @@
 {
     public enum ModalSize
     {
+        Content,
         Small,
         Medium,
         Large,
@@ -15,6 +16,8 @@
             var defaultStyle = "mx-auto sm:w-11/12 md:w-9/12";
             switch (modalSize)
             {
+                case ModalSize.Content:
+                    return $"mx-auto";
                 case ModalSize.Small:
                     return $"{defaultStyle} lg:w-4/12";
                 case ModalSize.Medium:

@@ -1,0 +1,15 @@
+﻿<div class="relative">
+    <Button OnClickedAsync="(() => isShowing = !isShowing)">@ChildContent @Down.EndDownSolid</Button>
+    <div class="@visible transition-opacity duration-300 origin-top-right absolute right-0 mt-2 shadow-lg">
+        @Content
+    </div>
+</div>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public RenderFragment? Content { get; set; }
+
+
+    private string visible => isShowing ? "visible opacity-100" : "invisible opacity-0";
+    private bool isShowing = false;
+}
