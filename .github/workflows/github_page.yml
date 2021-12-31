@@ -19,9 +19,12 @@ jobs:
       with:
         dotnet-version: 6.0.101
     
-    # install the tailwind cli
-    - name: Install Tailwind
-      run: npm install -D tailwindcss
+    # install the npms
+    - name: Install Blatomic NPM
+      run: npm --prefix ./Blatomic install
+      
+    - name: Install Examples NPM
+      run: npm --prefix ./Blatomic.Examples install
     
     # publishes Blazor project to the release-folder
     - name: Publish .NET Core Project
