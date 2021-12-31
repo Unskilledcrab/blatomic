@@ -4,7 +4,10 @@
     ondragstart="event.dataTransfer.setData('', event.target.id);" @ondragenter="HandleDragEnter">
 
     <CascadingValue Value="this">
-        @ChildContent(Items)
+        @if (ChildContent is not null)
+        {
+            @ChildContent(Items)
+        }
     </CascadingValue>
     @if (isShowingDrop)
     {
@@ -31,9 +34,7 @@
 
     [Parameter] public List<TData> Items { get; set; } = new();
 
-    [Parameter]
-    public Func<DragArgs<TData>, Task<bool>> ShouldDropAsync { get; set; } = (dropItem) =>
-    Task.FromResult(true);
+    [Parameter] public Func<DragArgs<TData>, Task<bool>> ShouldDropAsync { get; set; } = (dropItem) => Task.FromResult(true);
     [Parameter] public Func<DragArgs<TData>, Task> OnDragEnterAsync { get; set; } = (dropItem) => Task.CompletedTask;
     [Parameter] public Func<DragArgs<TData>, Task> OnDragLeaveAsync { get; set; } = (dropItem) => Task.CompletedTask;
     [Parameter] public Func<DragArgs<TData>, Task> BeforeDropAsync { get; set; } = (dropItem) => Task.CompletedTask;
