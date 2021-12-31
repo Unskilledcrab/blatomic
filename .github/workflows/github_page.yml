@@ -21,7 +21,7 @@ jobs:
         
     # navigate to wasm folder
     - name: Move to WASM Project folder
-      run: cd ./Blatomic.WASM
+      run: cd .\Blatomic.WASM\
     
     # publishes Blazor project to the release-folder
     - name: Publish .NET Core Project
