@@ -14,6 +14,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blatomic.Server", "Blatomic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blatomic.Examples", "Blatomic.Examples\Blatomic.Examples.csproj", "{252405D2-24CF-48A7-AAFD-0BCAD663D7B4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blatomic.WASM", "Blatomic.WASM\Blatomic.WASM.csproj", "{F74BC339-5527-494A-AA43-0EDC51351BD3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +34,10 @@ Global
 		{252405D2-24CF-48A7-AAFD-0BCAD663D7B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{252405D2-24CF-48A7-AAFD-0BCAD663D7B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{252405D2-24CF-48A7-AAFD-0BCAD663D7B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F74BC339-5527-494A-AA43-0EDC51351BD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F74BC339-5527-494A-AA43-0EDC51351BD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F74BC339-5527-494A-AA43-0EDC51351BD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F74BC339-5527-494A-AA43-0EDC51351BD3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
