@@ -1,35 +1,37 @@
 ﻿<CascadingValue Value="this">
-    <div class="flex items-start justify-around bg-gray-100 p-4">
+    <div class="flex flex-col">
+
+    <div class="flex items-start justify-around p-4 @PanelColors">
         @for (var i = 0; i < steps.Count; i++)
         {
             var stepCount = i;
             <a class="shrink-0 flex-initial flex flex-col items-center cursor-pointer relative" @onclick="@(() => GoToStep(stepCount))">
-                <div class="rounded-full z-10 h-8 w-8 p-1 text-center align-middle transition duration-500 @(i <= currentStepIndex ? "bg-green-300" : "bg-gray-200")">@(i + 1)</div>
+                <div class="rounded-full z-10 h-8 w-8 p-1 text-center align-middle transition duration-500 @(i <= currentStepIndex ? FillActiveColors : FillInactiveColors)">@(i + 1)</div>
                 <div>@steps[i].Title</div>
                 @if (i > 0)
                 {
                     <div class="absolute left-0 w-1/2 mt-3">
-                        <div class="w-full h-1 pointer-events-none transition duration-1000 @(i <= currentStepIndex ? "bg-green-300" : "bg-gray-200")"></div>
+                        <div class="w-full h-1 pointer-events-none transition duration-1000 @(i <= currentStepIndex ? FillActiveColors : FillInactiveColors)"></div>
                     </div>
                 }
                 @if (i < steps.Count - 1)
                 {
                     <div class="absolute right-0 w-1/2 mt-3">
-                        <div class="w-full h-1 pointer-events-none transition duration-1000 @(currentStepIndex > i ? "bg-green-300" : "bg-gray-200")"></div>
+                        <div class="w-full h-1 pointer-events-none transition duration-1000 @(currentStepIndex > i ? FillActiveColors : FillInactiveColors)"></div>
                     </div>
                 }
             </a>
             @if (i < steps.Count - 1)
             {
-                <div class="w-full border-2 mt-3 transition duration-1000  @(i < currentStepIndex ? "border-green-300" : "border-gray-200")"></div>
+                <div class="w-full border-2 mt-3 transition duration-1000  @(i < currentStepIndex ? FillActiveColors : FillInactiveColors)"></div>
             }
         }
     </div>
-    <div>
+    <div class="grow @ContentColors">
         @ContentArea
         @ChildContent
     </div>
-    <div class="flex @buttonJustify items-center bg-gray-100 p-4">
+    <div class="flex @buttonJustify items-center p-4 @PanelColors">
         @if (currentStepIndex != 0)
         {
             <div class="justify-self-start">
@@ -50,10 +52,15 @@
             </div>
         }
     </div>
+    
+    </div>
 </CascadingValue>
 
 @code {
-    [Parameter] public string ButtonColors { get; set; } = "bg-indigo-500 hover:bg-indigo-400";
+    [Parameter] public string PanelColors { get; set; } = "bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100";
+    [Parameter] public string ContentColors { get; set; } = "bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100";
+    [Parameter] public string FillActiveColors { get; set; } = "bg-green-400 dark:bg-green-600 border-green-400 dark:border-green-600";
+    [Parameter] public string FillInactiveColors { get; set; } = "bg-gray-300 dark:bg-gray-700 border-gray-300 dark:border-gray-700";
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
     private string buttonJustify => currentStepIndex == 0 ? "justify-end" : "justify-between";
