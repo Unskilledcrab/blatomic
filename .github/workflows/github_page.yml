@@ -23,6 +23,10 @@ jobs:
     - name: Publish .NET Core Project
       run: dotnet publish Blatomic.WASM/Blatomic.WASM.csproj -c Release -o release --nologo
     
+    # changes the base-tag in index.html from '/' to 'BlazorGitHubPagesDemo' to match GitHub Pages repository subdirectory
+    - name: Change base-tag in index.html from / to blatomic
+      run: sed -i 's/<base href="\/" \/>/<base href="\/blatomic\/" \/>/g' release/wwwroot/index.html
+    
     # publish to github pages
     - name: Commit wwwroot to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@3.7.1
