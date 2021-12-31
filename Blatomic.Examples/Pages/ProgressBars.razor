@@ -1,30 +1,33 @@
 ﻿@page "/progressbars"
 
-<ProgressBar @bind-Percentage="@progress">@progress</ProgressBar>
+<div class="flex flex-col space-y-2">
+    <ProgressBar @bind-Percentage="@progress">@progress</ProgressBar>
+    <ProgressBar @bind-Percentage="@progress">@($"Made it to {progress}%")</ProgressBar>
+</div>
 
 <div class="mt-4 flex justify-around">
     <Button Css="bg-indigo-500 hover:bg-indigo-400" HoverStyle="HoverStyle.Shadow" RoundedStyle="RoundedStyle.Full"
-        OnClickedAsync="() => progress -= 10">
+            OnClickedAsync="() => progress -= 10">
         Minus 10
     </Button>
     <Button Css="bg-indigo-500 hover:bg-indigo-400" HoverStyle="HoverStyle.Shadow" RoundedStyle="RoundedStyle.Full"
-        OnClickedAsync="() => progress -= 5">
+            OnClickedAsync="() => progress -= 5">
         Minus 5
     </Button>
     <Button Css="bg-indigo-500 hover:bg-indigo-400" HoverStyle="HoverStyle.Shadow" RoundedStyle="RoundedStyle.Full"
-        OnClickedAsync="() => progress -= 1">
+            OnClickedAsync="() => progress -= 1">
         Minus 1
     </Button>
     <Button Css="bg-indigo-500 hover:bg-indigo-400" HoverStyle="HoverStyle.Shadow" RoundedStyle="RoundedStyle.Full"
-        OnClickedAsync="() => progress += 1">
+            OnClickedAsync="() => progress += 1">
         Plus 1
     </Button>
     <Button Css="bg-indigo-500 hover:bg-indigo-400" HoverStyle="HoverStyle.Shadow" RoundedStyle="RoundedStyle.Full"
-        OnClickedAsync="() => progress += 5">
+            OnClickedAsync="() => progress += 5">
         Plus 5
     </Button>
     <Button Css="bg-indigo-500 hover:bg-indigo-400" HoverStyle="HoverStyle.Shadow" RoundedStyle="RoundedStyle.Full"
-        OnClickedAsync="() => progress += 10">
+            OnClickedAsync="() => progress += 10">
         Plus 10
     </Button>
 </div>

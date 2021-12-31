@@ -1,5 +1,5 @@
-﻿<div class="w-full h-6 bg-gray-200">
-    <div class="transition-[width] h-full flex justify-center items-center @DefaultStyle" style="width: @width">
+﻿<div class="w-full h-fit bg-gray-200 rounded-full">
+    <div class="transition-[width] min-h-[1.5rem] h-fit flex justify-center items-center rounded-full @DefaultStyle" style="width: @width">
         @if (percentage != 0)
         {
             @ChildContent
@@ -36,5 +36,5 @@
     public EventCallback<int> PercentageChanged { get; set; }
 
     [Parameter] public RenderFragment? ChildContent { get; set; }
-    [Parameter] public string DefaultStyle { get; set; } = "bg-green-400 text-white";
+    [Parameter] public string DefaultStyle { get; set; } = "bg-blue-600 text-white";
 }

@@ -1,5 +1,28 @@
 ﻿@page "/steppers"
 
+<div class="flex flex-col space-y-5">
+<Stepper>
+    <Step>
+        Step 1
+    </Step>
+    <Step>
+        Step 2
+    </Step>
+    <Step>
+        Step 3
+    </Step>
+</Stepper>
+<Stepper>
+    <Step Title="start">
+        Step 1
+    </Step>
+    <Step>
+        Step 2
+    </Step>
+    <Step Title="end">
+        Step 3
+    </Step>
+</Stepper>
 <div class="shadow">
     <Stepper ButtonColors="bg-indigo-500 hover:bg-indigo-400">
         <Step Title="No Fightin">
@@ -77,6 +100,7 @@
             </div>
         </Step>
     </Stepper>
+</div>
 </div>
 
 @code {

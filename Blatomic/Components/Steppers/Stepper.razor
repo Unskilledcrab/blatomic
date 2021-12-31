@@ -43,7 +43,7 @@
 </CascadingValue>
 
 @code {
-    [Parameter] public string? ButtonColors { get; set; }
+    [Parameter] public string ButtonColors { get; set; } = "bg-indigo-500 hover:bg-indigo-400";
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
     private string buttonJustify => currentStepIndex == 0 ? "justify-end" : "justify-between";
