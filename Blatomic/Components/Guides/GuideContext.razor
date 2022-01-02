@@ -1,0 +1,83 @@
+﻿
+<div class="fixed @visible transition-opacity duration-300 z-40 top-0 left-0 w-full h-full overflow-auto bg-black/50">
+</div>
+    <CascadingValue Value="this">
+        @ChildContent
+    </CascadingValue>    
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    private bool BoundIsShowing
+    {
+        get => IsShowing;
+        set
+        {
+            IsShowing = value;
+            IsShowingChanged.InvokeAsync(value);
+        }
+    }
+    private bool isShowing = false;
+    [Parameter] public bool IsShowing 
+    {
+        get => isShowing;
+        set
+        {
+            if (value == isShowing)
+            {
+                return;
+            }
+            isShowing = value;
+
+            if (isShowing)
+            {
+                ActiveStep();                
+            }
+            else
+            {
+                DeactiveStep();
+            }
+        }
+    }
+
+    [Parameter] public EventCallback<bool> IsShowingChanged { get; set; }
+
+    private string visible => BoundIsShowing ? "visible opacity-100" : "invisible opacity-0";
+    private int currentStep = 0;
+    private List<GuideStep> Steps = new();
+    private List<GuideStep> orderedSteps => Steps.OrderBy(s => s.Step).ToList();
+
+    private void ActiveStep()
+    {
+        orderedSteps[currentStep].ActiveStep();
+        StateHasChanged();
+    }
+
+    private void DeactiveStep()
+    {
+        orderedSteps[currentStep].DeactiveStep();    
+        StateHasChanged();    
+    }
+
+    public void EndGuide()
+    {
+        BoundIsShowing = false;
+    }
+
+    public void PreviousStep()
+    {        
+        currentStep--;
+        ActiveStep();
+    }
+
+    public void NextStep()
+    {
+        currentStep++;
+        ActiveStep();
+    }
+
+    public void AddStep(GuideStep step)
+    {
+        Steps.Add(step);
+    }
+}

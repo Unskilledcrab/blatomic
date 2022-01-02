@@ -1,5 +1,7 @@
 ﻿@inherits BaseComponent
 
+@inject ITheme Theme
+
 <button type="@Type" class="@Color @css" style="@style" disabled="@isDisabled" @onclick="@ClickHandler">
     @InnerContent()
 </button>
@@ -7,7 +9,7 @@
 @code {
     private bool isDisabled => IsDisabled || (IsLoading && DisableWhenLoading);
 
-    [Parameter] public string Color { get; set; } = "text-gray-900 bg-gray-100 dark:text-gray-100 dark:bg-gray-900";
+    [Parameter] public string Color { get; set; } = string.Empty;
     [Parameter] public RenderFragment? LoadingTemplate { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
@@ -19,6 +21,11 @@
 
     protected override void OnInitialized()
     {
+        if (Color == string.Empty)
+        {
+            Color = Theme.Primary;
+        }
+
         base.OnInitialized();
 
         AddCssStyle("inline-flex");

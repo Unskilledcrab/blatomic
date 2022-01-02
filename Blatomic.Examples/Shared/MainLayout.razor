@@ -1,25 +1,30 @@
 ﻿@inherits LayoutComponentBase
+@inject Blatomic.Services.ColorScheme.ITheme Theme
 
 <PageTitle>Blatomic Examples</PageTitle>
 
-<div class="page @darkClass">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+<div class="@darkClass">
 
-    <main>
-        <div class="top-row px-4">
-            <Button OnClickedAsync="(() => darkMode = !darkMode)">
-                @(darkMode ? "Light" : "Dark")
-            </Button>
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+    <div class="page @Theme.Light">
+        <div class="sidebar">
+            <NavMenu />
         </div>
 
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
+        <main>
+            <div class="flex justify-end items-center space-x-3 px-4 py-4 @Theme.Primary">
+                <Button OnClickedAsync="(() => darkMode = !darkMode)" Color="@Theme.Light">
+                    @(darkMode ? "Light" : "Dark")
+                </Button>
+                <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+            </div>
+
+            <article class="pt-4 px-4">
+                @Body
+            </article>
+        </main>
+    </div>
 </div>
+
 
 @code {
     private string darkClass => darkMode ? "dark" : string.Empty;

@@ -1,0 +1,62 @@
+﻿@inject ITheme Theme
+
+<div @ref="@elementReference" id="@guid" class="relative @activeIndex">
+    @ChildContent
+    <div class="absolute @activeVisibility @Theme.Light">
+        @HelpContent
+        <div class="flex justify-around items-center">
+            <Button OnClickedAsync="EndGuide" Color="@Theme.Danger">End</Button>
+            <Button OnClickedAsync="PreviousStep">Previous</Button>
+            <Button OnClickedAsync="NextStep">Next</Button>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    [CascadingParameter] public GuideContext? Context {get; set;}
+
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public RenderFragment? HelpContent { get; set; }
+    [Parameter] public int Step { get; set; } = 0;
+
+    public string guid { get; } = $"a{Guid.NewGuid()}";
+    public bool isActive = false;
+
+    private ElementReference elementReference;
+    private string activeIndex => isActive ? "z-50" : "z-0";
+    private string activeVisibility => isActive ? "visible opacity-100" : "invisible opacity-0";
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        Context?.AddStep(this);
+    }
+
+    public void ActiveStep()
+    {
+        isActive = true;        
+    }
+
+    public void DeactiveStep()
+    {
+        isActive = false;        
+    }
+
+    private void EndGuide()
+    {
+        Context?.EndGuide();
+    }
+
+    private void PreviousStep()
+    {
+        DeactiveStep();
+        Context?.PreviousStep();
+    }
+
+    private void NextStep()
+    {
+        DeactiveStep();
+        Context?.NextStep();
+    }
+}

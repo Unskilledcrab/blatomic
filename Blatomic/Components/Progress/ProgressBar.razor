@@ -1,5 +1,7 @@
-﻿<div class="w-full h-fit bg-gray-200 rounded-full">
-    <div class="transition-[width] min-h-[1.5rem] h-fit flex justify-center items-center rounded-full @DefaultStyle" style="width: @width">
+﻿@inject ITheme Theme
+
+<div class="w-full h-fit bg-gray-200 rounded-full">
+    <div class="transition-[width] min-h-[1.5rem] h-fit flex justify-center items-center rounded-full @Colors" style="width: @width">
         @if (percentage != 0)
         {
             @ChildContent
@@ -36,5 +38,15 @@
     public EventCallback<int> PercentageChanged { get; set; }
 
     [Parameter] public RenderFragment? ChildContent { get; set; }
-    [Parameter] public string DefaultStyle { get; set; } = "bg-blue-600 text-white";
+    [Parameter] public string Colors { get; set; } = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        if (Colors == string.Empty)
+        {
+            Colors = Theme.Primary;
+        }
+    }
 }

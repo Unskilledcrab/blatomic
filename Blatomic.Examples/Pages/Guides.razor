@@ -1,0 +1,48 @@
+﻿@page "/guides"
+
+<GuideContext @bind-IsShowing="@isGuideShowing">
+    <div class="flex flex-col space-y-5">
+        <Button OnClickedAsync="(() => isGuideShowing = true)">Start Guide</Button>
+        
+        <GuideStep>
+            <ChildContent>
+                <Button>Very important button</Button>
+            </ChildContent>
+            <HelpContent>
+                <p>This is a very important button.. push it if you would like</p>
+            </HelpContent>
+        </GuideStep>
+        
+        <GuideStep>
+            <ChildContent>
+                <Button>Very important button</Button>
+            </ChildContent>
+            <HelpContent>
+                <p>This is a very important button.. push it if you would like</p>
+            </HelpContent>
+        </GuideStep>
+        
+        <GuideStep>
+            <ChildContent>
+                <Button>Very important button</Button>
+            </ChildContent>
+            <HelpContent>
+                <p>This is a very important button.. push it if you would like</p>
+            </HelpContent>
+        </GuideStep>
+        
+        <GuideStep>
+            <ChildContent>
+                <Button>Very important button</Button>
+            </ChildContent>
+            <HelpContent>
+                <p>This is a very important button.. push it if you would like</p>
+            </HelpContent>
+        </GuideStep>
+
+    </div>
+</GuideContext>
+
+@code {
+    private bool isGuideShowing = false;
+}
