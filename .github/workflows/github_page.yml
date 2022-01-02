@@ -28,7 +28,7 @@ jobs:
       run: dotnet publish ./Blatomic.WASM/Blatomic.WASM.csproj -c Release -o release
     
     - name: Pack for nuget
-      run: dotnet pack ./Blatomic/Blatomic.csproj --no-build -p:PackageVersion=1.0.0
+      run: dotnet pack ./Blatomic/Blatomic.csproj -c Release --no-build -p:PackageVersion=1.0.0
 
     - name: Push to nuget
       run: dotnet nuget push ./Blatomic/bin/Release/Blatomic.1.0.0.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
