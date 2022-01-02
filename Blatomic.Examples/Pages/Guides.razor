@@ -3,7 +3,92 @@
 <GuideContext @bind-IsShowing="@isGuideShowing">
     <div class="flex flex-col space-y-5">
         <Button OnClickedAsync="(() => isGuideShowing = true)">Start Guide</Button>
-        
+
+        <GuideStep>
+            <ChildContent>
+                <ProgressBar Percentage="50">50%</ProgressBar>
+            </ChildContent>
+            <HelpContent>
+                <p>This progress bar tells you exactly how close we are until the end of time...</p>
+            </HelpContent>
+        </GuideStep>
+
+        <GuideStep>
+            <ChildContent>
+                <DragContext TData="string">
+                    <div class="flex justify-around">
+
+                        <GuideStep>
+                            <ChildContent>
+
+                                <div class="flex flex-col space-y-5 shrink-0">
+                                    <DragItem DragData="@("Yay you did it")" Copy="true">
+                                        <div class="p-3 bg-blue-400 rounded-full">
+                                            Drag Me!
+                                        </div>
+                                    </DragItem>
+                                </div>
+                            </ChildContent>
+                            <HelpContent>
+                                This is an object that you can drop around on the screen
+                            </HelpContent>
+                        </GuideStep>
+
+
+                        <GuideStep>
+                            <ChildContent>
+
+                                <DropArea Context="Items">
+                                    <div class="p-5 flex flex-col space-y-2">
+                                        <p>Items in this are will be copied to their drop location</p>
+                                        @foreach (var item in Items)
+                                        {
+                                            <DragItem Copy="true" DragData="@item">
+                                                <div class="p-3 bg-purple-400 rounded-full">
+                                                    Data: @item
+                                                </div>
+                                            </DragItem>
+                                        }
+                                    </div>
+                                </DropArea>
+
+                            </ChildContent>
+                            <HelpContent>
+                                You can drop the item here and it will update with the data of that item. Note: The data does not have to match the dragged items content
+                            </HelpContent>
+                        </GuideStep>
+
+
+                        <GuideStep>
+                            <ChildContent>
+                                <DropArea Context="Items"
+                                          ShouldDropAsync="@((dragItem) => dragItem.Data == "Third" ? Task.FromResult(true) : Task.FromResult(false))">
+                                    <div class="p-5 flex flex-col space-y-2">
+                                        <p>You can only drop the 'Third' item into this location</p>
+                                        @foreach (var item in Items)
+                                        {
+                                            <DragItem DragData="@item">
+                                                <div class="p-3 bg-red-400 rounded-full">
+                                                    Data: @item
+                                                </div>
+                                            </DragItem>
+                                        }
+                                    </div>
+                                </DropArea>
+
+                            </ChildContent>
+                            <HelpContent>
+                                You won't ever be able to drop the item in this area... it doesn't like you
+                            </HelpContent>
+                        </GuideStep>
+                    </div>
+                </DragContext>
+            </ChildContent>
+            <HelpContent>
+                <p>This is using the drag and drop context</p>
+            </HelpContent>
+        </GuideStep>
+
         <GuideStep>
             <ChildContent>
                 <Button>Very important button</Button>
@@ -12,25 +97,7 @@
                 <p>This is a very important button.. push it if you would like</p>
             </HelpContent>
         </GuideStep>
-        
-        <GuideStep>
-            <ChildContent>
-                <Button>Very important button</Button>
-            </ChildContent>
-            <HelpContent>
-                <p>This is a very important button.. push it if you would like</p>
-            </HelpContent>
-        </GuideStep>
-        
-        <GuideStep>
-            <ChildContent>
-                <Button>Very important button</Button>
-            </ChildContent>
-            <HelpContent>
-                <p>This is a very important button.. push it if you would like</p>
-            </HelpContent>
-        </GuideStep>
-        
+
         <GuideStep>
             <ChildContent>
                 <Button>Very important button</Button>

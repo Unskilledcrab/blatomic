@@ -45,11 +45,21 @@
     private string visible => BoundIsShowing ? "visible opacity-100" : "invisible opacity-0";
     private int currentStep = 0;
     private List<GuideStep> Steps = new();
-    private List<GuideStep> orderedSteps => Steps.OrderBy(s => s.Step).ToList();
+    private List<GuideStep> orderedSteps => Steps.OrderBy(s => s.internalIndex).ToList();
 
     private void ActiveStep()
     {
-        orderedSteps[currentStep].ActiveStep();
+        var hasPrevious = true;
+        var hasNext = true;
+        if (currentStep == Steps.Count -1)
+        {
+            hasNext = false;
+        }
+        if (currentStep == 0)
+        {
+            hasPrevious = false;
+        }
+        orderedSteps[currentStep].ActiveStep(hasPrevious, hasNext);
         StateHasChanged();
     }
 
@@ -78,6 +88,48 @@
 
     public void AddStep(GuideStep step)
     {
-        Steps.Add(step);
+        Steps.Add(step);        
+    }
+
+    private void ReorderIndexes()
+    {
+        foreach (var currentStep in Steps)
+        {
+            currentStep.internalIndex = 0;
+        }
+
+        for (var i = 0; i < Steps.Count; i++)
+        {
+            var currentStep = Steps[i];
+
+            if (currentStep.internalIndex != 0)
+            {
+                continue;
+            }
+
+            if (currentStep.Step != 0)
+            {
+                currentStep.internalIndex = currentStep.Step;
+                continue;
+            }
+
+            currentStep.internalIndex = i++;
+            if (currentStep.HasSubSteps)
+            {
+                foreach (var substep in currentStep.SubSteps)
+                {
+                    substep.internalIndex = i++;
+                }
+            }
+        }
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+        if (firstRender)
+        {
+            ReorderIndexes();
+        }
     }
 }

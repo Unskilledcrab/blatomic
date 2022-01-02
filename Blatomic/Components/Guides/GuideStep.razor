@@ -1,13 +1,21 @@
 ﻿@inject ITheme Theme
 
-<div @ref="@elementReference" id="@guid" class="relative @activeIndex">
-    @ChildContent
-    <div class="absolute @activeVisibility @Theme.Light">
+<div @ref="@elementReference" id="@guid" class="relative @activeIndex">    
+    <CascadingValue Value="this">
+        @ChildContent
+    </CascadingValue>
+    <div class="absolute mt-2 p-4 shadow-md rounded-lg @activeVisibility @Theme.Light">
         @HelpContent
-        <div class="flex justify-around items-center">
-            <Button OnClickedAsync="EndGuide" Color="@Theme.Danger">End</Button>
-            <Button OnClickedAsync="PreviousStep">Previous</Button>
-            <Button OnClickedAsync="NextStep">Next</Button>
+        <div class="flex justify-around items-center pt-4">
+            <Button OnClickedAsync="EndGuide" Color="@Theme.Danger" RoundedStyle="RoundedStyle.Full">End</Button>
+            @if (hasPrevious)
+            {
+                <Button OnClickedAsync="PreviousStep" RoundedStyle="RoundedStyle.Full">Previous</Button>
+            }
+            @if (hasNext)
+            {
+                <Button OnClickedAsync="NextStep" RoundedStyle="RoundedStyle.Full">Next</Button>
+            }
         </div>
     </div>
 </div>
@@ -15,32 +23,90 @@
 
 @code {
     [CascadingParameter] public GuideContext? Context {get; set;}
+    [CascadingParameter] public GuideStep? StepContext {get; set;}
 
     [Parameter] public RenderFragment? ChildContent { get; set; }
     [Parameter] public RenderFragment? HelpContent { get; set; }
     [Parameter] public int Step { get; set; } = 0;
 
+    public int internalIndex = 0;
     public string guid { get; } = $"a{Guid.NewGuid()}";
     public bool isActive = false;
+    public bool isInContext = false;
+    public bool hasPrevious = false;
+    public bool hasNext = false;
+    public bool HasSubSteps => subSteps.Count > 0;
+    public List<GuideStep> SubSteps => subSteps;
 
     private ElementReference elementReference;
-    private string activeIndex => isActive ? "z-50" : "z-0";
+    private string activeIndex => isActive || isInContext ? "z-50" : "z-0";
     private string activeVisibility => isActive ? "visible opacity-100" : "invisible opacity-0";
+    private List<GuideStep> subSteps = new();
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
         Context?.AddStep(this);
+        StepContext?.AddSubStep(this);
     }
 
-    public void ActiveStep()
+    public void AddSubStep(GuideStep step)
     {
-        isActive = true;        
+        subSteps.Add(step);
+    }
+
+    public void ShowParentStep()
+    {
+        if (StepContext is not null)
+        {
+            StepContext.isInContext = true;
+            StepContext.ShowParentStep();
+        }
+    }
+
+    public void HideParentStep()
+    {
+        if (StepContext is not null)
+        {
+            StepContext.isInContext = false;
+            StepContext.HideParentStep();
+        }
+    }
+
+    public void ShowSubSteps()
+    {
+        foreach (var step in subSteps)
+        {
+            step.isInContext = true;
+            step.ShowSubSteps();
+        }
+        StateHasChanged();
+    }
+
+    public void HideSubSteps()
+    {
+        foreach (var step in subSteps)
+        {
+            step.isInContext = false;
+            step.HideSubSteps();
+        }
+        StateHasChanged();
+    }
+
+    public void ActiveStep(bool hasPrevious, bool hasNext)
+    {
+        this.hasPrevious = hasPrevious;
+        this.hasNext = hasNext;
+        isActive = true;
+        ShowSubSteps();
+        ShowParentStep();
     }
 
     public void DeactiveStep()
     {
-        isActive = false;        
+        isActive = false;
+        HideSubSteps();
+        HideParentStep();
     }
 
     private void EndGuide()
