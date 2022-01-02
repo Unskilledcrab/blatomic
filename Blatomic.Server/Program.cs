@@ -1,4 +1,5 @@
 using Blatomic.Services;
+using Blatomic.Services.ColorScheme;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 

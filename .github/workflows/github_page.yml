@@ -21,12 +21,18 @@ jobs:
     
     # Build the project
     - name: Build Project
-      run: dotnet build ./Blatomic.WASM/Blatomic.WASM.csproj
+      run: dotnet build ./Blatomic.WASM/Blatomic.WASM.csproj -c Release
     
     # publishes Blazor project to the release-folder
     - name: Publish .NET Core Project
       run: dotnet publish ./Blatomic.WASM/Blatomic.WASM.csproj -c Release -o release
     
+    - name: Pack for nuget
+      run: dotnet pack ./Blatomic/Blatomic.csproj --no-build -p:PackageVersion=1.0.0
+
+    - name: Push to nuget
+      run: dotnet nuget push ./Blatomic/bin/Release/Blatomic.1.0.0.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+
     # changes the base-tag in index.html from '/' to 'BlazorGitHubPagesDemo' to match GitHub Pages repository subdirectory
     - name: Change base-tag in index.html from / to blatomic
       run: sed -i 's/<base href="\/" \/>/<base href="\/blatomic\/" \/>/g' release/wwwroot/index.html

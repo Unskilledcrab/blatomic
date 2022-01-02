@@ -1,7 +1,8 @@
 {
   "scripts": {
-    "watch": "npx tailwindcss -i ./input.css -o ./wwwroot/css/output.min.css --watch",
-    "buildcss": "npx tailwindcss -i ./input.css -o ./wwwroot/css/output.min.css --minify"
+    "watch": "npx tailwindcss -i ./input.css -o ./wwwroot/css/tw.min.css --watch",
+    "buildcss": "npx tailwindcss -i ./input.css -o ./wwwroot/css/tw.min.css --minify",
+    "buildstandardcss": "npx tailwindcss -i ./standard.css -o ./wwwroot/css/standard.min.css --minify"
   },
   "dependencies": {
     "autoprefixer": "^10.4.1",

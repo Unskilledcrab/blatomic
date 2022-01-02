@@ -2,13 +2,13 @@
 {
     public interface ITheme
     {
-        string Primary { get; }
-        string Light { get; }
-        string Secondary { get; }
-        string Success { get; }
-        string Danger { get; }
-        string Warning { get; }
-        string Info { get; }
-        string Dark { get; }
+        string Primary { get; set; }
+        string Light { get; set; }
+        string Secondary { get; set; }
+        string Success { get; set; }
+        string Danger { get; set; }
+        string Warning { get; set; }
+        string Info { get; set; }
+        string Dark { get; set; }
     }
 }

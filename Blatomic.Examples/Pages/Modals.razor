@@ -35,6 +35,8 @@
             <div class="text-sm font-medium">
                 Not registered? <a href="#" class="@TwColors.Text_Blue_600 hover:underline">Create account</a>
             </div>
+
+            <Button OnClickedAsync="UpdateTheme">Update Primary Theme</Button>
         </form>
     </Body>
 </Modal>
@@ -79,4 +81,9 @@
     private bool isShowingSmall = false;
     private bool isShowingMedium = false;
     private bool isShowingFull = false;
+
+    private void UpdateTheme()
+    {
+        Theme.Primary = $"{TwColors.Bg_Red_200} {TwColors.Text_Gray_800}";
+    }
 }
