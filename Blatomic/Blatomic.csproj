@@ -7,7 +7,7 @@
 		<NpmLastInstall>node_modules/.last-install</NpmLastInstall>
 		<Company>Original Technical Systems LLC</Company>
 		<Description>A blazor component library utilizing tailwind css styling</Description>
-		<PackageProjectUrl>https://github.com/Unskilledcrab/blatomic</PackageProjectUrl>
+		<PackageProjectUrl>https://unskilledcrab.github.io/blatomic/</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/Unskilledcrab/blatomic</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<PackageTags>blazor; blazor components; tailwind</PackageTags>
