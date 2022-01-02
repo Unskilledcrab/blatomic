@@ -2,9 +2,11 @@
 
 <div @ref="@elementReference" id="@guid" class="relative @activeIndex">    
     <CascadingValue Value="this">
-        @ChildContent
+        <div class="@activeAnimation">
+            @ChildContent
+        </div>
     </CascadingValue>
-    <div class="absolute mt-2 p-4 shadow-md rounded-lg @activeVisibility @Theme.Light">
+    <div class="absolute p-4 shadow-md rounded-lg @positionStyle @marginStyle @arrowStyle @activeVisibility @Theme.Light">
         @HelpContent
         <div class="flex justify-around items-center pt-4">
             <Button OnClickedAsync="EndGuide" Color="@Theme.Danger" RoundedStyle="RoundedStyle.Full">End</Button>
@@ -28,6 +30,7 @@
     [Parameter] public RenderFragment? ChildContent { get; set; }
     [Parameter] public RenderFragment? HelpContent { get; set; }
     [Parameter] public int Step { get; set; } = 0;
+    [Parameter] public Position Position { get; set; } = Position.Bottom;
 
     public int internalIndex = 0;
     public string guid { get; } = $"a{Guid.NewGuid()}";
@@ -41,6 +44,10 @@
     private ElementReference elementReference;
     private string activeIndex => isActive || isInContext ? "z-50" : "z-0";
     private string activeVisibility => isActive ? "visible opacity-100" : "invisible opacity-0";
+    private string activeAnimation => isActive ? "outline-4 outline-blue-400 outline" : string.Empty;
+    private string positionStyle => Position.AbsoluteStyle();
+    private string arrowStyle => Position.ArrowStyle();
+    private string marginStyle => Position.MarginStyle();
     private List<GuideStep> subSteps = new();
 
     protected override void OnInitialized()

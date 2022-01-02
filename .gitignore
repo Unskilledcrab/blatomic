@@ -351,3 +351,4 @@ MigrationBackup/
 Blatomic/wwwroot/css/output.min.css
 Blatomic.Examples/wwwroot/css/blatomic_examples.css
 Blatomic.Examples/wwwroot/css/blatomic_examples.min.css
+/Blatomic/wwwroot/css/blatomic_examples.min.css

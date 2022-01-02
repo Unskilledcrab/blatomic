@@ -1,9 +1,9 @@
 ﻿
 <div class="fixed @visible transition-opacity duration-300 z-40 top-0 left-0 w-full h-full overflow-auto bg-black/50">
 </div>
-    <CascadingValue Value="this">
-        @ChildContent
-    </CascadingValue>    
+<CascadingValue Value="this">
+    @ChildContent
+</CascadingValue>
 
 @code {
     [Parameter] public RenderFragment? ChildContent { get; set; }
@@ -18,7 +18,8 @@
         }
     }
     private bool isShowing = false;
-    [Parameter] public bool IsShowing 
+    [Parameter]
+    public bool IsShowing
     {
         get => isShowing;
         set
@@ -31,7 +32,7 @@
 
             if (isShowing)
             {
-                ActiveStep();                
+                ActiveStep();
             }
             else
             {
@@ -51,7 +52,7 @@
     {
         var hasPrevious = true;
         var hasNext = true;
-        if (currentStep == Steps.Count -1)
+        if (currentStep == Steps.Count - 1)
         {
             hasNext = false;
         }
@@ -65,8 +66,8 @@
 
     private void DeactiveStep()
     {
-        orderedSteps[currentStep].DeactiveStep();    
-        StateHasChanged();    
+        orderedSteps[currentStep].DeactiveStep();
+        StateHasChanged();
     }
 
     public void EndGuide()
@@ -75,7 +76,7 @@
     }
 
     public void PreviousStep()
-    {        
+    {
         currentStep--;
         ActiveStep();
     }
@@ -88,7 +89,7 @@
 
     public void AddStep(GuideStep step)
     {
-        Steps.Add(step);        
+        Steps.Add(step);
     }
 
     private void ReorderIndexes()
@@ -113,12 +114,12 @@
                 continue;
             }
 
-            currentStep.internalIndex = i++;
+            currentStep.internalIndex = i + 1;
             if (currentStep.HasSubSteps)
             {
                 foreach (var substep in currentStep.SubSteps)
                 {
-                    substep.internalIndex = i++;
+                    substep.internalIndex = i + 1;
                 }
             }
         }
