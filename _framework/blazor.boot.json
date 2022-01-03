@@ -7,9 +7,9 @@
   "linkerEnabled": true,
   "resources": {
     "assembly": {
-      "Blatomic.dll": "sha256-KQwxFNGeEWMOw6oQwEa4jWRKURC3V38v9F13KbRPY2U=",
-      "Blatomic.Examples.dll": "sha256-fs9BOkszbEw\/Z50Zc37aIxFbGFiAtuQwujTTXzjnNTk=",
-      "Blatomic.WASM.dll": "sha256-jsXkxc7Inp+\/ASRaLPN\/VjjCy1iwWMd45dt7oYcxCbA=",
+      "Blatomic.dll": "sha256-O\/+2FfmQCOd9jykEv4GKPBXaXcQ08pj0VSD\/rdbqi6Y=",
+      "Blatomic.Examples.dll": "sha256-Ogle9JM11KlkbE1Ws7T9ybz5G\/E5HebwGdt26\/CfpaE=",
+      "Blatomic.WASM.dll": "sha256-\/JQsG41wH2vW+wVmOGnT4GpjIR3YWh7orH3eW6yUS+c=",
       "Microsoft.AspNetCore.Components.dll": "sha256-MDSnWDD73gs9cr3\/HYv65FVSmF0817qk19HHsuqWGUg=",
       "Microsoft.AspNetCore.Components.Web.dll": "sha256-5SG3xGO0JbXR15YFD2U\/WNcIC5b8gA+x1oW1bM4VzAc=",
       "Microsoft.AspNetCore.Components.WebAssembly.dll": "sha256-2fbR6RpUxEMnL89Bp4BedWtQJQRpzWAu87gh1UjPAWk=",
