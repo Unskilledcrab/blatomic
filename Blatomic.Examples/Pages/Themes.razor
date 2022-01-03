@@ -41,6 +41,10 @@
         <p>@(@"}")</p>
     </div>
 
+    <div class="leading-none">
+        <Blazy.Components.BlazyCodeBox Code="@Usings"></Blazy.Components.BlazyCodeBox>
+    </div>
+
     <h3 class="text-xl font-bold mt-6">Wait.. you said extension?</h3>
     
     <p class="mt-2">Yes! The <b>ITheme</b> interface has a <b>CustomTheme</b> dictionary property where you can place any new theme you would like!</p>
@@ -67,3 +71,19 @@
         <p>@(@"<div class=""@TwColors.Bg_Slate_800 @TwColors.Text_Blue_200 rounded-lg p-2 mt-0.5 mb-2"">I will be shown properly in dark and light mode</div>")</p>
     </div> 
 </div>
+
+@code {
+    private string Usings => @"
+this is a test
+@using Blatomic.Effects
+@using Blatomic.Services.ColorScheme
+@using Blatomic.Components.Buttons
+@using Blatomic.Components.Notification
+@using Blatomic.Components.Steppers
+@using Blatomic.Components.Drag
+@using Blatomic.Components.Modals
+@using Blatomic.Components.Progress
+@using Blatomic.Components.Guides
+";
+    
+}
