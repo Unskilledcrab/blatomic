@@ -2,14 +2,19 @@
 {
     public class ColorPair
     {
+        public ColorPair()
+        {
+
+        }
+
         public ColorPair(string light, string dark)
         {
             Light = light;
             Dark = dark;
         }
 
-        public string Light { get; set; }
-        public string Dark { get; set; }
+        public string Light { get; set; } = string.Empty;
+        public string Dark { get; set; } = string.Empty;
 
         public override string ToString()
         {

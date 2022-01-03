@@ -2,17 +2,15 @@
 {
     public class Palette
     {
-        public Palette(ColorPair text, ColorPair background)
-        {
-            Text = text;
-            Background = background;
-        }
-        public ColorPair Text { get; set; }
-        public ColorPair Background { get; set; }
+        public ColorPair Text { get; set; } = new();
+        public ColorPair Background { get; set; } = new();
+        public ColorPair Border { get; set; } = new();
+        public ColorPair Outline { get; set; } = new();
+        public ColorPair Ring { get; set; } = new();
 
         public override string ToString()
         {
-            return $"{Text} {Background}";
+            return $"{Text} {Background} {Border} {Outline} {Ring}";
         }
     }
 }

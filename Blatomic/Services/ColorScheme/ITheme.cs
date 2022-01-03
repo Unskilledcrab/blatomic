@@ -10,5 +10,6 @@
         string Warning { get; set; }
         string Info { get; set; }
         string Dark { get; set; }
+        CustomTheme Custom { get; set; }
     }
 }
