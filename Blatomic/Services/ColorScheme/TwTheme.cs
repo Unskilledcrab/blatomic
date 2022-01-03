@@ -52,7 +52,7 @@ public class TwTheme : ITheme
     }.ToString();
     public virtual string Light {get;set;} = new Palette()
     {
-        Text = TwColors.Text_Black,
+        Text = TwColors.Text_Slate_700,
         Background = TwColors.Bg_Slate_300,
         Border = TwColors.Bg_Slate_400,
         Outline = TwColors.Bg_Slate_400,
@@ -60,7 +60,7 @@ public class TwTheme : ITheme
     }.ToString();
     public virtual string Dark {get;set;} = new Palette()
     {
-        Text = TwColors.Text_White,
+        Text = TwColors.Text_Slate_300,
         Background = TwColors.Bg_Slate_700,
         Border = TwColors.Bg_Slate_600,
         Outline = TwColors.Bg_Slate_600,

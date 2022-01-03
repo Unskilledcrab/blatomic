@@ -12,4 +12,12 @@
         string Dark { get; set; }
         CustomTheme Custom { get; set; }
     }
+
+    public static class ThemeExtensions
+    {
+        public static string Get(this ITheme theme, string themeName)
+        {
+            return theme.Custom.Get(themeName);
+        }
+    }
 }
