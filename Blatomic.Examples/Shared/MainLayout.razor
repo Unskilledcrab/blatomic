@@ -6,16 +6,23 @@
 <div class="@darkClass">
 
     <div class="page @Theme.Light">
-        <div class="sidebar">
-            <NavMenu />
+        <div class="sidebar @navClass">
+            <NavMenu @bind-ShowNavMenu="showNav"/>
         </div>
 
         <main>
-            <div class="flex justify-end items-center space-x-3 px-4 py-4 @Theme.Primary">
-                <Button OnClickedAsync="(() => darkMode = !darkMode)" Color="@Theme.Light">
-                    @(darkMode ? "Light" : "Dark")
+            <div class="flex justify-between @Theme.Primary">
+                <Button OnClickedAsync="ToggleNavMenu">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
+                    </svg>
                 </Button>
-                <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+                <div class="flex justify-end items-center space-x-3 px-4 py-4">
+                    <Button OnClickedAsync="(() => darkMode = !darkMode)" Color="@Theme.Light">
+                        @(darkMode ? "Light" : "Dark")
+                    </Button>
+                    <a href="https://github.com/Unskilledcrab/blatomic" target="_blank">Github</a>
+                </div>
             </div>
 
             <article class="p-4">
@@ -25,8 +32,15 @@
     </div>
 </div>
 
-
 @code {
     private string darkClass => darkMode ? "dark" : string.Empty;
     private bool darkMode = false;
+
+    private string navClass => showNav ? "block" : "hidden";
+    private bool showNav = false;
+
+    private void ToggleNavMenu()
+    {
+        showNav = !showNav;
+    }
 }

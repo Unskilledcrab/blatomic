@@ -52,16 +52,16 @@ public class TwTheme : ITheme
     }.ToString();
     public virtual string Light {get;set;} = new Palette()
     {
-        Text = TwColors.Text_Slate_700,
-        Background = TwColors.Bg_Slate_300,
+        Text = TwColors.Text_Slate_800,
+        Background = TwColors.Bg_Slate_200,
         Border = TwColors.Bg_Slate_400,
         Outline = TwColors.Bg_Slate_400,
         Ring = TwColors.Bg_Slate_400
     }.ToString();
     public virtual string Dark {get;set;} = new Palette()
     {
-        Text = TwColors.Text_Slate_300,
-        Background = TwColors.Bg_Slate_700,
+        Text = TwColors.Text_Slate_200,
+        Background = TwColors.Bg_Slate_800,
         Border = TwColors.Bg_Slate_600,
         Outline = TwColors.Bg_Slate_600,
         Ring = TwColors.Bg_Slate_600

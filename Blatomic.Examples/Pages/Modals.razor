@@ -36,6 +36,7 @@
             </div>
 
             <Button OnClickedAsync="UpdateTheme">Update Primary Theme</Button>
+            <Button OnClickedAsync="ResetTheme">Reset Primary Theme</Button>
         </form>
     </Body>
 </Modal>
@@ -82,5 +83,9 @@
     private void UpdateTheme()
     {
         Theme.Primary = new TwTheme().Info;
+    }
+    private void ResetTheme()
+    {
+        Theme.Primary = new TwTheme().Primary;
     }
 }

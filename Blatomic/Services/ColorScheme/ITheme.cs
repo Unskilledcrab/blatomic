@@ -19,5 +19,10 @@
         {
             return theme.Custom.Get(themeName);
         }
+        public static ITheme Add(this ITheme theme, string themeName, string themeClasses)
+        {
+            theme.Custom.Add(themeName, themeClasses);
+            return theme;
+        }
     }
 }
