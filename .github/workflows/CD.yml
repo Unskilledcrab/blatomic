@@ -44,7 +44,7 @@ jobs:
     
     - name: Pack for nuget
       if: contains(${{ env.RELEASE_VERSION }},'.')
-      run: dotnet pack ./Blatomic/Blatomic.csproj -c Release --no-build -p:PackageVersion=${{ steps.branch_name.outputs.SOURCE_TAG }}
+      run: dotnet pack ./Blatomic/Blatomic.csproj -c Release -p:PackageVersion=${{ steps.branch_name.outputs.SOURCE_TAG }}
 
     - name: Push to nuget
       if: contains(${{ env.RELEASE_VERSION }},'.')
