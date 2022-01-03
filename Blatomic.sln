@@ -19,7 +19,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "git", "git", "{B44D7BF2-2A40-437D-BAA2-8B22993588DD}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
-		.github\workflows\github_page.yml = .github\workflows\github_page.yml
+		.github\workflows\CD.yml = .github\workflows\CD.yml
+		.github\workflows\CI.yml = .github\workflows\CI.yml
 		LICENSE = LICENSE
 		README.md = README.md
 	EndProjectSection
