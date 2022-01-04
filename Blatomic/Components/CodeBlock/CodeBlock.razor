@@ -1,0 +1,130 @@
+﻿@using Microsoft.CodeAnalysis
+@using Microsoft.CodeAnalysis.CSharp
+@using Microsoft.CodeAnalysis.CSharp.Syntax
+@using Microsoft.CodeAnalysis.Text
+@using System.Text
+
+@inject ITheme Theme
+
+<pre class="@Theme.Dark.ToString() rounded-lg p-2 overflow-x-auto">
+    @((MarkupString)markup)
+</pre>
+
+@code {
+    [Parameter] public string Code { get; set; } = string.Empty;
+    [Parameter] public bool ShowLineNumber { get; set; } = true;
+
+    private int lineNumber = 1;
+    private string markup = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        if (!string.IsNullOrWhiteSpace(Code))
+        {
+            GenerateHTML(Code);
+        }
+        base.OnInitialized();
+    }
+
+    private void GenerateHTML(string code)
+    {
+        var root = CSharpSyntaxTree.ParseText(code).GetRoot();
+        var nodeSb = new StringBuilder();
+
+        TraverseNode(root, nodeSb);
+        markup = nodeSb.ToString();
+    }
+
+    private void AddLineNumber(StringBuilder sb)
+    {
+        var pre = ShowLineNumber ? $"<span class=\"inline-block select-none w-8 mr-6 text-right min-w-4\">{lineNumber}</span>" : string.Empty;
+        sb.Append(pre);
+        lineNumber++;
+    }
+
+    private void TraverseNode(SyntaxNode node, StringBuilder sb)
+    {
+        AddLineNumber(sb);
+        var test = new StringBuilder();
+        foreach (var token in node.DescendantTokens())
+        {
+            if (token.IsMissing)
+            {
+                continue;
+            }
+            foreach (var trivia in token.LeadingTrivia)
+            {
+                ParseTrivia(trivia, sb);
+            }
+            ParseToken(token, sb);
+            test.AppendLine($"{token}       {token.Kind()}      {token.Parent.Kind()}");
+            foreach (var trivia in token.TrailingTrivia)
+            {
+                ParseTrivia(trivia, sb);
+            }
+        }
+        var boom = test.ToString();
+    }
+
+    private void ParseTrivia(SyntaxTrivia trivia, StringBuilder sb)
+    {
+        var loweredSyntax = trivia.Kind().ToString().ToLower();
+        if (loweredSyntax.Contains("comment"))
+        {
+            sb.Append(Colorize(TwColors.Text_Green_500.ToString(), trivia.ToString()));
+        }
+        else if (trivia.Kind() == SyntaxKind.EndOfLineTrivia)
+        {
+            sb.Append(trivia.ToString());
+            AddLineNumber(sb);
+        }
+        else
+        {
+            sb.Append(trivia.ToString());
+        }
+    }
+
+    private void ParseToken(SyntaxToken token, StringBuilder sb)
+    {
+        var previousToken = token.GetPreviousToken().ToString();
+        var nextToken = token.GetNextToken().ToString();
+        var tokenString = token.ToString();
+        if (nextToken == ">" && previousToken == "/" || previousToken == "<" && tokenString != "/")
+        {
+            sb.Append(Colorize(TwColors.Text_Emerald_600.ToString(), tokenString));
+        }
+        else if (nextToken == "(")
+        {
+            sb.Append(Colorize(TwColors.Text_Sky_400.ToString(), tokenString));
+        }
+        else if (nextToken == "=")
+        {
+            sb.Append(Colorize(TwColors.Text_Sky_400.ToString(), tokenString));
+        }
+        else
+        {
+            var css = SyntaxColor(token.Kind().ToString());
+            sb.Append(Colorize(css, tokenString));
+        }
+    }
+
+    private string SyntaxColor(string syntax)
+    {
+        var loweredSyntax = syntax.ToLower();
+        if (loweredSyntax.Contains("keyword"))
+        {
+            return TwColors.Text_Blue_700.ToString();
+        }
+        else if (loweredSyntax.Contains("string"))
+        {
+            return TwColors.Text_Orange_300.ToString();
+        }
+        else if (loweredSyntax.Contains("comment"))
+        {
+            return TwColors.Text_Green_700.ToString();
+        }
+        else return TwColors.Text_Gray_400.ToString();
+    }
+
+    private string Colorize(string css, string content) => $"<span class=\" {css}\">{content}</span>";
+}

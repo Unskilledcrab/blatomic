@@ -5,7 +5,7 @@
 
 <div class="@darkClass">
 
-    <div class="page @Theme.Light">
+    <div class="page @Theme.Light.All">
         <div class="sidebar @navClass">
             <NavMenu @bind-ShowNavMenu="showNav"/>
         </div>
@@ -18,7 +18,7 @@
                     </svg>
                 </Button>
                 <div class="flex justify-end items-center space-x-3 px-4 py-4">
-                    <Button OnClickedAsync="(() => darkMode = !darkMode)" Color="@Theme.Light">
+                    <Button OnClickedAsync="(() => darkMode = !darkMode)" Color="@Theme.Light.All">
                         @(darkMode ? "Light" : "Dark")
                     </Button>
                     <a href="https://github.com/Unskilledcrab/blatomic" target="_blank">Github</a>

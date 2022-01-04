@@ -9,7 +9,7 @@
     <div class="absolute p-4 shadow-md rounded-lg @positionStyle @marginStyle @arrowStyle @activeVisibility @Theme.Light">
         @HelpContent
         <div class="flex justify-around items-center pt-4">
-            <Button OnClickedAsync="EndGuide" Color="@Theme.Danger" RoundedStyle="RoundedStyle.Full">End</Button>
+            <Button OnClickedAsync="EndGuide" Color="@Theme.Danger.All" RoundedStyle="RoundedStyle.Full">End</Button>
             @if (hasPrevious)
             {
                 <Button OnClickedAsync="PreviousStep" RoundedStyle="RoundedStyle.Full">Previous</Button>
@@ -44,7 +44,7 @@
     private ElementReference elementReference;
     private string activeIndex => isActive || isInContext ? "z-50" : "z-0";
     private string activeVisibility => isActive ? "visible opacity-100" : "invisible opacity-0";
-    private string activeAnimation => isActive ? "outline-4 outline-blue-400 outline" : string.Empty;
+    private string activeAnimation => isActive ? $"outline-4 {Theme.Primary.Outline} outline" : string.Empty;
     private string positionStyle => Position.AbsoluteStyle();
     private string arrowStyle => Position.ArrowStyle();
     private string marginStyle => Position.MarginStyle();

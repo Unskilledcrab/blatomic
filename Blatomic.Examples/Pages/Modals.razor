@@ -1,5 +1,6 @@
 ﻿@page "/modals"
 @inject ITheme Theme
+@inject NavigationManager Nav
 
 <Button HoverStyle="HoverStyle.Shadow"
         RoundedStyle="RoundedStyle.Full"
@@ -82,10 +83,12 @@
 
     private void UpdateTheme()
     {
-        Theme.Primary = new TwTheme().Info;
+        Theme.Primary = new TwTheme().Success;
+        Nav.NavigateTo(Nav.Uri, true);
     }
     private void ResetTheme()
     {
         Theme.Primary = new TwTheme().Primary;
+        Nav.NavigateTo(Nav.Uri, true);
     }
 }

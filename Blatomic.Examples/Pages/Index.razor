@@ -1,4 +1,5 @@
 ﻿@page "/"
+@inject ITheme Theme
 
 <PageTitle>Blatomic</PageTitle>
 
@@ -13,7 +14,7 @@
     <h3 class="text-xl font-bold mt-6">Getting Started</h3>
     <ol class="list-decimal ml-8 space-y-1 mt-2">
         <li>
-            <p>First you will need to add the <a class="@TwColors.Text_Blue_700 hover:underline" href="https://www.nuget.org/packages/Blatomic/">Blatomic Nuget Package</a> to you blazor project.</p>
+            <p>First you will need to add the <a class="@Theme.Primary.Text hover:underline" href="https://www.nuget.org/packages/Blatomic/">Blatomic Nuget Package</a> to you blazor project.</p>
         </li>
         <li>
             <p>Next you will need to add the blatomic styles. This will need to be the final style sheet in your header. There are two different style sheets provided depending on if you are already using tailwind.</p>
@@ -40,15 +41,17 @@
     
     <h3 class="text-xl font-bold mt-6">Adding Common Namespaces <b>(Optional)</b></h3>
     <p class="mt-2">If you want, you can add all of the blatomic namespaces in your _Imports.razor files</p>
-    <div class="@TwColors.Bg_Slate_800 @TwColors.Text_Blue_200 rounded-lg p-2 mt-0.5 mb-2">
-        <div>@("@using Blatomic.Effects")</div>
-        <div>@("@using Blatomic.Services.ColorScheme")</div>
-        <div>@("@using Blatomic.Components.Buttons")</div>
-        <div>@("@using Blatomic.Components.Notification")</div>
-        <div>@("@using Blatomic.Components.Steppers")</div>
-        <div>@("@using Blatomic.Components.Drag")</div>
-        <div>@("@using Blatomic.Components.Modals")</div>
-        <div>@("@using Blatomic.Components.Progress")</div>
-        <div>@("@using Blatomic.Components.Guides")</div>
-    </div>
+    <CodeBlock Code="@usings"/>
 </div>
+
+@code {
+    private string usings = @"@using Blatomic.Effects
+@using Blatomic.Services.ColorScheme
+@using Blatomic.Components.Buttons
+@using Blatomic.Components.Notification
+@using Blatomic.Components.Steppers
+@using Blatomic.Components.Drag
+@using Blatomic.Components.Modals
+@using Blatomic.Components.Progress
+@using Blatomic.Components.Guides";
+}

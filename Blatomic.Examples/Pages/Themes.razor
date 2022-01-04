@@ -25,25 +25,8 @@
     </div>
 
     <p>Themes can also be updated at runtime by simply injecting <b>ITheme</b> into your razor page and updating the theme</p>
-    <div class="@TwColors.Bg_Slate_800 @TwColors.Text_Blue_200 rounded-lg p-2 mt-0.5 mb-2"> 
-        <p>@("@inject ITheme Theme")</p>
-        <p class="mt-6">@(@"<Button OnClickedAsync=""UpdateTheme"">Update Primary Theme</Button>")</p>
-        <p>@(@"<Button OnClickedAsync=""ResetTheme"">Reset Primary Theme</Button>")</p>
-        <p class="mt-6">@("@code {")</p>
-        <p>@(@"    private void UpdateTheme()")</p>
-        <p>@(@"    {")</p>
-        <p>@(@"        Theme.Primary = ""bg-blue-100 dark:bg-blue-900"";")</p>
-        <p>@(@"    }")</p>
-        <p>@(@"    private void ResetTheme()")</p>
-        <p>@(@"    {")</p>
-        <p>@(@"        Theme.Primary = new TwTheme().Primary;")</p>
-        <p>@(@"    }")</p>
-        <p>@(@"}")</p>
-    </div>
+    <Blazy.Components.BlazyCodeBox Code="@themeUpdateCode"></Blazy.Components.BlazyCodeBox>
 
-    <div class="leading-none">
-        <Blazy.Components.BlazyCodeBox Code="@Usings"></Blazy.Components.BlazyCodeBox>
-    </div>
 
     <h3 class="text-xl font-bold mt-6">Wait.. you said extension?</h3>
     
@@ -73,17 +56,20 @@
 </div>
 
 @code {
-    private string Usings => @"
-this is a test
-@using Blatomic.Effects
-@using Blatomic.Services.ColorScheme
-@using Blatomic.Components.Buttons
-@using Blatomic.Components.Notification
-@using Blatomic.Components.Steppers
-@using Blatomic.Components.Drag
-@using Blatomic.Components.Modals
-@using Blatomic.Components.Progress
-@using Blatomic.Components.Guides
-";
+    private string themeUpdateCode => @"@inject ITheme Theme
+
+<Button OnClickedAsync=""UpdateTheme"">Update Primary Theme</Button>
+<Button OnClickedAsync=""ResetTheme"">Reset Primary Theme</Button>
+
+@code {
+    private void UpdateTheme()
+    {
+        Theme.Primary = ""bg-blue-100 dark:bg-blue-900"";
+    }
+    private void ResetTheme()
+    {
+        Theme.Primary = new TwTheme().Primary;
+    }
+}";
     
 }
