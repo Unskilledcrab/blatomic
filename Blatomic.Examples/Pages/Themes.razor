@@ -1,5 +1,6 @@
 ﻿@page "/themes"
 @inject ITheme Theme
+@inject NavigationManager Nav
 
 <PageTitle>Themes</PageTitle> 
 
@@ -14,49 +15,71 @@
     <h3 class="text-xl font-bold mt-6">Getting Started</h3>
     
     <p class="mt-2">By default, adding Blatomic to your services will give you the <b>TwTheme</b>. This is a custom theme designed by the maker of blatomic (who is by no means a designer)</p>
-    <div class="@TwColors.Bg_Slate_800 @TwColors.Text_Blue_200 rounded-lg p-2 mt-0.5 mb-2">
-        <p>builder.Services.AddBlatomic();</p>
-    </div>    
     
-    <p>If you would like to customize this theme simply add an action and change the default configuration however you would like. The example below shows how to overwrite the default <b>Danger</b> theme and makes it so only the background blue is applied in dark and light mode</p>
+    <CodeBlock Title="Program.cs" Language="Language.CSharp" Code="builder.Services.AddBlatomic();"></CodeBlock>
     
-    <div class="@TwColors.Bg_Slate_800 @TwColors.Text_Blue_200 rounded-lg p-2 mt-0.5 mb-2"> 
-        @("builder.Services.AddBlatomic((theme) => theme.Danger = \"bg-blue-100 dark:bg-blue-900\");") 
+    <p class="mt-4">If you would like to customize this theme simply add an action and change the default configuration however you would like. The example below shows how to overwrite the default <b>Danger</b> theme and makes it so only the background blue is applied in dark and light mode</p>
+    
+    
+    <CodeBlock Title="Program.cs" Language="Language.CSharp" Code="@updateTheme"></CodeBlock>
+
+    <p class="mt-4">Themes can also be updated at runtime by simply injecting <b>ITheme</b> into your razor page and updating the theme</p>
+    <CodeBlock Title="Any .razor file" Language="Language.Razor" Code="@themeUpdateCode"></CodeBlock>
+    
+    <p class="mt-4">Go ahead, try it</p>
+    <div class="mt-2 flex space-x-4">        
+            <Button OnClickedAsync="UpdateTheme">Update Primary Theme</Button>
+            <Button OnClickedAsync="ResetTheme">Reset Primary Theme</Button>
     </div>
-
-    <p>Themes can also be updated at runtime by simply injecting <b>ITheme</b> into your razor page and updating the theme</p>
-    <Blazy.Components.BlazyCodeBox Code="@themeUpdateCode"></Blazy.Components.BlazyCodeBox>
-
 
     <h3 class="text-xl font-bold mt-6">Wait.. you said extension?</h3>
     
     <p class="mt-2">Yes! The <b>ITheme</b> interface has a <b>CustomTheme</b> dictionary property where you can place any new theme you would like!</p>
     <p>These custom themes can also be setup in your services at startup or you can add them at runtime to allow for programmatically adding themes or letting your users add their own themes!</p>
     <p>Adding a new theme is simple, you just need to give it a name (here we are using "SuperButton") and then give it all of the classes that you would like to apply</p>
-    <div class="@TwColors.Bg_Slate_800 @TwColors.Text_Blue_200 rounded-lg p-2 mt-0.5 mb-2">
-        <p>@("@inject ITheme Theme")</p>
-        <p class="mt-6">@(@"Theme.Add(""SuperButton"", ""bg-fuschia-300 dark:bg-fuschia-700 text-white dark:text-black"");")</p>
-        <p class="mt-6"><b>The above is a shorthand using an extension method. below you can see you can directly access the CustomTheme dictionary if you'd like</b></p>
-        <p class="mt-6">@(@"Theme.Custom.Add(""SuperButton"", ""bg-fuschia-300 dark:bg-fuschia-700 text-white dark:text-black"");")</p>
-    </div>
     
-    <p>After you have added the theme you can use it anywhere you have <b>ITheme</b> injected</p>
-    <div class="@TwColors.Bg_Slate_800 @TwColors.Text_Blue_200 rounded-lg p-2 mt-0.5 mb-2">
-        <p>@("@inject ITheme Theme")</p>
-        <p class="mt-6">@(@"<Button Color=""@Theme.Get(""SuperButton"")"">My Themed Super Button</Button>")</p>
-    </div>   
+    <CodeBlock Title="Any .razor file" Language="Language.HTML" Code="@addToTheme"></CodeBlock>
+    
+    <p class="mt-4">After you have added the theme you can use it anywhere you have <b>ITheme</b> injected</p>
+    <CodeBlock Title="Any .razor file" Language="Language.HTML" Code="@useTheme"></CodeBlock>
     
     
     <h3 class="text-xl font-bold mt-6">Colors, Colors, and Dark mode</h3>
     
     <p class="mt-2">To make things easier we have added all of the colors in tailwind to a static <b>TwColor</b> class. With this class you can get all of the tailwind colors with their associated dark counter part. This way, you can easily use the tailwind color palette and rest assurred that your site will properly work in both light and dark mode</p>
-     <div class="@TwColors.Bg_Slate_800 @TwColors.Text_Blue_200 rounded-lg p-2 mt-0.5 mb-2">
-        <p>@(@"<div class=""@TwColors.Bg_Slate_800 @TwColors.Text_Blue_200 rounded-lg p-2 mt-0.5 mb-2"">I will be shown properly in dark and light mode</div>")</p>
-    </div> 
+    
+    <CodeBlock Title="Any .razor file" Language="Language.HTML" Code="@darkmode"></CodeBlock> 
 </div>
 
 @code {
+    
+
+    private void UpdateTheme()
+    {
+        Theme.Primary = new TwTheme().Success;
+        Nav.NavigateTo(Nav.Uri, true);
+    }
+    private void ResetTheme()
+    {
+        Theme.Primary = new TwTheme().Primary;
+        Nav.NavigateTo(Nav.Uri, true);
+    }
+
+    private string darkmode = @"<div class=""@TwColors.Bg_Slate_800 @TwColors.Text_Blue_200 rounded-lg p-2 mt-0.5 mb-2"">I will be shown properly in dark and light mode</div>";
+    private string useTheme = @"@inject ITheme Theme
+
+<Button Color=""@Theme.Get(""SuperButton"")"">My Themed Super Button</Button>";
+    private string addToTheme = @"@inject ITheme Theme
+
+// This is a shorthand extension method
+Theme.Add(""SuperButton"", ""bg-fuschia-300 dark:bg-fuschia-700 text-white dark:text-black"");
+
+// You can directly access the CustomTheme dictionary if you'd like
+Theme.Custom.Add(""SuperButton"", ""bg-fuschia-300 dark:bg-fuschia-700 text-white dark:text-black"");";
+
+    private string updateTheme = @"builder.Services.AddBlatomic((theme) => theme.Danger = ""bg-blue-100 dark:bg-blue-900"");";
     private string themeUpdateCode => @"@inject ITheme Theme
+@inject NavigationManager Nav
 
 <Button OnClickedAsync=""UpdateTheme"">Update Primary Theme</Button>
 <Button OnClickedAsync=""ResetTheme"">Reset Primary Theme</Button>
@@ -64,11 +87,13 @@
 @code {
     private void UpdateTheme()
     {
-        Theme.Primary = ""bg-blue-100 dark:bg-blue-900"";
+        Theme.Primary = new TwTheme().Success; // Update the theme to success palette
+        Nav.NavigateTo(Nav.Uri, true); // Refreshes the page so everything re-renders
     }
     private void ResetTheme()
     {
         Theme.Primary = new TwTheme().Primary;
+        Nav.NavigateTo(Nav.Uri, true);
     }
 }";
     
