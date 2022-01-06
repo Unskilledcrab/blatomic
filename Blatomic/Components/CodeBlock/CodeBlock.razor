@@ -12,7 +12,7 @@
 @inject IJSRuntime JSRuntime
 
 <div class="border @Theme.Light.Border.ToString() rounded-lg">
-    <div class="bg-gray-800 text-gray-400 flex justify-between items-center py-2 px-4 rounded-t-lg">
+    <div class="bg-gray-800 text-gray-200 flex justify-between items-center py-2 px-4 rounded-t-lg">
         <p>@Title</p>
         <Button Color="@Theme.Light.ToString()"
                 OnClickedAsync="CopyCodeToClipboard"
@@ -20,7 +20,7 @@
             @copyButtonText
         </Button>
     </div>
-    <pre class="text-gray-500 bg-gray-900 rounded-b-lg p-2 overflow-x-auto">
+    <pre class="text-gray-400 bg-gray-900 rounded-b-lg p-2 overflow-x-auto">
         @if (!string.IsNullOrWhiteSpace(Code))
         {
 
@@ -35,7 +35,6 @@
     [Parameter] public string Title { get; set; } = string.Empty;
     [Parameter] public Language Language { get; set; } = Language.HTML;
 
-    private int lineNumber = 1;
     private string markup = string.Empty;
     private IJSObjectReference? module;
     private string copyButtonText = "Copy";
@@ -44,7 +43,10 @@
     {
         if (!string.IsNullOrWhiteSpace(Code))
         {
-            GenerateHTML(Code);
+            markup = new LanguageParser() 
+            {
+                ShowLineNumbers = ShowLineNumber 
+            }.ParseCode(Code, Language.GetLanguage());
         }
         base.OnInitialized();
     }
@@ -88,190 +90,6 @@
         await Task.Delay(1000);
         copyButtonText = "Copy";
         StateHasChanged();
-    }
-
-    private void GenerateHTML(string code)
-    {
-        switch (Language)
-        {
-            case Language.CSharp:
-                markup = ParseCSharp(code);
-                break;
-            case Language.HTML:
-                markup = ParseHTML(code);
-                break;
-            case Language.Razor:
-                markup = ParseRazor(code);
-                break;
-            default:
-                break;
-        }
-    }
-
-    private string ParseRazor(string code)
-    {
-        var split = code.Split("@code");
-
-        var htmlMarkup = new StringBuilder();
-        if (split.Length > 0 && !string.IsNullOrWhiteSpace(split[0]))
-        {
-            htmlMarkup.Append(ParseHTML(split[0]));
-
-            AddLineNumber(htmlMarkup);
-            htmlMarkup.AppendLine(Colorize("text-purple-400", "@code"));
-        }
-        if (split.Length > 1 && !string.IsNullOrWhiteSpace(split[1]))
-        {
-            htmlMarkup.Append(ParseCSharp(split[1]));
-        }
-        return htmlMarkup.ToString();
-    }
-
-    private string ParseHTML(string code)
-    {
-        var htmlMarkup = new StringBuilder();
-        var lines = code.Split(Environment.NewLine);
-        for (var i = 0; i < lines.Length; i++)
-        {
-            AddLineNumber(htmlMarkup);
-            var words = lines[i].Split(" ");
-            foreach (var word in words)
-            {
-                htmlMarkup.Append(ParseHTMLWords(word));
-                htmlMarkup.Append(" ");
-            }
-            htmlMarkup.AppendLine();
-        }
-        return htmlMarkup.ToString();
-    }
-
-    private string ParseHTMLWords(string word)
-    {
-        if (word.Contains("<"))
-        {
-            var test = word.Replace("<", Colorize(string.Empty, "<"));
-            return test;
-        }
-        else
-        {
-            return word;
-        }
-    }
-
-    private string ParseCSharp(string code)
-    {
-        var root = CSharpSyntaxTree.ParseText(code).GetRoot();
-        var nodeSb = new StringBuilder();
-
-        TraverseNode(root, nodeSb);
-        return nodeSb.ToString();
-    }
-
-    private void AddLineNumber(StringBuilder sb)
-    {
-        var pre = ShowLineNumber ? $"<span class=\"inline-block select-none w-8 mr-6 text-right min-w-4\">{lineNumber}</span>" : string.Empty;
-        sb.Append(pre);
-        lineNumber++;
-    }
-
-    private void TraverseNode(SyntaxNode node, StringBuilder sb)
-    {
-        AddLineNumber(sb);
-        var test = new StringBuilder();
-        foreach (var token in node.DescendantTokens())
-        {
-            if (token.IsMissing)
-            {
-                continue;
-            }
-            foreach (var trivia in token.LeadingTrivia)
-            {
-                ParseTrivia(trivia, sb);
-            }
-            ParseToken(token, sb);
-            test.AppendLine($"{token}       {token.Kind()}      {token.Parent?.Kind()}");
-            foreach (var trivia in token.TrailingTrivia)
-            {
-                ParseTrivia(trivia, sb);
-            }
-        }
-        var boom = test.ToString();
-    }
-
-    private void ParseTrivia(SyntaxTrivia trivia, StringBuilder sb)
-    {
-        var loweredSyntax = trivia.Kind().ToString().ToLower();
-        var triviaString = trivia.ToString();
-        if (loweredSyntax.Contains("comment"))
-        {
-            sb.Append(Colorize(TwColors.Text_Green_500.ToString(), trivia.ToString()));
-        }
-        else if (trivia.Kind() == SyntaxKind.EndOfLineTrivia)
-        {
-            sb.Append(trivia.ToString());
-            AddLineNumber(sb);
-        }
-        else if (trivia.Kind() == SyntaxKind.SkippedTokensTrivia)
-        {
-            sb.Append(Colorize("text-gray-400", trivia.ToString()));
-        }
-        else
-        {
-            sb.Append(trivia.ToString());
-        }
-    }
-
-    private void ParseToken(SyntaxToken token, StringBuilder sb)
-    {
-        var previousToken = token.GetPreviousToken().ToString();
-        var nextToken = token.GetNextToken().ToString();
-        var tokenKind = token.Kind();
-        var tokenString = token.ToString();
-        if (nextToken == ">" && previousToken == "/" || previousToken == "<" && tokenString != "/")
-        {
-            sb.Append(Colorize("text-emerald-600", tokenString));
-        }
-        else if (nextToken == "(" && tokenKind == SyntaxKind.IdentifierToken)
-        {
-            sb.Append(Colorize("text-yellow-300", tokenString));
-        }
-        else if (nextToken == "=")
-        {
-            sb.Append(Colorize("text-sky-400", tokenString));
-        }
-        else if (nextToken == "." && tokenKind == SyntaxKind.IdentifierToken)
-        {
-            sb.Append(Colorize("text-sky-400", tokenString));
-        }
-        else if (tokenString.StartsWith('@'))
-        {
-            sb.Append(Colorize("text-amber-700", tokenString));
-        }
-        else
-        {
-            var css = SyntaxColor(token.Kind().ToString());
-            sb.Append(Colorize(css, tokenString));
-        }
-    }
-
-    private string SyntaxColor(string syntax)
-    {
-        var loweredSyntax = syntax.ToLower();
-        if (loweredSyntax.Contains("keyword"))
-        {
-            return "text-blue-800";
-        }
-        else if (loweredSyntax.Contains("string"))
-        {
-            return "text-orange-300";
-        }
-        else if (loweredSyntax.Contains("comment"))
-        {
-            return "text-green-700";
-        }
-        else return "text-gray-400";
-    }
-
-    private string Colorize(string css, string content) => $"<span class=\" {css}\">{content}</span>";
+    }   
 }
 
