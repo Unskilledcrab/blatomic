@@ -1,7 +1,7 @@
 [![CI](https://github.com/Unskilledcrab/blatomic/actions/workflows/CI.yml/badge.svg)](https://github.com/Unskilledcrab/blatomic/actions/workflows/CI.yml)
 [![Nuget](https://github.com/Unskilledcrab/blatomic/actions/workflows/Nuget.yml/badge.svg)](https://github.com/Unskilledcrab/blatomic/actions/workflows/Nuget.yml)
-[![page-deployment](https://github.com/Unskilledcrab/blatomic/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/Unskilledcrab/blatomic/actions/workflows/pages/pages-build-deployment)
-[![Github-Pages](https://github.com/Unskilledcrab/blatomic/actions/workflows/Github-Pages.yml/badge.svg)](https://github.com/Unskilledcrab/blatomic/actions/workflows/Github-Pages.yml)
+[![Github-Pages-Build](https://github.com/Unskilledcrab/blatomic/actions/workflows/Github-Pages.yml/badge.svg)](https://github.com/Unskilledcrab/blatomic/actions/workflows/Github-Pages.yml)
+[![Github-Page-Deployment](https://github.com/Unskilledcrab/blatomic/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/Unskilledcrab/blatomic/actions/workflows/pages/pages-build-deployment)
 
 # blatomic
 A blazor component library utilizing tailwind styled components
