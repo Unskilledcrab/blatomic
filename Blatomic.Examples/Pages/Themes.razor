@@ -4,11 +4,11 @@
 
 <PageTitle>Themes</PageTitle>
 
-<div class="flex flex-col leading-relaxed @TwColors.Text_Slate_600">
+<div class="leading-relaxed @TwColors.Text_Slate_600">
     <h1 class="text-2xl font-bold @TwColors.Text_Slate_900">Themes</h1>
 
 
-    <h3 class="text-xl font-bold mt-6 @TwColors.Text_Slate_900 mt-12">What are themes?</h3>
+    <h3 class="text-xl font-bold mt-6 @TwColors.Text_Slate_900">What are themes?</h3>
 
     <p class="mt-2 font-medium">
         Themes are custom color palettes that can be overriden or extended to meet your custom needs.
@@ -58,7 +58,7 @@
     <h3 class="text-xl font-bold mt-6 @TwColors.Text_Slate_900 mt-12">Colors, Light, and Dark mode</h3>
 
     <p class="mt-2">
-        To make things easier we have added all of the colors in tailwind to a static <b>TwColor</b> class.
+        To make things easier we have added all of the colors in tailwind to a static <b>TwColors</b> class.
         With this class you can get all of the tailwind colors with their associated dark counter part.
         This way, you can easily use the tailwind color palette and rest assurred that your site will properly work in both light and dark mode
     </p>
@@ -80,10 +80,14 @@
         Nav.NavigateTo(Nav.Uri, true);
     }
 
-    private string darkmode = @"<div class=""@TwColors.Bg_Slate_800 @TwColors.Text_Blue_200 rounded-lg p-2 mt-0.5 mb-2"">I will be shown properly in dark and light mode</div>";
+    private string darkmode = @"<div class=""@TwColors.Bg_Slate_800 @TwColors.Text_Blue_200 rounded-lg p-2 mt-0.5 mb-2"">
+    I will be shown properly in dark and light mode
+</div>";
     private string useTheme = @"@inject ITheme Theme
 
-<Button Color=""@Theme.Get(""SuperButton"")"">My Themed Super Button</Button>";
+<Button Color=""@Theme.Get(""SuperButton"")"">
+    My Themed Super Button
+</Button>";
     private string addToTheme = @"@inject ITheme Theme
 
 // This is a shorthand extension method
@@ -102,13 +106,13 @@ Theme.Custom.Add(""SuperButton"", ""bg-fuschia-300 dark:bg-fuschia-700 text-whit
 @code {
     private void UpdateTheme()
     {
-    Theme.Primary = new TwTheme().Success; // Update the theme to success palette
-    Nav.NavigateTo(Nav.Uri, true); // Refreshes the page so everything re-renders
+        Theme.Primary = new TwTheme().Success; // Update the theme to success palette
+        Nav.NavigateTo(Nav.Uri, true); // Refreshes the page so everything re-renders
     }
     private void ResetTheme()
     {
-    Theme.Primary = new TwTheme().Primary;
-    Nav.NavigateTo(Nav.Uri, true);
+        Theme.Primary = new TwTheme().Primary;
+        Nav.NavigateTo(Nav.Uri, true);
     }
 }";
 
