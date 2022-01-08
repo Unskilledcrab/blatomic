@@ -1,32 +1,121 @@
 ﻿@page "/buttons"
+@inject ITheme Theme
 
 <PageTitle>Buttons</PageTitle>
 
-<Button 
-        HoverStyle="HoverStyle.Ring"
-        OnClickedAsync="@OnClickAsync">
+<div class="leading-relaxed @TwColors.Text_Slate_600">
+    <h1 class="text-2xl font-bold @TwColors.Text_Slate_900">Buttons</h1>
+
+    <h3 class="text-xl font-bold mt-6 @TwColors.Text_Slate_900">What's so special?</h3>
+
+    <p class="my-2 font-medium">
+        The buttons in this library are fully functional and styled out of the box.
+        By default they will use the <b>Theme.Primary</b> palette. Below is an example of the default button.
+    </p>
+
+    <div class="mb-2">
+
+        <Button OnClickedAsync="@OnClickAsync">
+            Test Button
+        </Button>
+
+    </div>
+
+    <CodeBlock Title=".razor" Code="@defaultExample" />
+
+    <p class="my-2 font-medium">
+        As you can see by default the user will get feedback through: dimmed color, waiting cursor, and a loading indicator until your process completes.
+        This will make sure that your users are not left feeling frustrated from improper feedback
+    </p>
+
+    <h3 class="text-xl font-bold mt-12 @TwColors.Text_Slate_900">Customizing</h3>
+
+    <p class="my-2 font-medium">
+        You can customize the buttons to fit your specific style by modifying the <span class="@TwColors.Text_Blue_700">color</span>, changing the loader,
+        using a prebuilt style, or adding your own custom styling or classes. Here we are using a hover effect to give the button a ring on hover,
+        encapsulating the button in the <b>NotificationContainer</b> component, changing the loading template to display a custom message,
+        and switching the button to the <b>Success</b> color palette.
+    </p>
+
+    <NotificationContainer ShowNotification="true">
+        <Button HoverStyle="HoverStyle.Ring"
+                Color="@Theme.Success.All"
+                OnClickedAsync="@OnClickAsync">
+            <ChildContent>
+                Test Button
+            </ChildContent>
+            <LoadingTemplate>
+                Loading Item #@loadCount...
+            </LoadingTemplate>
+        </Button>
+    </NotificationContainer>
+
+    <div class="mt-2">
+        <CodeBlock Title=".razor" Code="@customExample" />
+    </div>
+</div>
+
+
+@code {
+    private string defaultExample = @"<Button OnClickedAsync=""@OnClickAsync"">
     Test Button
 </Button>
-
-<Button 
-        HoverStyle="HoverStyle.Shadow"
-        RoundedStyle="RoundedStyle.Full"
-        OnClickedAsync="@OnClickAsync">
-    Test Button
-</Button>
-
-<NotificationContainer ShowNotification="true">
-    <Button 
-            HoverStyle="HoverStyle.Ring"
-            OnClickedAsync="@OnClickAsync">
-        Test Button
-    </Button>
-</NotificationContainer>
 
 @code {
     private async Task OnClickAsync()
     {
         // Simulate doing something
-        await Task.Delay(30000);
+        await Task.Delay(3000);
+    }
+}";
+
+    private string customExample = @"@inject ITheme Theme
+<NotificationContainer ShowNotification=""true"">
+    <Button HoverStyle=""HoverStyle.Ring""
+            Color=""@Theme.Success.All""
+            OnClickedAsync=""@OnClickAsync"">
+        <ChildContent>
+            Test Button
+        </ChildContent>
+        <LoadingTemplate>
+            Loading @loadCount...
+        </LoadingTemplate>
+    </Button>
+</NotificationContainer>
+
+@code {
+    private int loadCount = 0;
+
+    private async Task OnClickAsync()
+    {
+        // Simulate doing something
+        await Delay();
+        await Delay();
+        await Delay();
+    }
+
+    private async Task Delay()
+    {
+        await Task.Delay(1000);
+        loadCount++;
+        StateHasChanged();
+    }
+}";
+
+    private int loadCount = 0;
+
+    private async Task OnClickAsync()
+    {
+        // Simulate doing something
+        await Delay();
+        await Delay();
+        await Delay();
+    }
+
+    private async Task Delay()
+    {
+        await Task.Delay(1000);
+        loadCount++;
+        StateHasChanged();
     }
 }

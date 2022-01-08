@@ -75,6 +75,7 @@ namespace Blatomic.Components.CodeBlock
                     "out",
                     "throw",
                     "float",
+                    "async",
                     "override",
                     "static",
                     "public",
@@ -105,7 +106,11 @@ namespace Blatomic.Components.CodeBlock
                     "@inherit",
                     "@using",
                     "@page",
+                    "@foreach",
+                    "@if",
 
+                    "var",
+                    "await",
                     "for",
                     "foreach",
                     "in",
@@ -118,10 +123,11 @@ namespace Blatomic.Components.CodeBlock
             },
             new()
             {
-                Color = "text-emerald-600",
+                Color = "text-emerald-500",
                 Tokens = new()
                 {
                     "List",
+                    "Task",
                 }
             },
         };

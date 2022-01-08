@@ -1,112 +1,108 @@
 ﻿@page "/steppers"
 
-<div class="flex flex-col space-y-5">
-    <Stepper>
-        <Step>
-            Step 1
-        </Step>
-        <Step>
-            Step 2
-        </Step>
-        <Step>
-            Step 3
-        </Step>
-    </Stepper>
-    <Stepper>
-        <Step Title="start">
-            Step 1
-        </Step>
-        <Step>
-            Step 2
-        </Step>
-        <Step Title="end">
-            Step 3
-        </Step>
-    </Stepper>
-    <div class="shadow">
+@inject ITheme Theme
+
+<div class="leading-relaxed @TwColors.Text_Slate_600">
+    <h1 class="text-2xl font-bold @TwColors.Text_Slate_900">Steppers</h1>
+
+    <h3 class="text-xl font-bold mt-6 @TwColors.Text_Slate_900">What are they?</h3>
+
+    <p class="my-2 font-medium">
+        These are meant to guide your user through a set of steps to complete. They can give information to the user in a more palettale way
+        or they can assure that certain processes happen in sequential order. The user can either use the <b>Next</b> or <b>Previous</b> buttons
+        or they can click on the step number in the header to proceed directly to that step.
+    </p>
+
+    <div class="max-w-xl mx-auto">
         <Stepper>
-            <Step Title="No Fightin">
-                <div class="p-4">
-                    <p>
-                        … Ladies up in here tonight
-                        No fighting
-                        We got the refugees up in here (no fighting)
-                        No fighting
-                        Shakira, Shakira
-                    </p>
-                </div>
+            <Step>
+                <div class="p-4">This is an introduction to the stepper component</div>
             </Step>
-            <Step Title="Speak Spanish?" IsStepComplete="@canProceed">
-                <div class="p-4">
-                    <p>
-                        No fighting
-                        We got the refugees up in here (no fighting)
-                        No fighting
-                        Shakira, Shakira
-                        … I never really knew that she could dance like this (hey)
-                        She make a man wants to speak Spanish
-                        ¿Cómo se llama? (Sí), bonita (sí)
-                        Mi casa, su casa (Shakira, Shakira)
-                    </p>
+            <Step>
+                <div class="p-4">It is super easy to use, just checkout the code below to see how this was made!</div>
+            </Step>
+        </Stepper>
+    </div>
+
+    <div class="mt-2">
+        <CodeBlock Title=".razor" Code="@firstExample" />
+    </div>
+
+
+    <h3 class="text-xl font-bold mt-6 @TwColors.Text_Slate_900">Customizing</h3>
+
+    <p class="my-2 font-medium">
+        Sometimes you may want to give the user more information than just the number of steps, You can easily add titles
+        to each step to let them know where they are at. While we are at it, lets also add a restriction to make sure that they
+        can't continue forward until they've agreed to our terms. They user will not be able to go to the 3rd (or any step after)
+        if they have not agreed to the new terms first.
+    </p>
+
+    <div class="max-w-xl mx-auto">
+        <Stepper>
+            <Step Title="Intro">
+                <div class="p-4">This will show you how to make sure that your user has completed a task before moving on to the next step</div>
+            </Step>
+            <Step Title="Terms" IsStepComplete="@canProceed">
+                <div class="p-4 space-y-2">
+                    <p>We have updated our terms of service, do you accept our new policies?</p>
                     <NotificationContainer ShowNotification="@(!canProceed)">
-                        <Button HoverStyle="HoverStyle.Ring"
-                                OnClickedAsync="@(() => Proceed())">
-                            Proceed?
+                        <Button Color="@Theme.Success.All"
+                                OnClickedAsync="@(() => canProceed = true)">
+                            I Agree
                         </Button>
                     </NotificationContainer>
                 </div>
             </Step>
-            <Step>
-                <div class="p-4">
-                    <p>
-                        No fighting
-                    </p>
-                </div>
-            </Step>
-            <Step Title="Si">
-                <div class="p-4">
-                    <p>
-                        We got the refugees up in here (no fighting)
-                    </p>
-                </div>
-            </Step>
-            <Step Title="Shakira">
-                <div class="p-4">
-                    <p>
-                        No fighting
-                        Shakira, Shakira
-                    </p>
-                </div>
-            </Step>
-            <Step Title="Shakira">
-                <div class="p-4">
-                    <p>
-                        … I never really knew that she could dance like this (hey)
-                        She make a man wants to speak Spanish
-                        ¿Cómo se llama? (Sí), bonita (sí)
-                        Mi casa, su casa (Shakira, Shakira)
-                    </p>
-                </div>
-            </Step>
-            <Step Title="Final">
-                <div class="p-4">
-                    <p>
-                        … Oh, baby, when you talk like that
-                        You make a woman go mad
-                        So be wise (sí) and keep on (sí)
-                        Reading the signs of my body (uno, dos, tres, cuatro)
-                    </p>
-                </div>
+            <Step Title="Done">
+                <div class="p-4">Thanks, you are now complete!</div>
             </Step>
         </Stepper>
     </div>
+
+    <div class="mt-2">
+        <CodeBlock Title=".razor" Code="@secondExample" />
+    </div>
+    
+    <p class="my-2 font-medium">
+        With just a few lines of code we have a fully functional stepper that allows you to quickly guide a user through their next steps
+    </p>
 </div>
 
 @code {
-    private bool canProceed = false;
+    private string firstExample = @"<Stepper>
+    <Step>
+        <div class=""p-4"">This is an introduction to the stepper component</div>
+    </Step>
+    <Step>
+        <div class=""p-4"">It is super easy to user, just checkout the code below to see how this was made!</div>
+    </Step>
+</Stepper>";
 
-    private void Proceed()
-    {
-        canProceed = true;
-    }
+    private string secondExample = @"@inject ITheme Theme
+<Stepper>
+    <Step Title=""Intro"">
+        <div class=""p-4"">This will show you how to make sure that your user has completed a task before moving on to the next step</div>
+    </Step>
+    <Step Title=""Terms"" IsStepComplete=""@canProceed"">
+        <div class=""p-4"">
+            <p>We have updated our terms of service, do you accept our new policies?</p>
+            <NotificationContainer ShowNotification=""@(!canProceed)"">
+                <Button Color=""@Theme.Success.All""
+                        OnClickedAsync=""@(() => canProceed = true)"">
+                    I Agree
+                </Button>
+            </NotificationContainer>
+        </div>
+    </Step>
+    <Step Title=""Done"">
+        <div class=""p-4"">Thanks, you are now complete!</div>
+    </Step>
+</Stepper>
+
+@code {
+    private bool canProceed = false;
+}";
+
+    private bool canProceed = false;
 }

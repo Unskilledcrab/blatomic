@@ -53,7 +53,7 @@ public class TwTheme : ITheme
     public virtual Palette Light {get;set;} = new Palette()
     {
         Text = TwColors.Text_Slate_800,
-        Background = TwColors.Bg_Slate_200,
+        Background = TwColors.Bg_White,
         Border = TwColors.Border_Slate_400,
         Outline = TwColors.Outline_Slate_400,
         Ring = TwColors.Ring_Slate_400
