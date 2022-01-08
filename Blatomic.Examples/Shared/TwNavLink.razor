@@ -1,0 +1,13 @@
+﻿<NavLink class="block pl-4 -ml-px hover:border-gray-400 dark:hover:border-gray-500 hover:text-gray-900 dark:hover:text-gray-300"
+         ActiveClass="border-l text-sky-500 dark:text-sky-400 border-sky-500"
+         href="@Href"
+         Match="@Match">
+    @ChildContent
+</NavLink>
+
+
+@code {
+    [Parameter] public string Href { get; set; }
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public NavLinkMatch Match { get; set; } = NavLinkMatch.Prefix;
+}

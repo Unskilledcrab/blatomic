@@ -2,57 +2,72 @@
 @inject ITheme Theme
 @inject NavigationManager Nav
 
-<PageTitle>Themes</PageTitle> 
+<PageTitle>Themes</PageTitle>
 
-<div class="flex flex-col leading-relaxed">
-    <h1 class="text-2xl font-bold">Themes</h1>
+<div class="flex flex-col leading-relaxed @TwColors.Text_Slate_600">
+    <h1 class="text-2xl font-bold @TwColors.Text_Slate_900">Themes</h1>
 
 
-    <h3 class="text-xl font-bold mt-6">What are themes?</h3>
+    <h3 class="text-xl font-bold mt-6 @TwColors.Text_Slate_900 mt-12">What are themes?</h3>
 
-    <p class="mt-2 font-medium">Themes are custom color palettes that can be overriden or extended to meet your custom needs. By default, each theme provided by the framework is capable of both dark and light modes</p>
+    <p class="mt-2 font-medium">
+        Themes are custom color palettes that can be overriden or extended to meet your custom needs.
+        By default, each theme provided by the framework is capable of both dark and light modes
+    </p>
 
-    <h3 class="text-xl font-bold mt-6">Getting Started</h3>
-    
-    <p class="mt-2">By default, adding Blatomic to your services will give you the <b>TwTheme</b>. This is a custom theme designed by the maker of blatomic (who is by no means a designer)</p>
-    
+    <h3 class="text-xl font-bold mt-6 @TwColors.Text_Slate_900 mt-12">Getting Started</h3>
+
+    <p class="mt-2">
+        By default, adding Blatomic to your services will give you the <b>TwTheme</b>.
+        This is a custom theme designed by the maker of blatomic (who is by no means a designer)
+    </p>
+
     <CodeBlock Title="Program.cs" Language="Language.CSharp" Code="builder.Services.AddBlatomic();"></CodeBlock>
-    
-    <p class="mt-4">If you would like to customize this theme simply add an action and change the default configuration however you would like. The example below shows how to overwrite the default <b>Danger</b> theme and makes it so only the background blue is applied in dark and light mode</p>
-    
-    
+
+    <p class="mt-4">
+        If you would like to customize this theme simply add an action and change the default configuration however you would like.
+        The example below shows how to overwrite the default <b>Danger</b> theme and makes it so only the background blue is applied in dark and light mode
+    </p>
+
+
     <CodeBlock Title="Program.cs" Language="Language.CSharp" Code="@updateTheme"></CodeBlock>
 
     <p class="mt-4">Themes can also be updated at runtime by simply injecting <b>ITheme</b> into your razor page and updating the theme</p>
     <CodeBlock Title="Any .razor file" Language="Language.Razor" Code="@themeUpdateCode"></CodeBlock>
-    
+
     <p class="mt-4">Go ahead, try it</p>
-    <div class="mt-2 flex space-x-4">        
-            <Button OnClickedAsync="UpdateTheme">Update Primary Theme</Button>
-            <Button OnClickedAsync="ResetTheme">Reset Primary Theme</Button>
+    <div class="mt-2 flex space-x-4">
+        <Button OnClickedAsync="UpdateTheme">Update Primary Theme</Button>
+        <Button OnClickedAsync="ResetTheme">Reset Primary Theme</Button>
     </div>
 
-    <h3 class="text-xl font-bold mt-6">Wait.. you said extension?</h3>
-    
-    <p class="mt-2">Yes! The <b>ITheme</b> interface has a <b>CustomTheme</b> dictionary property where you can place any new theme you would like!</p>
-    <p>These custom themes can also be setup in your services at startup or you can add them at runtime to allow for programmatically adding themes or letting your users add their own themes!</p>
-    <p>Adding a new theme is simple, you just need to give it a name (here we are using "SuperButton") and then give it all of the classes that you would like to apply</p>
-    
+    <h3 class="text-xl font-bold mt-6 @TwColors.Text_Slate_900 mt-12">Wait.. you said extension?</h3>
+
+    <p class="mt-2">
+        Yes! The <b>ITheme</b> interface has a <b>CustomTheme</b> dictionary property where you can place any new theme you would like!
+        These custom themes can also be setup in your services at startup or you can add them at runtime to allow for programmatically adding themes or letting your users add their own themes!
+        Adding a new theme is simple, you just need to give it a name (here we are using "SuperButton") and then give it all of the classes that you would like to apply
+    </p>
+
     <CodeBlock Title="Any .razor file" Language="Language.HTML" Code="@addToTheme"></CodeBlock>
-    
+
     <p class="mt-4">After you have added the theme you can use it anywhere you have <b>ITheme</b> injected</p>
     <CodeBlock Title="Any .razor file" Language="Language.HTML" Code="@useTheme"></CodeBlock>
-    
-    
-    <h3 class="text-xl font-bold mt-6">Colors, Colors, and Dark mode</h3>
-    
-    <p class="mt-2">To make things easier we have added all of the colors in tailwind to a static <b>TwColor</b> class. With this class you can get all of the tailwind colors with their associated dark counter part. This way, you can easily use the tailwind color palette and rest assurred that your site will properly work in both light and dark mode</p>
-    
-    <CodeBlock Title="Any .razor file" Language="Language.HTML" Code="@darkmode"></CodeBlock> 
+
+
+    <h3 class="text-xl font-bold mt-6 @TwColors.Text_Slate_900 mt-12">Colors, Light, and Dark mode</h3>
+
+    <p class="mt-2">
+        To make things easier we have added all of the colors in tailwind to a static <b>TwColor</b> class.
+        With this class you can get all of the tailwind colors with their associated dark counter part.
+        This way, you can easily use the tailwind color palette and rest assurred that your site will properly work in both light and dark mode
+    </p>
+
+    <CodeBlock Title="Any .razor file" Language="Language.HTML" Code="@darkmode"></CodeBlock>
 </div>
 
 @code {
-    
+
 
     private void UpdateTheme()
     {
@@ -87,14 +102,14 @@ Theme.Custom.Add(""SuperButton"", ""bg-fuschia-300 dark:bg-fuschia-700 text-whit
 @code {
     private void UpdateTheme()
     {
-        Theme.Primary = new TwTheme().Success; // Update the theme to success palette
-        Nav.NavigateTo(Nav.Uri, true); // Refreshes the page so everything re-renders
+    Theme.Primary = new TwTheme().Success; // Update the theme to success palette
+    Nav.NavigateTo(Nav.Uri, true); // Refreshes the page so everything re-renders
     }
     private void ResetTheme()
     {
-        Theme.Primary = new TwTheme().Primary;
-        Nav.NavigateTo(Nav.Uri, true);
+    Theme.Primary = new TwTheme().Primary;
+    Nav.NavigateTo(Nav.Uri, true);
     }
 }";
-    
+
 }

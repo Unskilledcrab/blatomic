@@ -1,0 +1,59 @@
+<svg xmlns = "http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20">
+  <g
+     id="layer1"
+     transform="translate(0,-277)">
+    <g
+       id="Rings"
+       style="stroke:#424242;stroke-opacity:1;stroke-width:0.2;stroke-miterlimit:4;stroke-dasharray:none;fill:none">
+      <ellipse
+         ry="9.4966516"
+         rx="2.7048922"
+         cy="287"
+         cx="10" />
+      <ellipse
+         transform="rotate(-45)"
+         ry="9.4966516"
+         rx="2.7048922"
+         cy="210.01071"
+         cx="-195.86859" />
+      <ellipse
+         transform="rotate(-90)"
+         ry="9.4966516"
+         rx="2.7048922"
+         cy="10.00001"
+         cx="-287" />
+      <ellipse
+         transform="rotate(-135)"
+         ry="9.4966516"
+         rx="2.7048922"
+         cy="-195.86856"
+         cx="-210.01073" />
+    </g>
+    <circle
+       style="fill:#72e7ff;fill-opacity:1;stroke:#2c2c2c;stroke-width:0.2;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="Center"
+       cx="10"
+       cy="287"
+       r="1.1093645" />
+    <g
+       id="Nodes"
+       style="opacity:1;fill:#597fc2;fill-opacity:1;stroke:#ffffff;stroke-width:0.32660112;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1">
+      <circle
+         r="0.71169943"
+         cy="282.36981"
+         cx="3.2675798"/>
+      <circle
+         r="0.71169943"
+         cy="282.40707"
+         cx="11.10839"/>
+      <circle
+         r="0.71169943"
+         cy="289.49307"
+         cx="13.867948"/>
+      <circle
+         r="0.71169943"
+         cy="294.00659"
+         cx="8.1617432"/>
+    </g>
+  </g>
+</svg>

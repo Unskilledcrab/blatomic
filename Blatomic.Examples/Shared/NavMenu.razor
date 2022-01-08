@@ -1,55 +1,60 @@
-﻿<div @onclick="ToggleNavMenu">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="themes">
-                <span class="oi oi-plus" aria-hidden="true"></span> Themes
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="buttons">
-                <span class="oi oi-plus" aria-hidden="true"></span> Buttons
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="steppers">
-                <span class="oi oi-plus" aria-hidden="true"></span> Steppers
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="dragdrop">
-                <span class="oi oi-plus" aria-hidden="true"></span> Drag & Drop
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="modals">
-                <span class="oi oi-plus" aria-hidden="true"></span> Modals
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="progressbars">
-                <span class="oi oi-plus" aria-hidden="true"></span> Progress Bars
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="guides">
-                <span class="oi oi-plus" aria-hidden="true"></span> Guides
-            </NavLink>
-        </div>
-    </nav>
-</div>
+﻿<nav>
+    <ul class="space-y-8 lg:space-y-4">
+        <li class="text-gray-700 dark:text-gray-400 border-transparent">
+            <h5 class="mb-4 lg:mb-3 font-semibold text-gray-900 dark:text-gray-200">
+                Getting Started
+            </h5>
+            <ul class="space-y-2 border-l border-gray-800 dark:border-gray-400">
+                <li>
+                    <TwNavLink Href="/" Match="NavLinkMatch.All">
+                        Installation
+                    </TwNavLink>
+                </li>
+                <li>
+                    <TwNavLink Href="themes">
+                        Themes
+                    </TwNavLink>
+                </li>
+            </ul>
+        </li>
 
-@code {
-    [Parameter] public bool ShowNavMenu { get; set; } = false;
-    [Parameter] public EventCallback<bool> ShowNavMenuChanged { get; set; }
+        <li class="text-gray-700 dark:text-gray-400 border-transparent">
+            <h5 class="mb-4 lg:mb-3 font-semibold text-gray-900 dark:text-gray-200">
+                Components
+            </h5>
+            <ul class="space-y-2 border-l border-gray-800 dark:border-gray-400">
+                <li>
+                    <TwNavLink Href="buttons">
+                        Buttons
+                    </TwNavLink>
+                </li>
+                <li>
+                    <TwNavLink Href="steppers">
+                        Steppers
+                    </TwNavLink>
+                </li>
+                <li>
+                    <TwNavLink Href="dragdrop">
+                        Drag & Drop
+                    </TwNavLink>
+                </li>
+                <li>
+                    <TwNavLink Href="modals">
+                        Modals
+                    </TwNavLink>
+                </li>
+                <li>
+                    <TwNavLink Href="progressbars">
+                        Progress Bars
+                    </TwNavLink>
+                </li>
+                <li>
+                    <TwNavLink Href="guides">
+                        Guides
+                    </TwNavLink>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</nav>
 
-    private void ToggleNavMenu()
-    {
-        ShowNavMenu = !ShowNavMenu;
-        ShowNavMenuChanged.InvokeAsync(ShowNavMenu);
-    }
-}

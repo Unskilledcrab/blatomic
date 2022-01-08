@@ -5,36 +5,75 @@
 
 <div class="@darkClass">
 
-    <div class="page @Theme.Light.All">
-        <div class="sidebar @navClass">
-            <NavMenu @bind-ShowNavMenu="showNav"/>
-        </div>
+    <div class="@Theme.Light.All fixed inset-0 overflow-y-auto">
 
         <main>
-            <div class="flex justify-between @Theme.Primary">
-                <Button OnClickedAsync="ToggleNavMenu">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
-                    </svg>
-                </Button>
-                <div class="flex justify-end items-center space-x-3 px-4 py-4">
-                    <Button OnClickedAsync="(() => darkMode = !darkMode)" Color="@Theme.Light.All">
-                        @(darkMode ? "Light" : "Dark")
-                    </Button>
-                    <a href="https://github.com/Unskilledcrab/blatomic" target="_blank">Github</a>
+            @*Top bar*@
+            <div class="sticky w-full top-0 z-10 @Theme.Primary.Background.ToString()">
+                <div class="max-w-8xl mx-auto">
+                    <div class="py-4 px-4 lg:px-8 border-b border-black dark:border-white">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <a href="/" class="text-xl flex items-center font-bold"><span class="inline-block mr-1">@Blatomic.Fragments.BlatomicIcon.LargeIcon</span> Blatomic</a>
+                            </div>
+                            <div>
+                                <Button OnClickedAsync="(() => darkMode = !darkMode)" Color="@Theme.Light.All">
+                                    @(darkMode ? "Light" : "Dark")
+                                </Button>
+                                <a class="ml-2" href="https://github.com/Unskilledcrab/blatomic" target="_blank">Github</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                <div class="lg:hidden max-w-8xl mx-auto">
+                    <div class="py-2 px-3 lg:px-8">
+                        <Button OnClickedAsync="ToggleNavMenu">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
+                            </svg>
+                        </Button>
+                    </div>
+                </div>
+                @if (showNav)
+                {
+                    <div class="@showNav lg:hidden">
+                        <div class="fixed z-10 inset-0 bg-gray-600/50" onclick="@(() => ToggleNavMenu())">
+                        </div>
+                        <div class="fixed z-20 top-0 bottom-0 px-16 pt-8 @TwColors.Bg_White">
+                            <div class="flex">
+                                <NavMenu />
+                                <div class="absolute top-6 right-2 h-15 w-15 cursor-pointer hover:text-white hover:bg-gray-300 p-1 rounded" @onclick="() => ToggleNavMenu()">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
             </div>
 
-            <article class="p-4 container mx-auto">
-                @Body
-            </article>
+            @*Main Body*@
+            <div class="mt-4 pb-4">
+                @*Side Nav*@
+                <div class="max-w-8xl mx-auto px-4">
+                    <div class="hidden lg:block fixed overflow-y-auto top-42 left-16">
+                        <NavMenu />
+                    </div>
+                    <div class="md:px-16 lg:px-64 xl:pl-64 xl:pr-96">
+                        @Body
+                    </div>
+                </div>
+
+            </div>
         </main>
     </div>
 </div>
 
 @code {
     private string darkClass => darkMode ? "dark" : string.Empty;
-    private bool darkMode = false;
+    private bool darkMode = true;
 
     private string navClass => showNav ? "block" : "hidden";
     private bool showNav = false;

@@ -8,7 +8,7 @@
             {
                 var stepCount = i;
                 <a class="shrink-0 flex-initial flex flex-col items-center cursor-pointer relative" @onclick="@(() => GoToStep(stepCount))">
-                    <div class="rounded-full z-10 h-8 w-8 p-1 text-center align-middle transition duration-500 @(i <= currentStepIndex ? FillActiveColors : FillInactiveColors)">@(i + 1)</div>
+                    <div class="rounded-full z-[1] h-8 w-8 p-1 text-center align-middle transition duration-500 @(i <= currentStepIndex ? FillActiveColors : FillInactiveColors)">@(i + 1)</div>
                     <div>@steps[i].Title</div>
                     @if (i > 0)
                     {

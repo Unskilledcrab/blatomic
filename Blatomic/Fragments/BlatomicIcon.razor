@@ -1,0 +1,124 @@
+﻿@code {
+    public static RenderFragment<string> BaseIcon = classes => __builder =>
+    {
+    <svg xmlns="http://www.w3.org/2000/svg" class="@classes" viewBox="0 0 20 20">
+        <g transform="translate(0,-277)">
+            <g id="Rings"
+        style="stroke:#424242;stroke-opacity:1;stroke-width:0.2;stroke-miterlimit:4;stroke-dasharray:none;fill:none">
+                <ellipse ry="9.4966516"
+                    rx="2.7048922"
+                    cy="287"
+                    cx="10" />
+                <ellipse transform="rotate(-45)"
+                    ry="9.4966516"
+                    rx="2.7048922"
+                    cy="210.01071"
+                    cx="-195.86859" />
+                <ellipse transform="rotate(-90)"
+                    ry="9.4966516"
+                    rx="2.7048922"
+                    cy="10.00001"
+                    cx="-287" />
+                <ellipse transform="rotate(-135)"
+                    ry="9.4966516"
+                    rx="2.7048922"
+                    cy="-195.86856"
+                    cx="-210.01073" />
+            </g>
+            <circle style="fill:#72e7ff;fill-opacity:1;stroke:#2c2c2c;stroke-width:0.2;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+            id="Center"
+            cx="10"
+            cy="287"
+            r="1.1093645" />
+            <g id="Nodes"
+        style="opacity:1;fill:#597fc2;fill-opacity:1;stroke:#ffffff;stroke-width:0.32660112;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1">
+                <circle r="0.71169943"
+                cy="282.36981"
+                cx="3.2675798" />
+                <circle r="0.71169943"
+                cy="282.40707"
+                cx="11.10839" />
+                <circle r="0.71169943"
+                cy="289.49307"
+                cx="13.867948" />
+                <circle r="0.71169943"
+                cy="294.00659"
+                cx="8.1617432" />
+            </g>
+        </g>
+    </svg>
+
+    };
+
+    public static RenderFragment<IconColors> BaseIcon2 = classes => __builder =>
+    {
+        <svg xmlns="http://www.w3.org/2000/svg" class="@classes.classes" viewBox="0 0 20 20">
+            <g id="Rings"
+                class="@classes.ringColor"
+                style="opacity:1;fill:none;fill-opacity:1;stroke-width:1.2;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1">
+                <ellipse ry="8.8910122"
+                    rx="3.5143745"
+                    cy="10"
+                    cx="10" />
+                <ellipse transform="rotate(120)"
+                    ry="9.7845049"
+                    rx="3.8675478"
+                    cy="-13.660254"
+                    cx="3.660254" />
+                <ellipse transform="rotate(-120)"
+                    ry="9.7845049"
+                    rx="3.8675478"
+                    cy="3.6602538"
+                    cx="-13.660254" />
+            </g>
+            <ellipse 
+                class="@classes.centerColor"
+                style="opacity:1;fill-opacity:1;stroke-width:0.4;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+                id="Center"
+                cx="10"
+                cy="10"
+                rx="1.3736273"
+                ry="1.3736274"
+                Center="path4676" />
+            <g id="Points"
+               class="@classes.pointColor"
+               style="opacity:1;fill-opacity:1;stroke-width:0.65;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1">
+                <ellipse
+                   ry="1.0751601"
+                   rx="1.07516"
+                   cy="7.7966104"
+                   cx="2.0435414" />
+                <ellipse
+                   ry="1.0751601"
+                   rx="1.07516"
+                   cy="4.0677967"
+                   cx="15.636139" />
+                <ellipse
+                   ry="1.0751601"
+                   rx="1.07516"
+                   cy="17.586527"
+                   cx="8.2203388" />
+            </g>
+    </svg>
+    };
+
+    public class IconColors
+    {
+        public string classes { get; set; } = "h-5 w-5";
+        public string ringColor { get; set; } = $"stroke-gray-900 dark:stroke-gray-200";
+        public string centerColor { get; set; } = "fill-blue-500 stroke-gray-900 dark:stroke-gray-200";
+        public string pointColor { get; set; } = "fill-sky-500 stroke-gray-900 dark:stroke-gray-200";
+    }
+
+    public static RenderFragment StandardIcon = __builder =>
+    {
+        @BaseIcon2(new IconColors())
+        ;
+    };
+
+    public static RenderFragment LargeIcon = __builder =>
+    {
+        @BaseIcon2(new IconColors() {classes="h-10 w-10"})
+        ;
+    };
+}

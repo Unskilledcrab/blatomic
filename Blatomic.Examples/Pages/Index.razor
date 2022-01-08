@@ -3,30 +3,35 @@
 
 <PageTitle>Blatomic</PageTitle>
 
-<div class="flex flex-col leading-relaxed">
-    <h1 class="text-2xl font-bold">Blatomic - An atomic blazor component library built with tailwind css</h1>
+<div class="flex flex-col leading-relaxed @TwColors.Text_Slate_600">
+    <h1 class="text-2xl font-bold @TwColors.Text_Slate_900">Blat@(Blatomic.Fragments.BlatomicIcon.BaseIcon2(new Fragments.BlatomicIcon.IconColors() { classes = "h-5 w-5 inline"}))mic - An atomic blazor component library built with tailwind css</h1>
 
 
-    <h3 class="text-xl font-bold mt-6">What is Blatomic?</h3>
+
+
+    <h3 class="text-xl font-bold mt-6 @TwColors.Text_Slate_900">What is Blatomic?</h3>
 
     <p class="mt-2 font-medium">Blatomic is an open-source blazor component library that uses configurable themed tailwind styling. With components that range from simple components like buttons all the way to more advanced components like drag and drop or steppers.</p>
 
-    <h3 class="text-xl font-bold mt-6">Getting Started</h3>
+    <h3 class="text-xl font-bold mt-12 @TwColors.Text_Slate_900">Getting Started</h3>
     <ol class="list-decimal ml-8 space-y-1 mt-2">
         <li>
-            <p>First you will need to add the <a class="@TwColors.Text_Blue_700 hover:underline" href="https://www.nuget.org/packages/Blatomic/">Blatomic Nuget Package</a> to you blazor project.</p>
+            <p>First you will need to add the <a class="@TwColors.Text_Blue_900 hover:underline" href="https://www.nuget.org/packages/Blatomic/">Blatomic Nuget Package</a> to you blazor project.</p>
+            <div class="mb-6"></div>
         </li>
         <li>
             <p>Next you will need to add the blatomic styles. This will need to be the final style sheet in your header. There are two different style sheets provided depending on if you are already using tailwind.</p>
-            <p class="mt-2">If you <b>are using tailwind</b>, use the <b>tw.min.css</b></p>
+            <p class="mt-6">If you <b>are using tailwind</b>, use the <b>tw.min.css</b></p>
             <CodeBlock Title="MainLayout.razor OR _Layout.cshtml" Code="@twStyle" />
-            <p class="mt-4">If you <b>are not using tailwind</b>, use the <b>standard.min.css</b></p>
+            <p class="mt-6">If you <b>are not using tailwind</b>, use the <b>standard.min.css</b></p>
             <CodeBlock Title="MainLayout.razor OR _Layout.cshtml" Code="@standardStyle" />
+            <div class="mb-6"></div>
         </li>
         <li>
             <p>Then you will need to register the blatomic services in your <b>Program.cs</b> file</p>
 
             <CodeBlock Title="Program.cs" Language="Language.CSharp" Code="builder.Services.AddBlatomic();" />
+            <div class="mb-6"></div>
         </li>
         <li>
             <p>That's it, you are off to the races!</p>
@@ -34,7 +39,7 @@
     </ol>
 
 
-    <h3 class="text-xl font-bold mt-6">Adding Common Namespaces <b>(Optional)</b></h3>
+    <h3 class="text-xl font-bold mt-12 @TwColors.Text_Slate_900">Adding Common Namespaces <b>(Optional)</b></h3>
     <p class="mt-2">If you want, you can add all of the blatomic namespaces in your _Imports.razor files</p>
     <CodeBlock Title="_Imports.razor" Language="Language.CSharp" Code="@usings" />
 
