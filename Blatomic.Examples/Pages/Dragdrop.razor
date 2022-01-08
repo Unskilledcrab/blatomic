@@ -1,84 +1,203 @@
 ﻿@page "/dragdrop"
+@inject ITheme Theme
 
-<DragContext TData="string">
-    <div class="flex justify-around">
+<PageTitle>Drag & Drop</PageTitle>
 
-        <div class="flex flex-col space-y-5 shrink-0">
-            <DragItem DragData="@testData1" Copy="true">
-                <div class="p-3 bg-blue-400 rounded-full">
-                    Data: @testData1
+<div class="leading-relaxed @TwColors.Text_Slate_600">
+    <h1 class="text-2xl font-bold @TwColors.Text_Slate_900">Drag & Drop</h1>
+
+    <h3 class="text-xl font-bold mt-6 @TwColors.Text_Slate_900">What is it?</h3>
+
+    <p class="my-2 font-medium">
+        The drag and drop component makes it very easy to make items <b>draggable</b> and associate data with the item.
+        Then you can make other areas <b>droppable</b> and place restrictions on what can and can't be dropped there.
+        Below is showing the most basic implementation of this without restrictions
+    </p>
+
+    <div class="mb-2 max-w-2xl mx-auto flex justify-between p-4 border border-gray-400">
+        <DragContext TData="int">
+            <DragItem DragData="5" Copy="true">
+                <div class="flex flex-col rounded-lg @Theme.Success.All">
+                    <div class="p-4 border-b border-gray-500">Drag Me</div>
+                    <div class="p-4">I contain a secret number</div>
                 </div>
             </DragItem>
-            <DragItem DragData="@testData2" Copy="true">
-                <div class="p-3 bg-orange-400 rounded-full">
-                    Data: @testData2
+            <DropArea Context="Items">
+                <div class="flex flex-col rounded-lg @Theme.Dark.All">
+                    <div class="p-4 border-b border-gray-500">Drop item here to reveal it's number</div>
+                    @foreach (var item in Items)
+                    {
+                        <div class="p-4">The secret number is @item</div>
+                    }
+                    @if (Items.Count > 2)
+                    {
+                        <div class="p-4">The number isn't going to change...</div>
+                    }
                 </div>
-            </DragItem>
-            <DragItem DragData="@testData3" Copy="true">
-                <div class="p-3 bg-green-400 rounded-full">
-                    Data: @testData3
-                </div>
-            </DragItem>
-        </div>
-
-        <DropArea Context="Items">
-            <div class="p-5 flex flex-col space-y-2">
-                <p>Items in this area will be moved and not copied to their drop location</p>
-                @foreach (var item in Items)
-                {
-                    <DragItem DragData="@item">
-                        <div class="p-3 bg-pink-400 rounded-full">
-                            Data: @item
-                        </div>
-                    </DragItem>
-                }
-            </div>
-        </DropArea>
-
-        <DropArea Context="Items">
-            <div class="p-5 flex flex-col space-y-2">
-                <p>Items in this are will be copied to their drop location</p>
-                @foreach (var item in Items)
-                {
-                    <DragItem Copy="true" DragData="@item">
-                        <div class="p-3 bg-purple-400 rounded-full">
-                            Data: @item
-                        </div>
-                    </DragItem>
-                }
-            </div>
-        </DropArea>
-
-        <DropArea Context="Items" @bind-Items="defaultItems">
-            <div class="p-5 flex flex-col space-y-2">
-                <p>Items dropped here cannot be dragged again</p>
-                @foreach (var item in Items)
-                {
-                        <div class="p-3 bg-gray-400 rounded-full">
-                            Data: @item
-                        </div>
-                }
-            </div>
-        </DropArea>
-
-        <DropArea Context="Items"
-                  ShouldDropAsync="@((dragItem) => dragItem.Data == "Third" ? Task.FromResult(true) : Task.FromResult(false))">
-            <div class="p-5 flex flex-col space-y-2">
-                <p>You can only drop the 'Third' item into this location</p>
-                @foreach (var item in Items)
-                {
-                    <DragItem DragData="@item">
-                        <div class="p-3 bg-red-400 rounded-full">
-                            Data: @item
-                        </div>
-                    </DragItem>
-                }
-            </div>
-        </DropArea>
+            </DropArea>
+        </DragContext>
     </div>
-</DragContext>
+
+    <CodeBlock Title=".razor" Code="@firstExample" />
+
+    <p class="my-2 font-semibold">
+        Lets break down this example into it's parts
+    </p>
+
+    <ol class="list-decimal ml-8 space-y-4 mt-2">
+        <li>
+            <p>
+                First we have the <b>DragContext</b>, with this, we define what type of data we will be transferring.
+                In this example we have chosen to use a simple <b>int</b>. This can be any data type and we
+                will go into more complex examples below
+            </p>
+        </li>
+        <li>
+            <p>
+                Next we have a <b>DragItem</b>, this has a property <b>DragData</b> that we have set to <b>5</b> (which matches the <b>int</b> datatype from the <b>DragContext</b>).
+                Finally we have the <b>Copy</b> property set to <b>true</b> so that we produce a copy of the object after we drop it instead of it disappearing.
+            </p>
+            <p class="italic">
+                Note: we <b>do not</b> need to declare the <b>DragData</b> or the <b>Copy</b> property for this example to work.
+            </p>
+        </li>
+        <li>
+            <p>
+                Finally we have the <b>DropArea</b> where we have set the <b>Context</b> to <b>Items</b> so that we can recieve all of the items that are in or have been dropped into that area
+            </p>
+        </li>
+    </ol>
+
+    <p class="my-2">
+        These are the three building blocks required for getting started with the drag and drop component
+    </p>
+
+    <h3 class="text-xl font-bold mt-12 @TwColors.Text_Slate_900">Advanced Usage</h3>
+
+    <p class="my-2">
+        Now lets take a deeper look into what we can do with drag and drop. In the example below we can see that the <b>Success Card</b> can not be dragged into
+        the second area because it <b>can not</b> take data that is equal to 5. However, our new <b>Danger Card</b> can be dragged into that area because
+        it contains the number <b>4</b>.
+    </p>
+
+    <div class="mb-2 max-w-4xl mx-auto overflow-auto flex justify-between p-4 border border-gray-400">
+        <DragContext TData="int">
+            <div class="flex flex-col space-y-4">
+                <DragItem DragData="5" Copy="true">
+                    <div class="flex flex-col rounded-lg @Theme.Success.All">
+                        <div class="p-4 border-b border-gray-500">Drag Me</div>
+                        <div class="p-4">I contain a secret number</div>
+                    </div>
+                </DragItem>
+                <DragItem DragData="4" Copy="true">
+                    <div class="flex flex-col rounded-lg @Theme.Danger.All">
+                        <div class="p-4 border-b border-gray-500">Drag Me</div>
+                        <div class="p-4">I contain a secret number</div>
+                    </div>
+                </DragItem>
+            </div>
+            <DropArea Context="Items">
+                <div class="flex flex-col rounded-lg @Theme.Dark.All">
+                    <div class="p-4 border-b border-gray-500">Drop <b>any</b> item here</div>
+                    @foreach (var item in Items)
+                    {
+                        <div class="p-4">The secret number is @item</div>
+                    }
+                    @if (Items.Count > 2)
+                    {
+                        <div class="p-4">The number did change this time!</div>
+                    }
+                </div>
+            </DropArea>
+            <DropArea Context="Items"
+                      ShouldDropAsync="@((item) => item.Data != 5 ? Task.FromResult(true) : Task.FromResult(false))">
+                <div class="flex flex-col rounded-lg @Theme.Dark.All">
+                    <div class="p-4 border-b border-gray-500">I can not take data that equals 5</div>
+                    @foreach (var item in Items)
+                    {
+                        <div class="p-4">The secret number is @item</div>
+                    }
+                    @if (Items.Count > 2)
+                    {
+                        <div class="p-4">The number isn't going to change...</div>
+                    }
+                </div>
+            </DropArea>
+        </DragContext>
+    </div>
+     
+    <CodeBlock Title=".razor" Code="@secondExample" />
+</div>
 
 @code {
+    private string firstExample = @"@inject ITheme Theme
+<DragContext TData=""int"">
+    <DragItem DragData=""5"" Copy=""true"">
+        <div class=""flex flex-col rounded-lg @Theme.Success.All"">
+            <div class=""p-4 border-b border-gray-500"">Card</div>
+            <div class=""p-4"">I contain a secret number</div>
+        </div>
+    </DragItem>
+    <DropArea Context=""Items"">
+        <div class=""flex flex-col rounded-lg @Theme.Dark.All"">
+        <div class=""p-4 border-b border-gray-500"">Drop item here to reveal it's number</div>
+        @foreach (var item in Items)
+        {
+            <div class=""p-4"">The secret number is @item</div>
+        }
+        @if (Items.Count > 2)
+        {
+            <div class=""p-4"">The number isn't going to change...</div>
+        }
+        </div>
+    </DropArea>
+</DragContext>";
+
+    private string secondExample = @"@inject ITheme Theme
+<DragContext TData=""int"">
+    <div class=""flex flex-col space-y-4"">
+        <DragItem DragData=""5"" Copy=""true"">
+            <div class=""flex flex-col rounded-lg @Theme.Success.All"">
+                <div class=""p-4 border-b border-gray-500"">Drag Me</div>
+                <div class=""p-4"">I contain a secret number</div>
+            </div>
+        </DragItem>
+        <DragItem DragData=""4"" Copy=""true"">
+            <div class=""flex flex-col rounded-lg @Theme.Danger.All"">
+                <div class=""p-4 border-b border-gray-500"">Drag Me</div>
+                <div class=""p-4"">I contain a secret number</div>
+            </div>
+        </DragItem>
+    </div>
+    <DropArea Context=""Items"">
+        <div class=""flex flex-col rounded-lg @Theme.Dark.All"">
+            <div class=""p-4 border-b border-gray-500"">Drop <b>any</b> item here</div>
+            @foreach (var item in Items)
+            {
+                <div class=""p-4"">The secret number is @item</div>
+            }
+            @if (Items.Count > 2)
+            {
+                <div class=""p-4"">The number did change this time!</div>
+            }
+        </div>
+    </DropArea>
+    <DropArea Context=""Items""
+              ShouldDropAsync=""@((item) => item.Data != 5 ? Task.FromResult(true) : Task.FromResult(false))"">
+        <div class=""flex flex-col rounded-lg @Theme.Dark.All"">
+            <div class=""p-4 border-b border-gray-500"">I can not take data that equals 5</div>
+            @foreach (var item in Items)
+            {
+                <div class=""p-4"">The secret number is @item</div>
+            }
+            @if (Items.Count > 2)
+            {
+                <div class=""p-4"">The number isn't going to change...</div>
+            }
+        </div>
+    </DropArea>
+</DragContext>";
+
     private string testData1 = "First";
     private string testData2 = "Second";
     private string testData3 = "Third";

@@ -106,7 +106,10 @@ namespace Blatomic.Components.CodeBlock
                     "@inherit",
                     "@using",
                     "@page",
+                    "@foreach",
+                    "@if",
 
+                    "var",
                     "await",
                     "for",
                     "foreach",
