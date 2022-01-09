@@ -1,6 +1,6 @@
 ﻿@inject ITheme Theme
 
-<div class="fixed @visible transition-opacity duration-300 z-40 top-0 left-0 w-full h-full overflow-auto bg-black/50" @onclick="() => BoundIsShowing = !IsShowing">
+<div class="fixed @visible transition-opacity duration-300 z-40 top-0 left-0 w-full h-full overflow-auto dark:bg-white/50 bg-black/50" @onclick="() => BoundIsShowing = !IsShowing">
     <div class="@size @margin @Theme.Light shadow-md flex flex-col" @onclick:stopPropagation="true">
         <div class="flex justify-between items-center p-4 @border">
             <div>

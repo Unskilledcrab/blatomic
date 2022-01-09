@@ -2,53 +2,90 @@
 @inject ITheme Theme
 @inject NavigationManager Nav
 
-<Button HoverStyle="HoverStyle.Shadow"
-        RoundedStyle="RoundedStyle.Full"
-        OnClickedAsync="() => isShowingSmall = true">
-    Open Modal Small
+<PageTitle>Modals</PageTitle>
+
+<div class="leading-relaxed @TwColors.Text_Slate_600">
+    <h1 class="text-2xl font-bold @TwColors.Text_Slate_900">Modals</h1>
+
+    <h3 class="text-xl font-bold mt-6 @TwColors.Text_Slate_900">What are they?</h3>
+
+    <p class="my-2 font-medium">
+        Modals are a way for you to shift focus from the websites main content to an overlay. The default modal is an empty canvas
+        which takes on the current theme and comes with an exit button and (if it is not a full screen modal) a selectable backdrop. 
+        If the user clicks either of these then the modal will hide itself. 
+        The programmer is responsible for display the modal to the user (usually by button click)
+    </p>
+
+    <div class="mb-2">
+        <Button OnClickedAsync="() => isShowingFirstExample = true">
+            Show Default Modal
+        </Button>
+
+        <Modal @bind-IsShowing="@isShowingFirstExample">
+            <Header>
+                Header
+            </Header>
+            <Body>
+                Body
+            </Body>
+            <Footer>
+                Footer
+            </Footer>
+        </Modal>
+    </div>
+
+    <CodeBlock Title=".razor" Code="@firstExample" />
+
+    
+    <p class="my-2 font-semibold">
+        Lets break down this example into it's parts
+    </p>
+
+    <ol class="list-decimal ml-8 space-y-4 mt-2">
+        <li>
+            <p>
+                First notice that we are using <b>@("@bind-IsShowing")</b>, this is to make sure that the variable reference that we have is updating
+                when the modal closes itself and we can also close the modal programmatically whenever we need to.
+            </p>
+        </li>
+        <li>
+            <p>
+                Next we have the <b>Header</b> section, this will be where you will usually place the title of the modal.
+            </p>
+        </li>
+        <li>
+            <p>
+                Next we have the <b>Body</b> section, this is where you will put the main content of your modal
+            </p>
+        </li>
+        <li>
+            <p>
+                Finally we have the <b>Footer</b> section where you can set any additional content usually used for actions (like agreeing or confirmation)
+            </p>
+            <p class="italic">
+                Note: we <b>do not</b> need to declare the <b>footer</b>. It is an optional section that is there incase you would like to use it
+            </p>
+        </li>
+    </ol>
+        
+    <p class="my-2">
+        As you can see the modal component is very simple to work with. If you would like to go into more depth and look at the different sizing options available,
+        check out the advanced section below.
+    </p>
+
+    <h3 class="text-xl font-bold mt-12 @TwColors.Text_Slate_900">Advanced</h3>
+
+    <p class="my-2">
+        Under Construction...
+    </p>
+</div>
+
+@code {
+    private string firstExample = @"<Button OnClickedAsync=""() => isShowingFirstExample = true"">
+    Show Default Modal
 </Button>
 
-<Modal @bind-IsShowing="@isShowingSmall" Size="ModalSize.Small">
-    <Body>
-        <form class="px-6 pb-4 space-y-6 lg:px-8 sm:pb-6 xl:pb-8" action="#">
-            <h3 class="text-xl font-medium">Sign in to our platform</h3>
-            <div>
-                <label for="email" class="block mb-2 text-sm font-medium">Your email</label>
-                <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="name@company.com" required>
-            </div>
-            <div>
-                <label for="password" class="block mb-2 text-sm font-medium">Your password</label>
-                <input type="password" name="password" id="password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
-            </div>
-            <div class="flex justify-between">
-                <div class="flex items-start">
-                    <div class="flex items-center h-5">
-                        <input id="remember" aria-describedby="remember" type="checkbox" class="w-4 h-4 bg-gray-50 rounded border border-gray-300 focus:ring-3 focus:ring-blue-300" required>
-                    </div>
-                    <div class="ml-3 text-sm">
-                        <label for="remember" class="font-medium">Remember me</label>
-                    </div>
-                </div>
-                <a href="#" class="text-sm @TwColors.Text_Blue_600 hover:underline ">Lost Password?</a>
-            </div>
-            <button type="submit" class="w-full @Theme.Primary focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Login to your account</button>
-            <div class="text-sm font-medium">
-                Not registered? <a href="#" class="@TwColors.Text_Blue_600 hover:underline">Create account</a>
-            </div>
-
-            <Button OnClickedAsync="UpdateTheme">Update Primary Theme</Button>
-            <Button OnClickedAsync="ResetTheme">Reset Primary Theme</Button>
-        </form>
-    </Body>
-</Modal>
-
-<Button HoverStyle="HoverStyle.Shadow"
-        RoundedStyle="RoundedStyle.Full"
-        OnClickedAsync="() => isShowingMedium = true">
-    Open Modal Medium
-</Button>
-
-<Modal @bind-IsShowing="@isShowingMedium" Size="ModalSize.Medium">
+<Modal @bind-IsShowing=""@isShowingFirstExample"">
     <Header>
         Header
     </Header>
@@ -60,35 +97,9 @@
     </Footer>
 </Modal>
 
-<Button HoverStyle="HoverStyle.Shadow"
-        RoundedStyle="RoundedStyle.Full"
-        OnClickedAsync="() => isShowingFull = true">
-    Open Modal Full
-</Button>
-
-
-<Modal @bind-IsShowing="@isShowingFull" Size="ModalSize.Full">
-    <Header>
-        Header
-    </Header>
-    <Body>
-        Body
-    </Body>
-</Modal>
-
 @code {
-    private bool isShowingSmall = false;
-    private bool isShowingMedium = false;
-    private bool isShowingFull = false;
+    private bool isShowingFirstExample = false;
+}";
 
-    private void UpdateTheme()
-    {
-        Theme.Primary = new TwTheme().Success;
-        Nav.NavigateTo(Nav.Uri, true);
-    }
-    private void ResetTheme()
-    {
-        Theme.Primary = new TwTheme().Primary;
-        Nav.NavigateTo(Nav.Uri, true);
-    }
+    private bool isShowingFirstExample = false;
 }

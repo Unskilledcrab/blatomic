@@ -1,37 +1,61 @@
 ﻿@page "/progressbars"
+@inject ITheme Theme
 
-<div class="flex flex-col space-y-2">
-    <ProgressBar @bind-Percentage="@progress">@progress</ProgressBar>
-    <ProgressBar @bind-Percentage="@progress">@($"Made it to {progress}%")</ProgressBar>
-</div>
+<PageTitle>Progress Bars</PageTitle>
 
-<div class="mt-4 flex justify-around">
-    <Button Css="bg-indigo-500 hover:bg-indigo-400" HoverStyle="HoverStyle.Shadow" RoundedStyle="RoundedStyle.Full"
-            OnClickedAsync="() => progress -= 10">
-        Minus 10
-    </Button>
-    <Button Css="bg-indigo-500 hover:bg-indigo-400" HoverStyle="HoverStyle.Shadow" RoundedStyle="RoundedStyle.Full"
-            OnClickedAsync="() => progress -= 5">
-        Minus 5
-    </Button>
-    <Button Css="bg-indigo-500 hover:bg-indigo-400" HoverStyle="HoverStyle.Shadow" RoundedStyle="RoundedStyle.Full"
-            OnClickedAsync="() => progress -= 1">
-        Minus 1
-    </Button>
-    <Button Css="bg-indigo-500 hover:bg-indigo-400" HoverStyle="HoverStyle.Shadow" RoundedStyle="RoundedStyle.Full"
-            OnClickedAsync="() => progress += 1">
-        Plus 1
-    </Button>
-    <Button Css="bg-indigo-500 hover:bg-indigo-400" HoverStyle="HoverStyle.Shadow" RoundedStyle="RoundedStyle.Full"
-            OnClickedAsync="() => progress += 5">
-        Plus 5
-    </Button>
-    <Button Css="bg-indigo-500 hover:bg-indigo-400" HoverStyle="HoverStyle.Shadow" RoundedStyle="RoundedStyle.Full"
-            OnClickedAsync="() => progress += 10">
-        Plus 10
-    </Button>
+<div class="leading-relaxed @TwColors.Text_Slate_600">
+    <h1 class="text-2xl font-bold @TwColors.Text_Slate_900">Progress Bars</h1>
+
+    <h3 class="text-xl font-bold mt-6 @TwColors.Text_Slate_900">What are they?</h3>
+
+    <p class="my-2 font-medium">
+        Progress bars are by default styled with the primary theme and only have a min height placed on them. 
+        They also have default animations that will all them to smoothly animate to the value placed.
+    </p>
+
+    <div class="mb-2">
+        <ProgressBar Percentage="50" />
+    </div>
+
+    <CodeBlock Title=".razor" Code="@firstExample" />
+
+    
+    <p class="my-2">
+        As you can see there is not whole lot that is needed to get started. So lets take a look at a more advanced example
+    </p>
+
+    <h3 class="text-xl font-bold mt-12 @TwColors.Text_Slate_900">Utilizing</h3>
+            
+    <p class="my-2">
+        Here we can manipulate the value of the progress bar and we are displaying that value to the user
+    </p>
+
+    <p class="my-2 max-w-lg mx-auto">
+        <ProgressBar @bind-Percentage="@progress">@($"{progress}%")</ProgressBar>
+        <div class="flex justify-around mt-2">
+            <Button OnClickedAsync="(() => progress = 0)">0</Button>
+            <Button OnClickedAsync="(() => progress -= 5)">- 5</Button>
+            <Button OnClickedAsync="(() => progress += 5)">+ 5</Button>
+            <Button OnClickedAsync="(() => progress = 100)">100</Button>
+        </div>
+    </p>
+    
+    <CodeBlock Title=".razor" Code="@secondExample" />
 </div>
 
 @code {
-    private int progress = 10;
+    private string firstExample = @"<ProgressBar Percentage=""50"" />";
+    private string secondExample = @"<ProgressBar @bind-Percentage=""@progress"">@($""{progress}%"")</ProgressBar>
+<div class=""flex justify-around mt-2"">
+    <Button OnClickedAsync=""(() => progress = 0)"">0</Button>
+    <Button OnClickedAsync=""(() => progress -= 5)"">- 5</Button>
+    <Button OnClickedAsync=""(() => progress += 5)"">+ 5</Button>
+    <Button OnClickedAsync=""(() => progress = 100)"">100</Button>
+</div>
+
+@code {
+    private int progress = 50;
+}";
+
+    private int progress = 50;
 }

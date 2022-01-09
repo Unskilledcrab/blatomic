@@ -17,7 +17,7 @@
             return span.Slice(index, 1);
         }
 
-        public static bool IsStringLiteral(this ReadOnlySpan<char> word, ILanguage syntax, out string color)
+        public static bool IsStringLiteral(this ReadOnlySpan<char> word, ILanguage syntax, out string? color)
         {
             return word.IsToken(syntax.StringLiteralPalette, out color);
         }
@@ -27,7 +27,7 @@
             return word.IsToken(syntax.SymbolPalette, out color);
         }
 
-        public static bool IsLookBehindToken(this ReadOnlySpan<char> word, ILanguage syntax, out string color)
+        public static bool IsLookBehindToken(this ReadOnlySpan<char> word, ILanguage syntax, out string? color)
         {
             return word.IsToken(syntax.LookBehindPalette, out color);
         }
@@ -35,7 +35,7 @@
 
         public static bool IsLookAheadToken(this ReadOnlySpan<char> word, ILanguage syntax, out string? color)
         {
-            return word.IsToken(syntax.LookAheadPalette,out color);
+            return word.IsToken(syntax.LookAheadPalette, out color);
         }
 
         public static bool IsComment(this ReadOnlySpan<char> word, ILanguage syntax, out string? color)
@@ -48,7 +48,7 @@
             return word.IsToken(syntax.KeywordPalette, out color);
         }
 
-        public static bool IsToken(this ReadOnlySpan<char> word, TokenPalette[] tokenPalettes, out string color)
+        public static bool IsToken(this ReadOnlySpan<char> word, TokenPalette[] tokenPalettes, out string? color)
         {
             color = null;
             foreach (var tokenPalette in tokenPalettes)

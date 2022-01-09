@@ -25,7 +25,6 @@ namespace Blatomic.Components.CodeBlock
                     break;
                 case Language.CSharp:
                     return new CSharpLanguage();
-                    break;
                 default:
                     break;
             }
