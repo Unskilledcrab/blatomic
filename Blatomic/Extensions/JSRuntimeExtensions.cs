@@ -18,7 +18,7 @@ namespace Blatomic.Extensions
         {
             var module = await jsRuntime.InvokeAsync<IJSObjectReference>(
                 "import",
-                Path.Combine($"./_content/Blatomic/", wwwrootpath)
+                Path.Combine($"./_content/Blatomic/js/", wwwrootpath)
             );
             return module;
         }

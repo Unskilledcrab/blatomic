@@ -5,11 +5,12 @@
 @using Microsoft.AspNetCore.Razor
 @using System.Text
 @using Microsoft.JSInterop
+@using Blatomic.Services.JS
 
 @implements IAsyncDisposable
 
 @inject ITheme Theme
-@inject IJSRuntime JSRuntime
+@inject ClipboardService ClipboardService
 
 <div class="border @Theme.Light.Border.ToString() rounded-lg">
     <div class="bg-gray-800 text-gray-200 flex justify-between items-center py-2 px-4 rounded-t-lg">
@@ -36,52 +37,43 @@
     [Parameter] public Language Language { get; set; } = Language.HTML;
 
     private string markup = string.Empty;
-    private IJSObjectReference? module;
     private string copyButtonText = "Copy";
 
     protected override void OnInitialized()
     {
         if (!string.IsNullOrWhiteSpace(Code))
         {
-            markup = new LanguageParser() 
-            {
-                ShowLineNumbers = ShowLineNumber 
-            }.ParseCode(Code, Language.GetLanguage());
+            markup = new LanguageParser()
+                {
+                    ShowLineNumbers = ShowLineNumber
+                }.ParseCode(Code, Language.GetLanguage());
         }
         base.OnInitialized();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (module is null)
-        {
-            module = await JSRuntime.Import(this);
-        }
+        await ClipboardService.Import();
+
         await base.OnAfterRenderAsync(firstRender);
     }
 
     async ValueTask IAsyncDisposable.DisposeAsync()
     {
-        if (module is not null)
-        {
-            await module.DisposeAsync();
-        }
+        await ClipboardService.DisposeAsync();
     }
 
     private async Task CopyCodeToClipboard()
     {
-        if (module is not null)
+        var error = await ClipboardService.CopyToClipboard(Code);
+        if (error is not null)
         {
-            var error = await module.InvokeAsync<string>("CopyToClipboard", Code);
-            if (error is not null)
-            {
-                copyButtonText = error;
-            }
-            else
-            {
-                copyButtonText = "Copied!";
-                _ = ButtonReset();
-            }
+            copyButtonText = error;
+        }
+        else
+        {
+            copyButtonText = "Copied!";
+            _ = ButtonReset();
         }
     }
 
@@ -90,6 +82,6 @@
         await Task.Delay(1000);
         copyButtonText = "Copy";
         StateHasChanged();
-    }   
+    }
 }
 

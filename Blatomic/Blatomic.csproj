@@ -18,6 +18,10 @@
 		<Version></Version>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <Content Remove="wwwroot\js\ClipboardService.js" />
+	</ItemGroup>
+
 
 	<ItemGroup>
 		<SupportedPlatform Include="browser" />
@@ -31,6 +35,10 @@
 
 	<ItemGroup>
 	  <Folder Include="wwwroot\css\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="wwwroot\js\ClipboardService.js" />
 	</ItemGroup>
 
 	<Target Name="CheckForNpm" BeforeTargets="NpmInstall">

@@ -1,109 +1,156 @@
 ﻿@page "/guides"
+@inject ITheme Theme
 
-<GuideContext @bind-IsShowing="@isGuideShowing">
-    <div class="flex flex-col space-y-5">
-        <Button OnClickedAsync="(() => isGuideShowing = true)">Start Guide</Button>
+<PageTitle>Progress Bars</PageTitle>
 
-        <GuideStep>
-            <ChildContent>
-                <ProgressBar Percentage="50">50%</ProgressBar>
-            </ChildContent>
-            <HelpContent>
-                <p>This progress bar tells you exactly how close we are until the end of time...</p>
-            </HelpContent>
-        </GuideStep>
+<div class="leading-relaxed @TwColors.Text_Slate_600">
+    <h1 class="text-2xl font-bold @TwColors.Text_Slate_900">Guides</h1>
 
-        <GuideStep>
-            <ChildContent>
-                <DragContext TData="string">
-                    <div class="flex justify-around">
+    <h3 class="text-xl font-bold mt-6 @TwColors.Text_Slate_900">What are they?</h3>
 
-                        <GuideStep>
-                            <ChildContent>
+    <p class="my-2 font-medium">
+        Guides are meant to take your user on a tour of specific areas of your webpage.
+        Below shows the most basic example of a guide with only a single step. Click on the
+        <b>Start Guide</b> button to see what I mean.
+    </p>
 
-                                <div class="flex flex-col space-y-5 shrink-0">
-                                    <DragItem DragData="@("Yay you did it")" Copy="true">
-                                        <div class="p-3 bg-blue-400 rounded-full">
-                                            Drag Me!
-                                        </div>
-                                    </DragItem>
-                                </div>
-                            </ChildContent>
-                            <HelpContent>
-                                This is an object that you can drop around on the screen
-                            </HelpContent>
-                        </GuideStep>
+    <div class="mb-2">
+        <GuideContext @bind-IsShowing="isGuideShowing">
+            <div class="flex flex-col space-y-4">
+
+                <div>
+                    <NotificationContainer ShowNotification="@(!isGuideShowing)">
+                        <Button OnClickedAsync="(() => isGuideShowing = true)">Start Guide</Button>
+                    </NotificationContainer>
+                </div>
+
+                <GuideStep>
+                    <ChildContent>
+                        <ProgressBar Percentage="50" />
+                    </ChildContent>
+                    <HelpContent>
+                        This Progress bar doesn't mean anything. but your focus is drawn to it because
+                        the rest of the website has been grayed out and it is the first (and only) step in the guide.
+                    </HelpContent>
+                </GuideStep>
+            </div>
+        </GuideContext>
+    </div>
+
+    <CodeBlock Title=".razor" Code="@firstExample" />
 
 
-                        <GuideStep>
-                            <ChildContent>
+    
+    <p class="my-2 font-semibold">
+        Lets break down this example into it's parts
+    </p>
 
-                                <DropArea Context="Items">
-                                    <div class="p-5 flex flex-col space-y-2">
-                                        <p>Items in this are will be copied to their drop location</p>
-                                        @foreach (var item in Items)
-                                        {
-                                            <DragItem Copy="true" DragData="@item">
-                                                <div class="p-3 bg-purple-400 rounded-full">
-                                                    Data: @item
-                                                </div>
-                                            </DragItem>
-                                        }
+    <ol class="list-decimal ml-8 space-y-4 mt-2">
+        <li>
+            <p>
+                First we have the <b>GuideContext</b>, this is how you will start and stop a guide with the <b>@("@bind-IsShowing")</b> property.
+                Make sure that you use binding to make sure that your local parameter updates if the guide closes itself.
+                This context will contain all of the <b>GuideStep</b> components.
+            </p>
+        </li>
+        <li>
+            <p>
+                Next we have the <b>GuideStep</b> component, this is what you will place around each area of the site that you want to draw your
+                users eyes to. Place the content you wish to show to the user in the <b>ChildContent</b> section and place any help context you
+                wish to provide inside the <b>HelpContent</b> section. Here are are only placing text but you can place anything you want in these
+                areas.
+            </p>
+        </li>
+        <li>
+            <p>
+                That's it! Next let's look at some more advanced usages
+            </p>
+        </li>
+    </ol>
+
+    <h3 class="text-xl font-bold mt-12 @TwColors.Text_Slate_900">Advanced</h3>
+
+    <p class="my-2">
+        Here you can see that we can nest guide steps within each other. If you need to explain a broad section of your site and then would like
+        to highlight specific subsections.
+    </p>
+
+    <p class="my-2 max-w-xlg mx-auto">
+        <GuideContext @bind-IsShowing="@isGuide2Showing">
+            <div class="flex flex-col space-y-4">
+                
+                <div>
+                    <NotificationContainer ShowNotification="@(!isGuide2Showing)">
+                        <Button OnClickedAsync="(() => isGuide2Showing = true)">Start Guide</Button>
+                    </NotificationContainer>
+                </div>
+
+                <GuideStep>
+                    <ChildContent>                        
+                            <GuideStep>
+                                <ChildContent>    
+                                    <div class="my-2">
+                                        <ProgressBar Percentage="25">25%</ProgressBar>
                                     </div>
-                                </DropArea>
+                                </ChildContent>
+                                <HelpContent>
+                                    I mean that i'm 25% sure that whoever smelt it, deblt it.
+                                </HelpContent>
+                            </GuideStep>
 
-                            </ChildContent>
-                            <HelpContent>
-                                You can drop the item here and it will update with the data of that item. Note: The data does not have to match the dragged items content
-                            </HelpContent>
-                        </GuideStep>
-
-
-                        <GuideStep>
-                            <ChildContent>
-                                <DropArea Context="Items"
-                                          ShouldDropAsync="@((dragItem) => dragItem.Data == "Third" ? Task.FromResult(true) : Task.FromResult(false))">
-                                    <div class="p-5 flex flex-col space-y-2">
-                                        <p>You can only drop the 'Third' item into this location</p>
-                                        @foreach (var item in Items)
-                                        {
-                                            <DragItem DragData="@item">
-                                                <div class="p-3 bg-red-400 rounded-full">
-                                                    Data: @item
-                                                </div>
-                                            </DragItem>
-                                        }
+                            <GuideStep>
+                                <ChildContent>    
+                                    <div class="my-2">              
+                                        <ProgressBar Percentage="50">50%</ProgressBar>
                                     </div>
-                                </DropArea>
+                                </ChildContent>
+                                <HelpContent>
+                                    I mean that i'm 50% sure that dogs are better than cats.
+                                </HelpContent>
+                            </GuideStep>
 
-                            </ChildContent>
-                            <HelpContent>
-                                You won't ever be able to drop the item in this area... it doesn't like you
-                            </HelpContent>
-                        </GuideStep>
-                    </div>
-                </DragContext>
-            </ChildContent>
-            <HelpContent>
-                <p>This is using the drag and drop context</p>
-            </HelpContent>
-        </GuideStep>
+                            <GuideStep>
+                                <ChildContent>   
+                                    <div class="my-2">               
+                                        <ProgressBar Percentage="75">75%</ProgressBar>
+                                    </div>
+                                </ChildContent>
+                                <HelpContent>
+                                    I mean that 75% of what you taste comes from your sense of smell.
+                                </HelpContent>
+                            </GuideStep>
+                    </ChildContent>
+                    <HelpContent>
+                        These are 3 progress bars that all mean different things... continue to find out more.
+                    </HelpContent>
+                </GuideStep>
+
+            </div>
+        </GuideContext>
+    </p>
+
+    <CodeBlock Title=".razor" Code="@secondExample" />
+</div>
+
+
+
+@code {
+    private string firstExample = @"<GuideContext @bind-IsShowing=""isGuideShowing"">
+    <div class=""flex flex-col space-y-4"">
+
+        <div>
+            <NotificationContainer ShowNotification=""@(!isGuideShowing)"">
+                <Button OnClickedAsync=""(() => isGuideShowing = true)"">Start Guide</Button>
+            </NotificationContainer>
+        </div>
 
         <GuideStep>
             <ChildContent>
-                <Button>Very important button</Button>
+                <ProgressBar Percentage=""50"" />
             </ChildContent>
             <HelpContent>
-                <p>This is a very important button.. push it if you would like</p>
-            </HelpContent>
-        </GuideStep>
-
-        <GuideStep>
-            <ChildContent>
-                <Button>Very important button</Button>
-            </ChildContent>
-            <HelpContent>
-                <p>This is a very important button.. push it if you would like</p>
+                This Progress bar doesn't mean anything. but your focus is drawn to it because
+                the rest of the website has been grayed out and it is the first (and only) step in the guide.
             </HelpContent>
         </GuideStep>
 
@@ -112,4 +159,63 @@
 
 @code {
     private bool isGuideShowing = false;
+}";
+    private string secondExample = @"<GuideContext @bind-IsShowing=""@isGuide2Showing"">
+            <div class=""flex flex-col space-y-4"">
+                
+                <div>
+                    <NotificationContainer ShowNotification=""@(!isGuide2Showing)"">
+                        <Button OnClickedAsync=""(() => isGuide2Showing = true)"">Start Guide</Button>
+                    </NotificationContainer>
+                </div>
+
+                <GuideStep>
+                    <ChildContent>                        
+                            <GuideStep>
+                                <ChildContent>    
+                                    <div class=""my-2"">
+                                        <ProgressBar Percentage=""25"">25%</ProgressBar>
+                                    </div>
+                                </ChildContent>
+                                <HelpContent>
+                                    I mean that i'm 25% sure that whoever smelt it, deblt it.
+                                </HelpContent>
+                            </GuideStep>
+
+                            <GuideStep>
+                                <ChildContent>    
+                                    <div class=""my-2"">              
+                                        <ProgressBar Percentage=""50"">50%</ProgressBar>
+                                    </div>
+                                </ChildContent>
+                                <HelpContent>
+                                    I mean that i'm 50% sure that dogs are better than cats.
+                                </HelpContent>
+                            </GuideStep>
+
+                            <GuideStep>
+                                <ChildContent>   
+                                    <div class=""my-2"">               
+                                        <ProgressBar Percentage=""75"">75%</ProgressBar>
+                                    </div>
+                                </ChildContent>
+                                <HelpContent>
+                                    I mean that 75% of what you taste comes from your sense of smell.
+                                </HelpContent>
+                            </GuideStep>
+                    </ChildContent>
+                    <HelpContent>
+                        These are 3 progress bars that all mean different things... continue to find out more.
+                    </HelpContent>
+                </GuideStep>
+
+            </div>
+        </GuideContext>
+
+@code {
+    private bool isGuide2Showing = false;
+}";
+
+    private bool isGuideShowing = false;
+    private bool isGuide2Showing = false;
 }
