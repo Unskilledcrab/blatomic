@@ -7,9 +7,9 @@
   "linkerEnabled": true,
   "resources": {
     "assembly": {
-      "Blatomic.dll": "sha256-fB\/qvIhBo89npzCWWHMNity3H1J8vfOLUb6S0Jxg7d8=",
-      "Blatomic.Examples.dll": "sha256-c0PW7hX3qIJ74ScRKIKMkF2uY7+XRDr5sABEQu6tOfM=",
-      "Blatomic.WASM.dll": "sha256-JWo1PKWuEsRTBTYFpNmGJFQ1it82ne0YCM\/99G40jV4=",
+      "Blatomic.dll": "sha256-k7c9SGqTCTexzQmXM1VKEx8rrE8SGIvLb7iHKiAkoxM=",
+      "Blatomic.Examples.dll": "sha256-s0t1BjaPwO3RIragk7ZXE8XUjUy7JWfb3xGMEt\/TXMA=",
+      "Blatomic.WASM.dll": "sha256-VPm+KoDDFv3ql4dnKUO5oZoHzb5S6MwoBm2GOTXIZgQ=",
       "Blazy.dll": "sha256-WCGByHtaguPfgbughfBDDqpNgrYNkHovHeCZ33VKR3I=",
       "Microsoft.AspNetCore.Components.dll": "sha256-jI\/vdgq5066cU8r9Bq2wuBBws5k90I7sxhslt2fe2l0=",
       "Microsoft.AspNetCore.Components.Web.dll": "sha256-5SG3xGO0JbXR15YFD2U\/WNcIC5b8gA+x1oW1bM4VzAc=",
@@ -21,7 +21,7 @@
       "Microsoft.Extensions.Configuration.Abstractions.dll": "sha256-zhFtW4kE16TdrpPne9I1Cu9o0KYzrS50VE9MVSifJg4=",
       "Microsoft.Extensions.Configuration.dll": "sha256-QPR+1IXNcA28b\/gXw3uZ8aRigHIZUJ1KWSH02kkCg7Q=",
       "Microsoft.Extensions.Configuration.Json.dll": "sha256-fF3xaP+hT6R3GYUctLIY1ixaXQ8mrHzwWHHf2dKfueU=",
-      "Microsoft.Extensions.DependencyInjection.Abstractions.dll": "sha256-5QqTvvnFOrh83a9zO8LmuDd295HKAZ1OOvl96CP5du8=",
+      "Microsoft.Extensions.DependencyInjection.Abstractions.dll": "sha256-UHhwyFobghePEanJVF\/RRshcu2yig8E\/bTCCrn194ks=",
       "Microsoft.Extensions.DependencyInjection.dll": "sha256-pYDNELbgbO60zgvgH5SP8004wkA0+o\/KlQxFXl\/uS2A=",
       "Microsoft.Extensions.Logging.Abstractions.dll": "sha256-9feaXahc\/8sPAnUzokYnaFZrdWisDpTtWPFxCBnq5EE=",
       "Microsoft.Extensions.Logging.dll": "sha256-aj8Tk1BLrOE4y41oBvw\/VGDdmvACVEpGmiEDNrA7Hco=",
