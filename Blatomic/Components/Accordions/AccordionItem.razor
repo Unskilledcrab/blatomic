@@ -1,0 +1,54 @@
+﻿<div @ref="header" class="p-4 flex justify-between items-center cursor-pointer border-b border-gray-300 transition focus:ring-2 @headShowStyle" @onclick="ToggleBody">
+    <div>
+        @Header
+    </div>
+    <div>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 transition duration-300 @svgClass" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+    </div>
+</div>
+<div class="transition-[max-height] duration-300 @bodyGrow overflow-hidden">
+    <div class="p-4 border-b border-gray-300">
+        @Body
+    </div>
+</div>
+
+
+@code {
+    [CascadingParameter] public AccordionContext? Parent {get; set;}
+    [Parameter] public RenderFragment? Header { get; set; }
+    [Parameter] public RenderFragment? Body { get; set; }
+    [Parameter] public string ShowHeaderStyle { get; set; } = "bg-blue-200 text-blue-600";
+
+    private ElementReference header;
+    private bool isShowing = false;
+    private string bodyGrow => isShowing ? "max-h-96" : "max-h-0";
+    private string svgClass => isShowing ? "rotate-180" : "rotate-0";
+    private string headShowStyle => isShowing ? ShowHeaderStyle : string.Empty;
+
+    protected override void OnInitialized()
+    {
+        Parent?.AddChild(this);
+        base.OnInitialized();
+    }
+
+    public async Task ToggleBody()
+    {
+        var showing = !isShowing;
+        Parent?.OnToggleChild();
+        isShowing = showing;
+        await header.FocusAsync();
+        //StateHasChanged();
+    }
+
+    public void HideBody()
+    {
+        isShowing = false;
+    }
+
+    public void ShowBody()
+    {
+        isShowing = true;
+    }
+}

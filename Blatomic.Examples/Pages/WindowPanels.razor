@@ -1,0 +1,51 @@
+﻿@page "/windowPanel"
+@inject ITheme Theme
+
+<PageTitle>Window Panel</PageTitle>
+
+<div class="leading-relaxed @TwColors.Text_Slate_600">
+    <h1 class="text-2xl font-bold @TwColors.Text_Slate_900">Window Panel</h1>
+
+    <h3 class="text-xl font-bold mt-6 @TwColors.Text_Slate_900">What's so special?</h3>
+
+    <p class="my-2 font-medium">
+        Under Construction
+    </p>
+
+    <div class="mb-2">
+
+        <Button OnClickedAsync="(() => isShowing = true)">Open Window Panel</Button>
+
+        <WindowPanel @bind-IsShowing="@isShowing" Position="Position.Right">
+            <Header>
+                <b>Header</b>
+            </Header>
+            <ChildContent>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </ChildContent>
+        </WindowPanel>
+
+    </div>
+
+    <CodeBlock Title=".razor" Code="@defaultExample" />
+</div>
+
+
+@code {
+    private string defaultExample = @"<Button OnClickedAsync=""(() => isShowing = true)"">Open Window Panel</Button>
+
+<WindowPanel @bind-IsShowing=""@isShowing"" Position=""Position.Right"">
+    <Header>
+        <b>Header</b>
+    </Header>
+    <ChildContent>
+        Lorem ipsum ...
+    </ChildContent>
+</WindowPanel>
+
+@code {
+    private bool isShowing = false;
+}";
+
+    private bool isShowing = false;
+}

@@ -1,5 +1,8 @@
 ﻿@inherits LayoutComponentBase
 @inject Blatomic.Services.ColorScheme.ITheme Theme
+@inject NavigationManager Nav
+
+@implements IDisposable
 
 <PageTitle>Blatomic Examples</PageTitle>
 
@@ -37,9 +40,9 @@
                 @if (showNav)
                 {
                     <div class="@showNav lg:hidden">
-                        <div class="fixed z-10 inset-0 dark:bg-white/50 bg-black/50" onclick="@(() => ToggleNavMenu())">
+                        <div class="fixed z-10 inset-0 dark:bg-white/50 bg-black/50" @onclick="(() => ToggleNavMenu())">
                         </div>
-                        <div class="fixed z-20 top-0 bottom-0 px-16 pt-8 @TwColors.Bg_White">
+                        <div class="fixed z-20 top-0 bottom-0 px-16 py-8 @TwColors.Bg_White overflow-y-auto">
                             <div class="flex">
                                 <NavMenu />
                                 <div class="absolute top-6 right-2 h-15 w-15 cursor-pointer hover:text-white hover:bg-gray-300 p-1 rounded" @onclick="() => ToggleNavMenu()">
@@ -78,8 +81,25 @@
     private string navClass => showNav ? "block" : "hidden";
     private bool showNav = false;
 
+    protected override void OnInitialized()
+    {
+        Nav.LocationChanged += CloseNav;
+        base.OnInitialized();
+    }
+
+    private void CloseNav(object? sender, LocationChangedEventArgs args)
+    {
+        showNav = false;
+        StateHasChanged();
+    }
+
     private void ToggleNavMenu()
     {
         showNav = !showNav;
+    }
+
+    public void Dispose()
+    {
+        Nav.LocationChanged -= CloseNav;
     }
 }

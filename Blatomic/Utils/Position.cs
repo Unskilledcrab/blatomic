@@ -14,8 +14,69 @@ namespace Blatomic.Utils
         Right
     }
 
+    public enum CordinalPosition
+    {
+        Top,
+        TopLeft,
+        TopRight,
+        Bottom,
+        BottomLeft,
+        BottomRight,
+        Left,
+        Right,
+        Center,
+    }
+
+    public static class CordinalPositionExtensions
+    {
+        public static string ToastStyle(this CordinalPosition position)
+        {
+            switch (position)
+            {
+                case CordinalPosition.Top:
+                    return "top-0 inset-x-1/2";
+                case CordinalPosition.TopLeft:
+                    return "top-0 left-0";
+                case CordinalPosition.TopRight:
+                    return "top-0 right-0";
+                case CordinalPosition.Bottom:
+                    return "bottom-0 inset-x-1/2";
+                case CordinalPosition.BottomLeft:
+                    return "bottom-0 left-0";
+                case CordinalPosition.BottomRight:
+                    return "bottom-0 right-0";
+                case CordinalPosition.Left:
+                    return "left-0 inset-y-1/2";
+                case CordinalPosition.Right:
+                    return "right-0 inset-y-1/2";
+                case CordinalPosition.Center:
+                    return "inset-1/2";
+                default:
+                    return string.Empty;
+            }
+        }
+    }
+
     public static class PositionExtensions
     {
+        public static string PanelStyle(this Position position)
+        {
+            switch (position)
+            {
+                case Position.Top:
+                    return "top-0 left-0 right-0 max-h-60";
+                case Position.Bottom:
+                    return "bottom-0 left-0 right-0 max-h-60";
+                case Position.Left:
+                    return "top-0 left-0 bottom-0 max-w-lg";
+                case Position.Right:
+                    return "top-0 bottom-0 right-0 max-w-lg";
+                default:
+                    return string.Empty;
+            }
+        }
+
+
         public static string AbsoluteStyle(this Position position)
         {
             switch (position)

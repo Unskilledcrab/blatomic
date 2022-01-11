@@ -1,0 +1,77 @@
+﻿@page "/accordions"
+@inject ITheme Theme
+
+<PageTitle>Accordions</PageTitle>
+
+<div class="leading-relaxed @TwColors.Text_Slate_600">
+    <h1 class="text-2xl font-bold @TwColors.Text_Slate_900">Accordions</h1>
+
+    <h3 class="text-xl font-bold mt-6 @TwColors.Text_Slate_900">What's so special?</h3>
+
+    <p class="my-2 font-medium">
+        Under Construction
+    </p>
+
+    <div class="mb-2 max-w-lg mx-auto @Theme.Dark.ToString()">
+
+        <AccordionContext AutoCollapse="false" AllOpen="true">
+            <AccordionItem>
+                <Header>
+                    <b>Test 1</b>
+                </Header>
+                <Body>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                </Body>
+            </AccordionItem>
+            <AccordionItem>
+                <Header>
+                    <b>Test 2</b>
+                </Header>
+                <Body>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                </Body>
+            </AccordionItem>
+            <AccordionItem>
+                <Header>
+                    <b>Test 3</b>
+                </Header>
+                <Body>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                </Body>
+            </AccordionItem>
+        </AccordionContext>
+
+    </div>
+
+    <CodeBlock Title=".razor" Code="@defaultExample" />
+</div>
+
+
+@code {
+    private string defaultExample = @"<AccordionContext AutoCollapse=""false"" AllOpen=""true"">
+    <AccordionItem>
+        <Header>
+            <b>Test 1</b>
+        </Header>
+        <Body>
+            Lorem ipsum ...
+        </Body>
+    </AccordionItem>
+    <AccordionItem>
+        <Header>
+            <b>Test 2</b>
+        </Header>
+        <Body>
+            Lorem ipsum ...
+        </Body>
+    </AccordionItem>
+    <AccordionItem>
+        <Header>
+            <b>Test 3</b>
+        </Header>
+        <Body>
+            Lorem ipsum ...
+        </Body>
+    </AccordionItem>
+</AccordionContext>";
+}

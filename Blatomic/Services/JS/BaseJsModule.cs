@@ -20,7 +20,7 @@ namespace Blatomic.Services.JS
         }
 
         protected IJSRuntime JSRuntime { get; set; }
-        protected IJSObjectReference? module;
+        protected static IJSObjectReference? module;
 
         private string? wwwrootpath;
         private object? componentReference;
