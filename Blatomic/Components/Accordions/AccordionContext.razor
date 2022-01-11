@@ -1,0 +1,41 @@
+﻿<CascadingValue Value="this">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public bool AutoCollapse { get; set; } = true;
+    [Parameter] public bool AllOpen { get; set; } = false;
+
+    private List<AccordionItem> children = new();
+
+    public void AddChild(AccordionItem child)
+    {
+        children.Add(child);
+    }
+
+    public void OnToggleChild()
+    {
+        if (AutoCollapse)
+        {
+            foreach (var child in children)
+            {
+                child.HideBody();
+            }
+        }
+        StateHasChanged();
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender && AllOpen)
+        {
+            foreach (var child in children)
+            {
+                child.ShowBody();
+            }
+            StateHasChanged();
+        }
+        base.OnAfterRender(firstRender);
+    }
+}

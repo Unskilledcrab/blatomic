@@ -6,7 +6,7 @@ namespace Blatomic.Services.JS
     {
         public static IServiceCollection AddJS(this IServiceCollection services)
         {
-            services.AddTransient<ClipboardService>();
+            services.AddScoped<ClipboardService>();
             return services;
         }
     }
