@@ -1,0 +1,77 @@
+﻿@typeparam TData
+
+<div tabindex="0" @onfocus="ShowDropdown" @onfocusout="HideDropdown" class="flex justify-between relative rounded focus:ring-2">
+    <div>
+        @if (selectedItem == null)
+        {
+            @PlaceHolderTemplate
+        }
+        else
+        {
+            @if (SelectedTemplate != null)
+            {
+                @SelectedTemplate(selectedItem)
+            }
+            else if (OptionTemplate != null)
+            {
+                @OptionTemplate(selectedItem)
+            }
+            else
+            {
+                @selectedItem
+            }
+        }
+    </div>
+    <div class="p-4">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+    </div>
+    <div class="absolute top-full mt-1 divide-y w-full bg-gray-300 @showingStyle" @onclick:stopPropagation="true">
+        @if (OptionTemplate != null && Items != null)
+        {
+            @foreach (var item in Items)
+            {
+                <div @onclick="(() => OnSelectedItem(item))" class="hover:bg-blue-300 cursor-pointer">
+                    @OptionTemplate(item)
+                </div>
+            }
+        }
+    </div>
+</div>
+<div @ref="select" tabindex="0"></div>
+
+@code {
+    [Parameter] public RenderFragment? PlaceHolderTemplate { get; set; }
+    [Parameter] public RenderFragment<TData>? OptionTemplate { get; set; }
+    [Parameter] public RenderFragment<TData>? SelectedTemplate { get; set; }
+    [Parameter] public IEnumerable<TData>? Items { get; set; }
+    [Parameter] public EventCallback<TData> OnItemSelect { get; set; }
+    [Parameter] public bool IsMultiSelect { get; set; } = false;
+
+    private TData? selectedItem;
+    private bool isDropdownShowing = false;
+    private ElementReference select;
+    private string showingStyle => isDropdownShowing ? "visible" : "hidden";
+
+    public void ShowDropdown()
+    {
+        isDropdownShowing = true;
+    }
+
+    public async Task HideDropdown()
+    {
+        isDropdownShowing = false;
+        await select.FocusAsync();
+    }
+
+    public async Task OnSelectedItem(TData item)
+    {
+        await OnItemSelect.InvokeAsync(item);
+        selectedItem = item;
+        if (!IsMultiSelect)
+        {
+            await HideDropdown();
+        }
+    }
+}
