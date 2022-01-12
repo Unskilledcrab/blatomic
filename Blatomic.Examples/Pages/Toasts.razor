@@ -1,0 +1,78 @@
+﻿@page "/toasts"
+
+@inject ITheme Theme
+@inject ToastService toastService
+
+<PageTitle>Toasts</PageTitle>
+
+<div class="leading-relaxed @TwColors.Text_Slate_600">
+    <h1 class="text-2xl font-bold @TwColors.Text_Slate_900">Toasts</h1>
+
+    <h3 class="text-xl font-bold mt-6 @TwColors.Text_Slate_900">What's so special?</h3>
+
+    <p class="my-2 font-medium">
+        Out toasts come pre-styled out of the box, however you can change the default styling be your own custom <b>RenderFragment</b> if you would like. 
+        One huge benefit to this toast system is it will automatically set the time on screen for you <b>based on the content</b>. This means that
+        if you place a large bit of content to show the user, it will stay on the screen for longer so that the user has time to read everything before
+        it disappears.
+    </p>
+
+    <div class="mb-2">
+
+        <ToastContainer/>
+
+        <Button OnClickedAsync="CreateToastSmall">Create Small Toast</Button>
+        <Button OnClickedAsync="CreateToastLarge">Create Large Toast</Button>
+    </div>
+
+    <CodeBlock Title=".razor" Code="@defaultExample" />
+
+    
+    <p class="my-2 font-medium">
+        UNDER CONSTRUCTION
+    </p>
+</div>
+
+
+@code {
+    private string defaultExample = @"@inject ToastService toastService
+
+<Button OnClickedAsync=""CreateToastSmall"">Create Small Toast</Button>
+<Button OnClickedAsync=""CreateToastLarge"">Create Large Toast</Button>
+
+@code {
+    private void CreateToastSmall()
+    {
+        toastService.AddToast(new Toast()
+            {
+                Header = ""Short Toast"",
+                Message = ""Not very much is here...""
+            });
+    }
+    private void CreateToastLarge()
+    {
+        toastService.AddToast(new Toast()
+            {
+                Header = ""Long Toast"",
+                Message = ""As you can see, this is ...""
+            });
+    }
+}";
+
+    private void CreateToastSmall()
+    {
+        toastService.AddToast(new Toast()
+            {
+                Header = "Short Toast",
+                Message = "Not very much is here..."
+            });
+    }
+    private void CreateToastLarge()
+    {
+        toastService.AddToast(new Toast()
+            {
+                Header = "Long Toast",
+                Message = "As you can see, this is an extremely long bit of information that is on this card.. but because we are getting a word count of how many words you have given your user to read, we can set the time that it shows to how long the average person's 'words per minute' reading pace is (at a leasure rate) and give them a little extra time so that the notification doesn't disappear before they have the chance to finish reading all of it. And you don't have to worry about a thing :). We take care of this automagically for you"
+            });
+    }
+}

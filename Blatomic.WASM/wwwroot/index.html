@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="icon" type="image/svg+xml" href="_content/Blatomic/images/blatomic-icon.svg">
     <title>Blatomic.WASM</title>
     <script type="text/javascript">
         // Single Page Apps for GitHub Pages
@@ -35,7 +36,55 @@
 </head>
 
 <body>
-    <div id="app">Loading...</div>
+    <div id="app">
+        <div class="fixed inset-0 bg-gray-400"></div>
+        <div class="fixed inset-1/2 -mt-24 -ml-24">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-48 w-48 animate-pulse" viewBox="0 0 20 20">
+                <g id="Rings"
+                   class="stroke-gray-900 dark:stroke-gray-200"
+                   style="opacity:1;fill:none;fill-opacity:1;stroke-width:1.2;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1">
+                    <ellipse ry="8.8910122"
+                             rx="3.5143745"
+                             cy="10"
+                             cx="10" />
+                    <ellipse transform="rotate(120)"
+                             ry="9.7845049"
+                             rx="3.8675478"
+                             cy="-13.660254"
+                             cx="3.660254" />
+                    <ellipse transform="rotate(-120)"
+                             ry="9.7845049"
+                             rx="3.8675478"
+                             cy="3.6602538"
+                             cx="-13.660254" />
+                </g>
+                <ellipse class="fill-blue-500 stroke-gray-900 dark:stroke-gray-200"
+                         style="opacity:1;fill-opacity:1;stroke-width:0.4;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+                         id="Center"
+                         cx="10"
+                         cy="10"
+                         rx="1.3736273"
+                         ry="1.3736274"
+                         Center="path4676" />
+                <g id="Points"
+                   class="fill-sky-500 stroke-gray-900 dark:stroke-gray-200"
+                   style="opacity:1;fill-opacity:1;stroke-width:0.65;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1">
+                    <ellipse ry="1.0751601"
+                             rx="1.07516"
+                             cy="7.7966104"
+                             cx="2.0435414" />
+                    <ellipse ry="1.0751601"
+                             rx="1.07516"
+                             cy="4.0677967"
+                             cx="15.636139" />
+                    <ellipse ry="1.0751601"
+                             rx="1.07516"
+                             cy="17.586527"
+                             cx="8.2203388" />
+                </g>
+            </svg>
+        </div>
+    </div>
 
     <div id="blazor-error-ui">
         An unhandled error has occurred.
