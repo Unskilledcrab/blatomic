@@ -8,7 +8,24 @@
 <div class="leading-relaxed @TwColors.Text_Slate_600">
     <h1 class="text-2xl font-bold @TwColors.Text_Slate_900">Toasts</h1>
 
-    <h3 class="text-xl font-bold mt-6 @TwColors.Text_Slate_900">What's so special?</h3>
+    <p class="my-2 p-4 bg-yellow-400 font-bold text-black rounded">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        </svg>
+        Warning: This does require specific setup, please follow guide below
+    </p>
+
+    <h3 class="text-xl font-bold mt-6 @TwColors.Text_Slate_900">How to setup?</h3>
+
+    <p class="my-2 font-medium">
+        Setup is easy, you just need to place the <b>ToastContainer</b> somewhere at a high level in your application. 
+        It is recommended to place within the <b>App.razor</b> file. That's it. As long as you have registered the 
+        services as shown in <a class="@TwColors.Text_Blue_900 hover:underline" href="">Installation</a> then you are all set to go.
+    </p>
+
+    <CodeBlock Title="App.razor" Code="@defaultExample2" />
+
+    <h3 class="text-xl font-bold mt-6 @TwColors.Text_Slate_900">How to use?</h3>
 
     <p class="my-2 font-medium">
         Out toasts come pre-styled out of the box, however you can change the default styling be your own custom <b>RenderFragment</b> if you would like. 
@@ -26,11 +43,6 @@
     </div>
 
     <CodeBlock Title=".razor" Code="@defaultExample" />
-
-    
-    <p class="my-2 font-medium">
-        UNDER CONSTRUCTION
-    </p>
 </div>
 
 
@@ -58,6 +70,22 @@
             });
     }
 }";
+    private string defaultExample2 = @"@using Blatomic.Examples.Shared
+
+<ToastContainer/>
+
+<Router AppAssembly=""@typeof(MainLayout).Assembly"">
+    <Found Context=""routeData"">
+        <RouteView RouteData=""@routeData"" DefaultLayout=""@typeof(MainLayout)"" />
+        <FocusOnNavigate RouteData=""@routeData"" Selector=""h1"" />
+    </Found>
+    <NotFound>
+        <PageTitle>Not found</PageTitle>
+        <LayoutView Layout=""@typeof(MainLayout)"">
+            <p role=""alert"">Sorry, there's nothing at this address.</p>
+        </LayoutView>
+    </NotFound>
+</Router>";
 
     private void CreateToastSmall()
     {

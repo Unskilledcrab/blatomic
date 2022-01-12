@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 
 namespace Blatomic.Components.CodeBlock
 {
-
     public class CSharpLanguage : ILanguage
     {
         /// <summary>

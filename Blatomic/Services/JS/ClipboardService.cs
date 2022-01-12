@@ -14,8 +14,8 @@ namespace Blatomic.Services.JS
             {
                 return module.InvokeAsync<string>("CopyToClipboard", content);
             }
-            
-            throw new NullReferenceException("The javascript module you are referencing is null");            
+
+            throw new NullReferenceException("The javascript module you are referencing is null");
         }
     }
 }

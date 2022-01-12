@@ -34,21 +34,21 @@ namespace Blatomic.Utils
             switch (position)
             {
                 case CordinalPosition.Top:
-                    return "top-0 inset-x-1/2 mt-4";
+                    return "top-0 inset-x-1/2 mt-1 sm:mt-4";
                 case CordinalPosition.TopLeft:
-                    return "top-0 left-0 ml-4 mt-4";
+                    return "top-0 left-0 ml-1 mt-1 sm:ml-4 sm:mt-4";
                 case CordinalPosition.TopRight:
-                    return "top-0 right-0 mr-4 mt-4";
+                    return "top-0 right-0 mr-1 mt-1 sm:mr-4 sm:mt-4";
                 case CordinalPosition.Bottom:
-                    return "bottom-0 inset-x-1/2 mb-4";
+                    return "bottom-0 inset-x-1/2 mb-1 sm:mb-4";
                 case CordinalPosition.BottomLeft:
-                    return "bottom-0 left-0 ml-4 mb-4";
+                    return "bottom-0 left-0 ml-1 mb-1 sm:ml-4 sm:mb-4";
                 case CordinalPosition.BottomRight:
-                    return "bottom-0 right-0 mr-4 mb-4";
+                    return "bottom-0 right-0 mr-1 mb-1 sm:mr-4 sm:mb-4";
                 case CordinalPosition.Left:
-                    return "left-0 inset-y-1/2 ml-4";
+                    return "left-0 inset-y-1/2 ml-1 sm:ml-4";
                 case CordinalPosition.Right:
-                    return "right-0 inset-y-1/2 mr-4";
+                    return "right-0 inset-y-1/2 mr-1 sm:mr-4";
                 case CordinalPosition.Center:
                     return "inset-1/2";
                 default:
@@ -68,9 +68,9 @@ namespace Blatomic.Utils
                 case Position.Bottom:
                     return "bottom-0 left-0 right-0 max-h-60";
                 case Position.Left:
-                    return "top-0 left-0 bottom-0 max-w-lg";
+                    return "top-0 left-0 bottom-0 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg";
                 case Position.Right:
-                    return "top-0 bottom-0 right-0 max-w-lg";
+                    return "top-0 bottom-0 right-0 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg";
                 default:
                     return string.Empty;
             }

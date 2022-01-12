@@ -19,7 +19,7 @@
                 }
                 else
                 {
-                    <div class="max-w-sm shadow-lg dark:shadow-white/5 divide-y divide-gray-500 rounded bg-gray-200/80 dark:bg-gray-800/80 text-black dark:text-white">
+                    <div class="max-w-xs sm:max-w-sm shadow-lg dark:shadow-white/5 divide-y divide-gray-500 rounded bg-gray-200/80 dark:bg-gray-800/80 text-black dark:text-white">
                         <div class="flex justify-between items-center p-2">
                             <div class="flex items-center">
                                 <span class="inline-block h-5 w-5 bg-blue-400 rounded mr-2"></span>
@@ -67,12 +67,15 @@
         RemoveToast(toastWrapper);
     }
 
-    private async void RemoveToast(ToastWrapper toastWrapper)
+    private async void RemoveToast(ToastWrapper toastWrapper, bool refreshUI = true)
     {
         toastWrapper.Elapsed -= TimedRemove;
         toasts.Remove(toastWrapper);
         toastWrapper.Dispose();
-        await InvokeAsync(() => StateHasChanged());
+        if (refreshUI)
+        {
+            await InvokeAsync(() => StateHasChanged());
+        }
     }
 
     protected override void OnInitialized()
@@ -83,6 +86,10 @@
 
     public void Dispose()
     {
+        for (var i = toasts.Count - 1; i >= 0; i--)
+        {
+            RemoveToast(toasts[i], false);
+        }
         toastService.OnAddToast -= AddToast;
     }
 }

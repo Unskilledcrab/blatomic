@@ -34,7 +34,7 @@
     [Parameter] public string Code { get; set; } = string.Empty;
     [Parameter] public bool ShowLineNumber { get; set; } = true;
     [Parameter] public string Title { get; set; } = string.Empty;
-    [Parameter] public Language Language { get; set; } = Language.HTML;
+    [Parameter] public ILanguage Language { get; set; } = new CSharpLanguage();
 
     private string markup = string.Empty;
     private string copyButtonText = "Copy";
@@ -46,7 +46,7 @@
             markup = new LanguageParser()
                 {
                     ShowLineNumbers = ShowLineNumber
-                }.ParseCode(Code, Language.GetLanguage());
+                }.ParseCode(Code, Language);
         }
         base.OnInitialized();
     }

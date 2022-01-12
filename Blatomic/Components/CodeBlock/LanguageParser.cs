@@ -3,14 +3,14 @@
 namespace Blatomic.Components.CodeBlock
 {
     public class LanguageParser
-   {
+    {
         public bool ShowLineNumbers { get; set; } = true;
         public string NewLineClass { get; set; } = "inline-block select-none w-8 mr-6 text-right min-w-4";
 
         private int lineNumber = 1;
         private int wordLength = 1;
         private StringBuilder html = new();
-        private (int start, int length) previousTokenIndex = (0,0);
+        private (int start, int length) previousTokenIndex = (0, 0);
 
         public string ParseCode(ReadOnlySpan<char> code, ILanguage syntax)
         {
