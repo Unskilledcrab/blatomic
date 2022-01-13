@@ -1,7 +1,7 @@
 ﻿@inject ITheme Theme
 
 <div class="w-full h-fit bg-gray-200 rounded-full">
-    <div class="transition-[width] min-h-[1.5rem] h-fit flex justify-center items-center rounded-full @Colors" style="width: @width">
+    <div class="transition-[width] @Size.GetStyle() h-fit flex justify-center items-center rounded-full @Colors" style="width: @width">
         @if (percentage != 0)
         {
             @ChildContent
@@ -11,9 +11,9 @@
 
 @code {
     private string width => $"{percentage}%";
-    private int percentage = 0;
+    private double percentage = 0;
     [Parameter]
-    public int Percentage
+    public double Percentage
     {
         get => percentage;
         set
@@ -35,10 +35,11 @@
         }
     }    
     [Parameter]
-    public EventCallback<int> PercentageChanged { get; set; }
+    public EventCallback<double> PercentageChanged { get; set; }
 
     [Parameter] public RenderFragment? ChildContent { get; set; }
     [Parameter] public string Colors { get; set; } = string.Empty;
+    [Parameter] public ProgressBarSize Size { get; set; } = ProgressBarSize.Medium;
 
     protected override void OnInitialized()
     {

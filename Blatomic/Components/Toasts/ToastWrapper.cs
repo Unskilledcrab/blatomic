@@ -7,26 +7,42 @@ namespace Blatomic.Components.Toasts
         public ToastWrapper(Toast toast)
         {
             Toast = toast;
-            int readTime = (toast.Message.Length * 80) + 4000;
+            var headerWords = toast.Header.Split(' ').Length;
+            var messageWords = toast.Message.Split(' ').Length;
+            ReadTime = ((headerWords + messageWords) * 250) + 4000;
 
-            timer = new System.Timers.Timer(readTime)
+            timer = new System.Timers.Timer(tickTime)
             {
-                AutoReset = false,
+                AutoReset = true,
                 Enabled = true
             };
 
-            timer.Elapsed += TimerOver;
+            timer.Elapsed += TimerTick;
         }
 
+        private readonly double tickTime = 100;
         public Toast Toast { get; set; }
         public bool IsShowing { get; set; } = true;
-        public event ElapsedEventHandler? Elapsed;
+        public event ElapsedEventHandler? OnElapsed;
+        public event ElapsedEventHandler? OnTick;
         private System.Timers.Timer timer;
+        public readonly int ReadTime;
+        private double tickCount = 0;
+        private double totalTicks => ReadTime / tickTime;
+        public double PercentageComplete => 100 - (percentage * 100);
+        private double percentage => tickCount / totalTicks;
 
-        private void TimerOver(object? sender, ElapsedEventArgs e)
+        private void TimerTick(object? sender, ElapsedEventArgs e)
         {
-            IsShowing = false;
-            Elapsed?.Invoke(this, e);
+            tickCount++;
+
+            if (tickCount >= totalTicks)
+            {
+                IsShowing = false;
+                OnElapsed?.Invoke(this, e);
+            }
+
+            OnTick?.Invoke(this, e);
         }
 
         public void StopTimer()

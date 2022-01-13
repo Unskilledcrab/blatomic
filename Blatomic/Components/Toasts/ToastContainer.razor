@@ -19,7 +19,7 @@
                 }
                 else
                 {
-                    <div class="max-w-xs sm:max-w-sm shadow-lg dark:shadow-white/5 divide-y divide-gray-500 rounded bg-gray-200/80 dark:bg-gray-800/80 text-black dark:text-white">
+                    <div tabindex="0" @onclick="@(() => PauseToastTimer(toast))" @onmouseover="@(() => PauseToastTimer(toast))" @onmouseout="@(() => StartToastTimer(toast))" class="max-w-xs sm:max-w-sm shadow-lg dark:shadow-white/5 divide-y divide-gray-500 rounded bg-gray-200/90 dark:bg-gray-800/90 text-black dark:text-white">
                         <div class="flex justify-between items-center p-2">
                             <div class="flex items-center">
                                 <span class="inline-block h-5 w-5 bg-blue-400 rounded mr-2"></span>
@@ -33,8 +33,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="p-2">
+                        <div class="p-2 border-b-0">
                             @toast.Toast.Message
+                        </div>
+                        <div class="p-1">
+                            <Blatomic.Components.Progress.ProgressBar Size="Components.Progress.ProgressBarSize.Tiny" Percentage="@(toast.PercentageComplete)"></Blatomic.Components.Progress.ProgressBar>
                         </div>
                     </div>
                 }
@@ -53,8 +56,23 @@
     {
         var toastWrapper = new ToastWrapper(toast);
         toasts.Add(toastWrapper);
-        toastWrapper.Elapsed += TimedRemove;
+        toastWrapper.OnElapsed += TimedRemove;
+        toastWrapper.OnTick += ToastTick;
         StateHasChanged();
+    }
+
+    private void PauseToastTimer(ToastWrapper toastWrapper)
+    {
+        toastWrapper.StopTimer();
+    }
+    private void StartToastTimer(ToastWrapper toastWrapper)
+    {
+        toastWrapper.StartTimer();
+    }
+
+    private async void ToastTick(object? sender, ElapsedEventArgs e)
+    {
+        await InvokeAsync(() => StateHasChanged());
     }
 
     private void TimedRemove(object? sender, ElapsedEventArgs e)
@@ -69,7 +87,8 @@
 
     private async void RemoveToast(ToastWrapper toastWrapper, bool refreshUI = true)
     {
-        toastWrapper.Elapsed -= TimedRemove;
+        toastWrapper.OnElapsed -= TimedRemove;
+        toastWrapper.OnTick -= ToastTick;
         toasts.Remove(toastWrapper);
         toastWrapper.Dispose();
         if (refreshUI)
