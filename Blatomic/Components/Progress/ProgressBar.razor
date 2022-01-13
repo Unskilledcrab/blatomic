@@ -1,7 +1,7 @@
 ﻿@inject ITheme Theme
 
 <div class="w-full h-fit bg-gray-200 rounded-full">
-    <div class="transition-[width] @Size.GetStyle() h-fit flex justify-center items-center rounded-full @Colors" style="width: @width">
+    <div class="transition-[width] @Size.GetStyle() flex justify-center items-center rounded-full @Colors" style="width: @width">
         @if (percentage != 0)
         {
             @ChildContent

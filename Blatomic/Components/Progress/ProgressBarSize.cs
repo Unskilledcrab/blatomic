@@ -9,10 +9,13 @@ namespace Blatomic.Components.Progress
     public enum ProgressBarSize
     {
         Tiny,
+        XXS,
+        XS,
         Small,
         Medium,
         Large,
-        XL
+        XL,
+        XXL,
     }
 
     public static class ProgressBarSizeExtensions
@@ -23,14 +26,20 @@ namespace Blatomic.Components.Progress
             {
                 case ProgressBarSize.Tiny:
                     return "h-1";
-                case ProgressBarSize.Small:
+                case ProgressBarSize.XXS:
                     return "h-2";
-                case ProgressBarSize.Medium:
+                case ProgressBarSize.XS:
                     return "h-3";
-                case ProgressBarSize.Large:
+                case ProgressBarSize.Small:
                     return "h-4";
-                case ProgressBarSize.XL:
+                case ProgressBarSize.Medium:
                     return "h-5";
+                case ProgressBarSize.Large:
+                    return "h-6";
+                case ProgressBarSize.XL:
+                    return "h-7";
+                case ProgressBarSize.XXL:
+                    return "h-8";
                 default:
                     return string.Empty;
             }
