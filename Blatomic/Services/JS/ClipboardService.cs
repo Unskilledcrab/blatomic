@@ -10,12 +10,7 @@ namespace Blatomic.Services.JS
 
         public ValueTask<string> CopyToClipboard(string content)
         {
-            if (module is not null)
-            {
-                return module.InvokeAsync<string>("CopyToClipboard", content);
-            }
-
-            throw new NullReferenceException("The javascript module you are referencing is null");
+            return Run<string>("CopyToClipboard", content);
         }
     }
 }

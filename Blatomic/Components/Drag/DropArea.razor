@@ -24,7 +24,7 @@
                 @CannotDropTemplate
             }
         </div>
-        <div class="absolute z-20 flex justify-center items-center inset-0 bg-gray-300/25 @dropClass"
+        <div class="absolute z-20 inset-0 @DropBorderClass"
              @ondragleave="HandleDragLeave" @ondrop="HandleDrop">
         </div>
     }
@@ -32,12 +32,13 @@
 
 @code {
     private ElementReference container;
-    private string dropClass = string.Empty;
+    private string dropBorderClass = string.Empty;
     private bool isShowingDrop = false;
     private bool canDrop = false;
 
     [CascadingParameter] public DragContext<TData>? Context { get; set; }
 
+    [Parameter] public string DropBorderClass { get; set; } = "outline-2 outline-dashed animate-pulse bg-gray-300/25";
     private List<TData> BoundItems
     {
         get => Items;
@@ -55,7 +56,6 @@
     [Parameter] public Func<DragArgs<TData>, Task> OnDragLeaveAsync { get; set; } = (dropItem) => Task.CompletedTask;
     [Parameter] public Func<DragArgs<TData>, Task> BeforeDropAsync { get; set; } = (dropItem) => Task.CompletedTask;
     [Parameter] public Func<DragArgs<TData>, Task> OnDropAsync { get; set; } = (dropItem) => Task.CompletedTask;
-    [Parameter] public string DropClass { get; set; } = "outline-2 outline-dashed animate-pulse";
 
     [Parameter] public RenderFragment<List<TData>>? ChildContent { get; set; }
     [Parameter] public RenderFragment? CanDropTemplate { get; set; } = @Plus.StandardPlusOutline;
@@ -69,12 +69,6 @@
         {
             Context?.DropAreas.Add(this);
         }
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        await ElementService.Import();
-        await base.OnAfterRenderAsync(firstRender);
     }
 
     async ValueTask IAsyncDisposable.DisposeAsync()
@@ -97,11 +91,12 @@
             }
         }
     }
+
     public void AddDragItem(TData dragItem)
     {
         if (dragItem is not null)
         {
-            BoundItems.Remove(dragItem);
+            BoundItems.Add(dragItem);
         }
     }
 
@@ -109,7 +104,7 @@
     {
         this.canDrop = canDrop;
         isShowingDrop = true;
-        dropClass = DropClass;
+        dropBorderClass = DropBorderClass;
         StateHasChanged();
     }
 
@@ -117,7 +112,7 @@
     {
         canDrop = false;
         isShowingDrop = false;
-        dropClass = string.Empty;
+        dropBorderClass = string.Empty;
         StateHasChanged();
     }
 

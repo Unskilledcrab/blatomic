@@ -11,12 +11,7 @@ namespace Blatomic.Services.JS
 
         public ValueTask<BoundingClientRect> GetBoundingClientRect(ElementReference element)
         {
-            if (module is not null)
-            {
-                return module.InvokeAsync<BoundingClientRect>("GetBoundingClientRect", element);
-            }
-
-            throw new NullReferenceException("The javascript module you are referencing is null");
+            return Run<BoundingClientRect>("GetBoundingClientRect", element);
         }
     }
 }

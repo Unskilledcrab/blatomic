@@ -51,13 +51,6 @@
         base.OnInitialized();
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        await ClipboardService.Import();
-
-        await base.OnAfterRenderAsync(firstRender);
-    }
-
     async ValueTask IAsyncDisposable.DisposeAsync()
     {
         await ClipboardService.DisposeAsync();
