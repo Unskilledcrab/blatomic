@@ -7,9 +7,9 @@
   "linkerEnabled": true,
   "resources": {
     "assembly": {
-      "Blatomic.dll": "sha256-u4b3rcZ5SEoymQG7\/\/1ZpgAepPhLZZ0D3jVF6nVvY3g=",
-      "Blatomic.Examples.dll": "sha256-FC9AB3WWAG4mcN6PtsU+jb1gADInfr2a3z74Sy2Ql10=",
-      "Blatomic.WASM.dll": "sha256-mqcqj2zNCyUE5OhxsvvqGcQzSEaaSz8FRnY1bEg8yAk=",
+      "Blatomic.dll": "sha256-LA3V\/feuhgL6F9mzRfPQ7TbUxUmEYSwf7h+QIcwD36c=",
+      "Blatomic.Examples.dll": "sha256-Svl++kvVUWk1QCUxNZ5J+OOAtT2NR\/Ip8450pniADD0=",
+      "Blatomic.WASM.dll": "sha256-HZ\/tpVUSU0GrgErqLXrxW2SjSqV781T2VABrWM+p0TM=",
       "Blazored.LocalStorage.dll": "sha256-ItMv+HytRb8SgPKYiz75PK0k+DFgN1E247PZT\/8lODs=",
       "Blazy.dll": "sha256-WCGByHtaguPfgbughfBDDqpNgrYNkHovHeCZ33VKR3I=",
       "Microsoft.AspNetCore.Components.dll": "sha256-98Ww44BvnySA\/cyJahM2w8olMgxe9vjggfKi3BJlGsM=",
