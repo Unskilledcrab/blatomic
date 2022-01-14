@@ -2,7 +2,9 @@
 
 @if (isShowing)
 {
-    <div class="@dragClass" draggable="true" @ondragend="HandleDragEnd" @ondragstart="HandleDragStart">
+    <div class="@dragClass cursor-grab" draggable="true" 
+        @ondragend="HandleDragEnd" @ondragstart="HandleDragStart" 
+        @ontouchstart="HandleTouchStart" @ontouchmove="HandleTouchStart" @ontouchend="HandleTouchEnd" @ontouchcancel="HandleTouchEnd">
         @ChildContent
     </div>
 }
@@ -25,7 +27,16 @@
         itemDropped = true;
     }
 
-    private void HandleDragEnd(DragEventArgs e)
+    private async Task HandleDragEnd(DragEventArgs e)
+    {
+        await EndDrag();
+    }
+    private async Task HandleTouchEnd(TouchEventArgs e)
+    {
+        await EndDrag(true, e);
+    }
+
+    private async Task EndDrag(bool isTouch = false, TouchEventArgs? e = null)
     {
         if (!Copy && itemDropped)
         {
@@ -38,22 +49,36 @@
                 isShowing = false;
             }
         }
-        
+
         if (Context is not null)
         {
-            Context.DragItem = null;
+            if (isTouch && e != null)
+            {
+                await Context.OnTouchEnd(e);
+            }
+            Context.OnDragStop();
         }
         isDragging = false;        
         StateHasChanged();
     }
 
-    private void HandleDragStart(DragEventArgs e)
+    private async Task HandleTouchStart(TouchEventArgs e)
+    {
+        await StartDrag();
+    }
+
+    private async Task HandleDragStart(DragEventArgs e)
+    {
+        await StartDrag();
+    }
+
+    private async Task StartDrag()
     {
         isDragging = true;
         StateHasChanged();
         if (Context is not null)
         {
-            Context.DragItem ??= this;
+            await Context.OnDragStart(this);
         }
     }
 }

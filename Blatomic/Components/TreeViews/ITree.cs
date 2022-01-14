@@ -50,6 +50,11 @@
 
         public static ITreeItem<TData> Build<TData>(this ITreeItem<TData> tree)
         {
+            return GoToRoot(tree);
+        }
+
+        public static ITreeItem<TData> GoToRoot<TData>(this ITreeItem<TData> tree)
+        {
             while (tree.GoToParent() != null)
             {
                 tree = tree.GoToParent();
@@ -76,6 +81,18 @@
             var newChild = new TreeItem<TData>(child, tree);
             tree.Children.Add(newChild);
             return newChild;
+        }
+
+        public static ITreeItem<TData> GoTo<TData>(this ITreeItem<TData> tree)
+        {
+            return tree.Children.Last();
+        }
+
+        public static ITreeItem<TData> AddChildGoToParent<TData>(this ITreeItem<TData> tree, TData child)
+        {
+            var newChild = new TreeItem<TData>(child, tree);
+            tree.Children.Add(newChild);
+            return tree.Parent;
         }
 
         public static ITreeItem<TData> GoToParent<TData>(this ITreeItem<TData> tree)

@@ -30,11 +30,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="wwwroot\css\" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Folder Include="wwwroot\js\" />
+	  <Folder Include="wwwroot\" />
 	</ItemGroup>
 
 	<Target Name="CheckForNpm" BeforeTargets="NpmInstall">
