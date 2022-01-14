@@ -1,0 +1,64 @@
+﻿@typeparam TData
+
+@if (Item != null)
+{
+    <div class="border-l-4 border-l-blue-500 pl-3" @onclick="(() => ToggleCollapse())" @onclick:stopPropagation="true">
+        <div>
+            @if (Item.HasChildren())
+            {
+                @if (isCollapsed)
+                {
+                    @if (OpenTemplate != null)
+                    {
+                        @OpenTemplate(Item.Data)
+                    }
+                    else
+                    {                    
+                        @Fragments.Plus.BasePlusSolid("h-5 w-5 inline mr-1")
+                    }
+                }
+                else
+                {    
+                    @if (CloseTemplate != null)
+                    {
+                        @CloseTemplate(Item.Data)
+                    }
+                    else
+                    {                    
+                        @Fragments.Minus.BaseMinusSolid("h-5 w-5 inline mr-1")
+                    }
+                }
+            }
+
+            @if (ItemTemplate != null)
+            {
+                @ItemTemplate(Item.Data)
+            }
+        </div>
+        <div>
+            @foreach (var child in Item.GetChildrenItems())
+            {
+                <div class="ml-2 @collapsedStyle">
+                    <TreeItemView CollapseAll="CollapseAll" ItemTemplate="ItemTemplate" OpenTemplate="OpenTemplate" CloseTemplate="CloseTemplate" Item="@child" />
+                </div>
+            }
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public ITreeItem<TData>? Item { get; set; }
+    [Parameter] public RenderFragment<TData>? ItemTemplate { get; set; }
+    [Parameter] public RenderFragment<TData>? OpenTemplate { get; set; }
+    [Parameter] public RenderFragment<TData>? CloseTemplate { get; set; }
+    [Parameter] public bool CollapseAll { get; set; } = false;
+
+    private bool isSelfCollapsed = true;
+    private bool isCollapsed => isSelfCollapsed || CollapseAll;
+    private string collapsedStyle => isCollapsed ? "hidden" : "visible";
+
+    public void ToggleCollapse()
+    {
+        isSelfCollapsed = !isSelfCollapsed;
+    }
+}
