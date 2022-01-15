@@ -2,10 +2,11 @@
 
 @if (Item != null)
 {
-    <div class="border-l-4 border-l-blue-500 pl-3" @onclick="(() => ToggleCollapse())" @onclick:stopPropagation="true">
+    <div class="border-l-4 border-l-blue-500 pl-3">
         <div>
             @if (Item.HasChildren())
             {
+                <div class="inline" @onclick="(() => ToggleCollapse())" @onclick:stopPropagation="true">
                 @if (isCollapsed)
                 {
                     @if (OpenTemplate != null)
@@ -28,6 +29,7 @@
                         @Minus.BaseMinusSolid("h-5 w-5 inline mr-1")
                     }
                 }
+                </div>
             }
 
             @if (ItemTemplate != null)

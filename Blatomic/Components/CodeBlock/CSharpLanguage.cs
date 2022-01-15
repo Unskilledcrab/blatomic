@@ -107,6 +107,7 @@ namespace Blatomic.Components.CodeBlock
                     "@page",
                     "@foreach",
                     "@if",
+                    "@implements",
 
                     "var",
                     "await",
@@ -127,6 +128,7 @@ namespace Blatomic.Components.CodeBlock
                 {
                     "List",
                     "Task",
+                    "ValueTask",
                 }
             },
         };

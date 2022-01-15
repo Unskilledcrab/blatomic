@@ -20,11 +20,11 @@
     private string dragClass => isDragging ? "opacity-50" : string.Empty;
     private bool isShowing = true;
     private bool isDragging = false;
-    private bool itemDropped = false;
+    private bool droppedInDropZone = false;
 
-    public void OnDragComplete()
+    public void OnDragToDropZoneComplete()
     {
-        itemDropped = true;
+        droppedInDropZone = true;
     }
 
     private async Task HandleDragEnd(DragEventArgs e)
@@ -38,7 +38,7 @@
 
     private async Task EndDrag(bool isTouch = false, TouchEventArgs? e = null)
     {
-        if (!Copy && itemDropped)
+        if (!Copy && droppedInDropZone)
         {
             if (DragData is not null && DropArea is not null)
             {

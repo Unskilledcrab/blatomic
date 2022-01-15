@@ -1,0 +1,79 @@
+﻿@page "/services"
+@inject ITheme Theme
+
+<PageTitle>Services</PageTitle>
+
+<div class="leading-relaxed @TwColors.Text_Slate_600">
+    <h1 class="text-2xl font-bold @TwColors.Text_Slate_900">Services</h1>
+
+    <h3 class="text-xl font-bold mt-6 @TwColors.Text_Slate_900">What are services?</h3>
+
+    <p class="my-2 font-medium">
+        Servies are classes that are automatically injected for you when you add blatomic to your DI system.
+        The services can be broken into two different sections (Javascript Services) or (Blatomic Services).
+        For the <b>Javascript services</b> you will need to make sure you <b>Dispose</b> of each instance of the
+        service that you create.
+    </p>
+
+    <p class="my-2 p-4 bg-yellow-400 font-bold text-black rounded">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        </svg>
+        Disposing is only nessessary with the <b>JavaScript</b> services (See list below)
+    </p>
+
+    <div class="mb-2">
+
+        <CodeBlock Title=".razor" Code="@disposeExample" />
+
+    </div>
+
+    <p class="my-2 font-medium">
+        By default services are loaded when calling a method. So you will not have to worry about importing the module 
+        yourself unless you would like to. If you do want to import them yourself we have an "Import" method on each
+        of our services to allow you to easily do so. It is recommended to import the module in the <b>OnAfterRenderAsync</b>
+        lifecycle method. If it is not in this call then it may not work properly if you are running in a blazor server environment.
+    </p>
+    
+    <h3 class="text-xl font-bold mt-12 @TwColors.Text_Slate_900">List of Blatomic services</h3>
+    <ol class="list-decimal ml-8 space-y-2 mt-2">
+        @Blatomic(("Toast Service","Toasts/ToastService.cs"))
+    </ol>
+
+    <h3 class="text-xl font-bold mt-12 @TwColors.Text_Slate_900">List of JavaScript services</h3>
+    <ol class="list-decimal ml-8 space-y-2 mt-2">
+        @JS(("Clipboard Service","Clipboard/ClipboardService.cs"))
+        @JS(("Element Service","Element/ElementService.cs"))
+    </ol>
+
+</div>
+
+
+@code {
+    private RenderFragment<(string name,string path)> JS = service => __builder =>
+    {        
+        <li>
+            <a class="text-sky-500 dark:text-sky-400" href="@($"https://github.com/Unskilledcrab/blatomic/tree/releases/github/Blatomic/Services/JS/{service.path}")">
+                @service.name
+            </a>
+        </li>
+    };
+    private RenderFragment<(string name,string path)> Blatomic = service => __builder =>
+    {        
+        <li>
+            <a class="text-sky-500 dark:text-sky-400" href="@($"https://github.com/Unskilledcrab/blatomic/tree/releases/github/Blatomic/Services/{service.path}")">
+                @service.name
+            </a>
+        </li>
+    };
+
+    private string disposeExample = @"@inject ElementService ElementService
+@implements IAsyncDisposable
+
+@code {
+    async ValueTask IAsyncDisposable.DisposeAsync()
+    {
+        await ElementService.DisposeAsync();
+    }
+}";
+}
