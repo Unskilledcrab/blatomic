@@ -25,21 +25,21 @@ namespace Blatomic.Components.Progress
             switch (size)
             {
                 case ProgressBarSize.Tiny:
-                    return "h-1";
+                    return "b-h-1";
                 case ProgressBarSize.XXS:
-                    return "h-2";
+                    return "b-h-2";
                 case ProgressBarSize.XS:
-                    return "h-3";
+                    return "b-h-3";
                 case ProgressBarSize.Small:
-                    return "h-4";
+                    return "b-h-4";
                 case ProgressBarSize.Medium:
-                    return "h-5";
+                    return "b-h-5";
                 case ProgressBarSize.Large:
-                    return "h-6";
+                    return "b-h-6";
                 case ProgressBarSize.XL:
-                    return "h-7";
+                    return "b-h-7";
                 case ProgressBarSize.XXL:
-                    return "h-8";
+                    return "b-h-8";
                 default:
                     return string.Empty;
             }

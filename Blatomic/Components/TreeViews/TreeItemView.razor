@@ -2,7 +2,7 @@
 
 @if (Item != null)
 {
-    <div class="border-l-4 border-l-blue-500 pl-3">
+    <div class="b-border-l-4 b-border-l-blue-500 b-pl-3">
         <div>
             @if (Item.HasChildren())
             {
@@ -15,7 +15,7 @@
                     }
                     else
                     {                    
-                        @Plus.BasePlusSolid("h-5 w-5 inline mr-1")
+                        @Plus.BasePlusSolid("b-h-5 b-w-5 b-inline b-mr-1")
                     }
                 }
                 else
@@ -26,7 +26,7 @@
                     }
                     else
                     {                    
-                        @Minus.BaseMinusSolid("h-5 w-5 inline mr-1")
+                        @Minus.BaseMinusSolid("b-h-5 b-w-5 b-inline b-mr-1")
                     }
                 }
                 </div>
@@ -40,7 +40,7 @@
         <div>
             @foreach (var child in Item.GetChildrenItems())
             {
-                <div class="ml-2 @collapsedStyle">
+                <div class="b-ml-2 @collapsedStyle">
                     <TreeItemView CollapseAll="CollapseAll" ItemTemplate="ItemTemplate" OpenTemplate="OpenTemplate" CloseTemplate="CloseTemplate" Item="@child" />
                 </div>
             }
@@ -57,7 +57,7 @@
 
     private bool isSelfCollapsed = true;
     private bool isCollapsed => isSelfCollapsed || CollapseAll;
-    private string collapsedStyle => isCollapsed ? "hidden" : "visible";
+    private string collapsedStyle => isCollapsed ? "b-hidden" : "b-visible";
 
     public void ToggleCollapse()
     {

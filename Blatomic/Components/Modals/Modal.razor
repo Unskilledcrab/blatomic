@@ -1,26 +1,26 @@
 ﻿@inject ITheme Theme
 
-<div class="fixed @visible transition-opacity duration-300 z-40 top-0 left-0 w-full h-full overflow-auto dark:bg-white/50 bg-black/50" @onclick="() => BoundIsShowing = !IsShowing">
-    <div class="@size @margin @Theme.Light shadow-md flex flex-col" @onclick:stopPropagation="true">
-        <div class="flex justify-between items-center p-4 @border">
+<div class="b-fixed @visible b-transition-opacity b-duration-300 b-z-40 b-top-0 b-left-0 b-w-full b-h-full b-overflow-auto dark:bg-white/50 b-bg-black/50" @onclick="() => BoundIsShowing = !IsShowing">
+    <div class="@size @margin @Theme.Light b-shadow-md b-flex b-flex-col" @onclick:stopPropagation="true">
+        <div class="b-flex b-justify-between b-items-center b-p-4 @border">
             <div>
                 @if (Header != null)
                 {
                     @Header
                 }
             </div>
-            <div class="cursor-pointer hover:text-white hover:bg-gray-300 p-1 rounded" @onclick="() => BoundIsShowing = !IsShowing">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <div class="b-cursor-pointer b-hover:text-white b-hover:bg-gray-300 b-p-1 b-rounded" @onclick="() => BoundIsShowing = !IsShowing">
+                <svg xmlns="http://www.w3.org/2000/svg" class="b-h-5 b-w-5" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
                 </svg>
             </div>
         </div>
-        <div class="p-4 grow">
+        <div class="b-p-4 b-grow">
             @Body
         </div>
         @if (Footer != null)
         {
-            <div class="p-4 border-t">
+            <div class="b-p-4 b-border-t">
                 @Footer
             </div>
         }
@@ -29,10 +29,10 @@
 
 
 @code {
-    private string visible => IsShowing ? "visible opacity-100" : "invisible opacity-0";
+    private string visible => IsShowing ? "b-visible b-opacity-100" : "b-invisible b-opacity-0";
     private string size => Size.GetStyle();
-    private string margin => Size == ModalSize.Full ? "h-full" : "mt-4 rounded-md";
-    private string border => Header != null ? "border-b" : string.Empty;
+    private string margin => Size == ModalSize.Full ? "b-h-full" : "b-mt-4 b-rounded-md";
+    private string border => Header != null ? "b-border-b" : string.Empty;
 
     private bool BoundIsShowing
     {

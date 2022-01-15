@@ -1,6 +1,6 @@
 ﻿@typeparam TData
 
-<div tabindex="0" @onfocus="ShowDropdown" @onfocusout="HideDropdown" class="flex justify-between relative rounded focus:ring-2">
+<div tabindex="0" @onfocus="ShowDropdown" @onfocusout="HideDropdown" class="b-flex b-justify-between b-relative b-rounded focus:b-ring-2">
     <div>
         @if (selectedItem == null)
         {
@@ -22,17 +22,17 @@
             }
         }
     </div>
-    <div class="p-4">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <div class="b-p-4">
+        <svg xmlns="http://www.w3.org/2000/svg" class="b-h-6 b-w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
         </svg>
     </div>
-    <div class="absolute top-full mt-1 divide-y w-full bg-gray-300 @showingStyle" @onclick:stopPropagation="true">
+    <div class="b-absolute b-top-full b-mt-1 b-divide-y b-w-full b-bg-gray-800 dark:b-bg-gray-200 @showingStyle" @onclick:stopPropagation="true">
         @if (OptionTemplate != null && Items != null)
         {
             @foreach (var item in Items)
             {
-                <div @onclick="(() => OnSelectedItem(item))" class="hover:bg-blue-300 cursor-pointer">
+                <div @onclick="(() => OnSelectedItem(item))" class="hover:b-bg-blue-300 b-cursor-pointer">
                     @OptionTemplate(item)
                 </div>
             }
@@ -52,7 +52,7 @@
     private TData? selectedItem;
     private bool isDropdownShowing = false;
     private ElementReference select;
-    private string showingStyle => isDropdownShowing ? "visible" : "hidden";
+    private string showingStyle => isDropdownShowing ? "b-visible" : "b-hidden";
 
     public void ShowDropdown()
     {

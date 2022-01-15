@@ -13,19 +13,19 @@
     {
         public static string GetStyle(this ModalSize modalSize)
         {
-            var defaultStyle = "mx-auto sm:w-11/12 md:w-9/12";
+            var defaultStyle = "b-mx-auto sm:b-w-11/12 md:b-w-9/12";
             switch (modalSize)
             {
                 case ModalSize.Content:
-                    return $"mx-auto";
+                    return $"b-mx-auto";
                 case ModalSize.Small:
-                    return $"{defaultStyle} lg:w-4/12";
+                    return $"{defaultStyle} lg:b-w-4/12";
                 case ModalSize.Medium:
-                    return $"{defaultStyle} lg:w-1/2";
+                    return $"{defaultStyle} lg:b-w-1/2";
                 case ModalSize.Large:
                     return $"{defaultStyle}";
                 case ModalSize.Full:
-                    return "w-full";
+                    return "b-w-full";
                 default:
                     return string.Empty;
             }

@@ -2,7 +2,7 @@
 
 @if (isShowing)
 {
-    <div class="@dragClass cursor-grab" draggable="true" 
+    <div class="@dragClass b-cursor-grab" draggable="true" 
         @ondragend="HandleDragEnd" @ondragstart="HandleDragStart" 
         @ontouchstart="HandleTouchStart" @ontouchmove="HandleTouchStart" @ontouchend="HandleTouchEnd" @ontouchcancel="HandleTouchEnd">
         @ChildContent
@@ -17,7 +17,7 @@
     [Parameter] public RenderFragment? ChildContent { get; set; }
     [Parameter] public bool Copy { get; set; } = false;
 
-    private string dragClass => isDragging ? "opacity-50" : string.Empty;
+    private string dragClass => isDragging ? "b-opacity-50" : string.Empty;
     private bool isShowing = true;
     private bool isDragging = false;
     private bool droppedInDropZone = false;

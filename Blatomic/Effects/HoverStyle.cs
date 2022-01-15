@@ -28,9 +28,9 @@
                 case 0:
                     return string.Empty;
                 case Effects.HoverStyle.Shadow:
-                    return "hover:shadow-2xl";
+                    return "hover:b-shadow-2xl";
                 case Effects.HoverStyle.Ring:
-                    return "hover:ring";
+                    return "hover:b-ring";
             };
             return string.Empty;
         }

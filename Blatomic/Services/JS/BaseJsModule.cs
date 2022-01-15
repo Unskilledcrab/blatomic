@@ -55,37 +55,49 @@ namespace Blatomic.Services.JS
         public async ValueTask Run(string identifier, params object?[]? args)
         {
             await Import();
+#pragma warning disable CS8604 // Possible null reference argument.
             await module.InvokeVoidAsync(identifier, args);
+#pragma warning restore CS8604 // Possible null reference argument.
         }
 
         public async ValueTask Run(string identifier, CancellationToken cancellationToken, params object?[]? args)
         {
             await Import();
+#pragma warning disable CS8604 // Possible null reference argument.
             await module.InvokeVoidAsync(identifier, cancellationToken, args);
+#pragma warning restore CS8604 // Possible null reference argument.
         }
 
         public async ValueTask Run(string identifier, TimeSpan timeout, params object?[]? args)
         {
             await Import();
+#pragma warning disable CS8604 // Possible null reference argument.
             await module.InvokeVoidAsync(identifier, timeout, args);
+#pragma warning restore CS8604 // Possible null reference argument.
         }
 
         public async ValueTask<TValue> Run<TValue>(string identifier, params object?[]? args)
         {
             await Import();
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             return await module.InvokeAsync<TValue>(identifier, args);
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         }
 
         public async ValueTask<TValue> Run<TValue>(string identifier, CancellationToken cancellationToken, params object?[]? args)
         {
             await Import();
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             return await module.InvokeAsync<TValue>(identifier, cancellationToken, args);
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         }
 
         public async ValueTask<TValue> Run<TValue>(string identifier, TimeSpan timeout, params object?[]? args)
         {
             await Import();
+#pragma warning disable CS8604 // Possible null reference argument.
             return await module.InvokeAsync<TValue>(identifier, timeout, args);
+#pragma warning restore CS8604 // Possible null reference argument.
         }
 
         public async ValueTask DisposeAsync()

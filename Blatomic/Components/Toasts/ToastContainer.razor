@@ -5,9 +5,9 @@
 @inject ToastService toastService
 @inject ITheme Theme
 
-<div class="fixed @Position.ToastStyle() p-4 rounded overflow-auto">
-    <div class="flex flex-col space-y-4">
-        @foreach (var toast in toasts)
+<div class="b-fixed @Position.ToastStyle() b-p-4 b-rounded b-overflow-auto">
+    <div class="b-flex b-flex-col b-space-y-4">
+        @foreach (var toast in toasts.GetItems())
         {
             @if (toast.IsShowing)
             {
@@ -19,24 +19,24 @@
                 }
                 else
                 {
-                    <div tabindex="0" @onclick="@(() => PauseToastTimer(toast))" @onmouseover="@(() => PauseToastTimer(toast))" @onmouseout="@(() => StartToastTimer(toast))" class="max-w-xs sm:max-w-sm shadow-lg dark:shadow-white/5 divide-y divide-gray-500 rounded bg-gray-200/90 dark:bg-gray-800/90 text-black dark:text-white">
-                        <div class="flex justify-between items-center p-2">
-                            <div class="flex items-center">
-                                <span class="inline-block h-5 w-5 bg-blue-400 rounded mr-2"></span>
+                    <div tabindex="0" @onclick="@(() => PauseToastTimer(toast))" @onmouseover="@(() => PauseToastTimer(toast))" @onmouseout="@(() => StartToastTimer(toast))" class="b-max-w-xs sm:b-max-w-sm b-shadow-lg dark:b-shadow-white/5 b-divide-y b-divide-gray-500 b-rounded b-bg-gray-200/90 dark:b-bg-gray-800/90 b-text-black dark:b-text-white">
+                        <div class="b-flex b-justify-between b-items-center b-p-2">
+                            <div class="b-flex b-items-center">
+                                <span class="b-inline-block b-h-5 b-w-5 b-bg-blue-400 b-rounded b-mr-2"></span>
                                 <b>@toast.Toast.Header</b>
                             </div>
-                            <div class="ml-8">
-                                <div class="cursor-pointer hover:text-white hover:bg-gray-300 p-1 rounded" @onclick="(() => RemoveToast(toast))">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <div class="b-ml-8">
+                                <div class="b-cursor-pointer hover:b-text-white hover:b-bg-gray-300 b-p-1 b-rounded" @onclick="(() => RemoveToast(toast))">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="b-h-5 b-w-5" viewBox="0 0 20 20" fill="currentColor">
                                         <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
                                     </svg>
                                 </div>
                             </div>
                         </div>
-                        <div class="p-2 border-b-0">
+                        <div class="b-p-2 b-border-b-0">
                             @toast.Toast.Message
                         </div>
-                        <div class="p-1">
+                        <div class="b-p-1">
                             <Blatomic.Components.Progress.ProgressBar Size="Components.Progress.ProgressBarSize.Tiny" Percentage="@(toast.PercentageComplete)"></Blatomic.Components.Progress.ProgressBar>
                         </div>
                     </div>
@@ -50,7 +50,8 @@
     [Parameter] public CordinalPosition Position { get; set; } = CordinalPosition.BottomRight;
     [Parameter] public RenderFragment<ToastWrapper>? ToastTemplate { get; set; }
 
-    private List<ToastWrapper> toasts = new();
+    private ThreadSafeList<ToastWrapper> toasts = new();
+    private bool canUpdate = true;
 
     public void AddToast(Toast toast)
     {
@@ -58,7 +59,10 @@
         toasts.Add(toastWrapper);
         toastWrapper.OnElapsed += TimedRemove;
         toastWrapper.OnTick += ToastTick;
-        StateHasChanged();
+        if (canUpdate)
+        {            
+            StateHasChanged();
+        }
     }
 
     private void PauseToastTimer(ToastWrapper toastWrapper)
@@ -72,7 +76,8 @@
 
     private async void ToastTick(object? sender, ElapsedEventArgs e)
     {
-        await InvokeAsync(() => StateHasChanged());
+        if (canUpdate)
+            await InvokeAsync(() => StateHasChanged());
     }
 
     private void TimedRemove(object? sender, ElapsedEventArgs e)
@@ -87,6 +92,7 @@
 
     private async void RemoveToast(ToastWrapper toastWrapper, bool refreshUI = true)
     {
+        canUpdate = false;
         toastWrapper.OnElapsed -= TimedRemove;
         toastWrapper.OnTick -= ToastTick;
         toasts.Remove(toastWrapper);
@@ -95,6 +101,7 @@
         {
             await InvokeAsync(() => StateHasChanged());
         }
+        canUpdate = true;
     }
 
     protected override void OnInitialized()
@@ -107,7 +114,7 @@
     {
         for (var i = toasts.Count - 1; i >= 0; i--)
         {
-            RemoveToast(toasts[i], false);
+            RemoveToast(toasts.IndexOf(i), false);
         }
         toastService.OnAddToast -= AddToast;
     }

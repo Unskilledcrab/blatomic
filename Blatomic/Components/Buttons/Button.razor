@@ -28,14 +28,14 @@
 
         base.OnInitialized();
 
-        AddCssStyle("inline-flex");
-        AddCssStyle("items-center");
-        AddCssStyle("px-4");
-        AddCssStyle("py-2");
-        AddCssStyle("font-semibold");
-        AddCssStyle("leading-5");
-        AddCssStyle("text-sm");
-        AddCssStyle("transition");
+        AddCssStyle("b-inline-flex");
+        AddCssStyle("b-items-center");
+        AddCssStyle("b-px-4");
+        AddCssStyle("b-py-2");
+        AddCssStyle("b-font-semibold");
+        AddCssStyle("b-leading-5");
+        AddCssStyle("b-text-sm");
+        AddCssStyle("b-transition");
     }
 
     protected override void OnParametersSet()
@@ -49,26 +49,26 @@
     {
         if (IsLoading)
         {
-            AddCssStyle("cursor-wait");
+            AddCssStyle("b-cursor-wait");
         }
         else
         {
-            RemoveCssStyle("cursor-wait");            
+            RemoveCssStyle("b-cursor-wait");            
         }
         if (isDisabled)
         {
-            AddCssStyle("opacity-75");
+            AddCssStyle("b-opacity-75");
             if (!IsLoading)
             {
-                AddCssStyle("cursor-not-allowed");
+                AddCssStyle("b-cursor-not-allowed");
             }
         }
         else
         {
-            RemoveCssStyle("opacity-75");
+            RemoveCssStyle("b-opacity-75");
             if (!IsLoading)
             {
-                RemoveCssStyle("cursor-not-allowed");
+                RemoveCssStyle("b-cursor-not-allowed");
             }
         }
     }
@@ -111,7 +111,7 @@
     private RenderFragment LoadingFragment()
     {
         return
-    @<span class="inline-flex items-center">@Loader.ButtonLoader @ChildContent</span>
+    @<span class="b-inline-flex b-items-center">@Loader.ButtonLoader @ChildContent</span>
     ;
     }
 }

@@ -3,7 +3,7 @@
 @implements IAsyncDisposable
 @inject ElementService ElementService
 
-<div @ref="container" class="relative" ondragover="event.preventDefault();"
+<div @ref="container" class="b-relative" ondragover="event.preventDefault();"
     ondragstart="event.dataTransfer.setData('', event.target.id);" @ondragenter="HandleDragEnter">
 
     <CascadingValue Value="this">
@@ -14,7 +14,7 @@
     </CascadingValue>
     @if (isShowingDrop)
     {
-        <div class="absolute z-10 flex justify-center items-center inset-0">
+        <div class="b-absolute b-z-10 b-flex b-justify-center b-items-center b-inset-0">
             @if (canDrop)
             {
                 @CanDropTemplate
@@ -24,7 +24,7 @@
                 @CannotDropTemplate
             }
         </div>
-        <div class="absolute z-20 inset-0 @DropBorderClass"
+        <div class="b-absolute b-z-20 b-inset-0 @DropBorderClass"
              @ondragleave="HandleDragLeave" @ondrop="HandleDrop">
         </div>
     }
@@ -38,7 +38,7 @@
 
     [CascadingParameter] public DragContext<TData>? Context { get; set; }
 
-    [Parameter] public string DropBorderClass { get; set; } = "outline-2 outline-dashed animate-pulse bg-gray-300/25";
+    [Parameter] public string DropBorderClass { get; set; } = "b-outline-2 b-outline-dashed b-animate-pulse b-bg-gray-300/25";
     [Parameter] public bool ShowCantDrop { get; set; } = true;
     private List<TData> BoundItems
     {

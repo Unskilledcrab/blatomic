@@ -1,5 +1,5 @@
 ﻿
-<div class="fixed @visible transition-opacity duration-300 z-40 top-0 left-0 w-full h-full overflow-auto dark:bg-white/50 bg-black/50">
+<div class="b-fixed @visible b-transition-opacity b-duration-300 b-z-40 b-top-0 b-left-0 b-w-full b-h-full b-overflow-auto dark:b-bg-white/50 b-bg-black/50">
 </div>
 <CascadingValue Value="this">
     @ChildContent
@@ -43,7 +43,7 @@
 
     [Parameter] public EventCallback<bool> IsShowingChanged { get; set; }
 
-    private string visible => BoundIsShowing ? "visible opacity-100" : "invisible opacity-0";
+    private string visible => BoundIsShowing ? "b-visible b-opacity-100" : "b-invisible b-opacity-0";
     private int currentStep = 0;
     private List<GuideStep> Steps = new();
     private List<GuideStep> orderedSteps => Steps.OrderBy(s => s.internalIndex).ToList();
