@@ -1,14 +1,14 @@
 ﻿@inject ITheme Theme
 
-<div @ref="@elementReference" id="@guid" class="relative @activeIndex">    
+<div @ref="@elementReference" id="@guid" class="b-relative @activeIndex">    
     <CascadingValue Value="this">
         <div class="@activeAnimation">
             @ChildContent
         </div>
     </CascadingValue>
-    <div class="absolute p-4 shadow-md rounded-lg @positionStyle @marginStyle @arrowStyle @activeVisibility @Theme.Light">
+    <div class="b-absolute b-p-4 b-shadow-md b-rounded-lg @positionStyle @marginStyle @arrowStyle @activeVisibility @Theme.Light">
         @HelpContent
-        <div class="flex justify-around items-center pt-4">
+        <div class="b-flex b-justify-around b-items-center b-pt-4">
             <Button OnClickedAsync="EndGuide" Color="@Theme.Danger.All" RoundedStyle="RoundedStyle.Full">End</Button>
             @if (hasPrevious)
             {
@@ -42,9 +42,9 @@
     public List<GuideStep> SubSteps => subSteps;
 
     private ElementReference elementReference;
-    private string activeIndex => isActive || isInContext ? "z-50" : "z-0";
-    private string activeVisibility => isActive ? "visible opacity-100" : "invisible opacity-0";
-    private string activeAnimation => isActive ? $"outline-4 {Theme.Primary.Outline} outline" : string.Empty;
+    private string activeIndex => isActive || isInContext ? "b-z-50" : "b-z-0";
+    private string activeVisibility => isActive ? "b-visible b-opacity-100" : "b-invisible b-opacity-0";
+    private string activeAnimation => isActive ? $"b-outline-4 {Theme.Primary.Outline} b-outline" : string.Empty;
     private string positionStyle => Position.AbsoluteStyle();
     private string arrowStyle => Position.ArrowStyle();
     private string marginStyle => Position.MarginStyle();

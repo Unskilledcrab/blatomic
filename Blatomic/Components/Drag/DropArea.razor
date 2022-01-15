@@ -1,6 +1,9 @@
 ﻿@typeparam TData
 
-<div class="relative @dropClass" ondragover="event.preventDefault();"
+@implements IAsyncDisposable
+@inject ElementService ElementService
+
+<div @ref="container" class="b-relative" ondragover="event.preventDefault();"
     ondragstart="event.dataTransfer.setData('', event.target.id);" @ondragenter="HandleDragEnter">
 
     <CascadingValue Value="this">
@@ -11,8 +14,7 @@
     </CascadingValue>
     @if (isShowingDrop)
     {
-        <div class="absolute z-20 flex justify-center items-center inset-0 bg-gray-300/25"
-        @ondragleave="HandleDragLeave" @ondrop="HandleDrop">
+        <div class="b-absolute b-z-10 b-flex b-justify-center b-items-center b-inset-0">
             @if (canDrop)
             {
                 @CanDropTemplate
@@ -22,16 +24,22 @@
                 @CannotDropTemplate
             }
         </div>
+        <div class="b-absolute b-z-20 b-inset-0 @DropBorderClass"
+             @ondragleave="HandleDragLeave" @ondrop="HandleDrop">
+        </div>
     }
 </div>
 
 @code {
-    private string dropClass = string.Empty;
+    private ElementReference container;
+    private string dropBorderClass = string.Empty;
     private bool isShowingDrop = false;
     private bool canDrop = false;
 
     [CascadingParameter] public DragContext<TData>? Context { get; set; }
 
+    [Parameter] public string DropBorderClass { get; set; } = "b-outline-2 b-outline-dashed b-animate-pulse b-bg-gray-300/25";
+    [Parameter] public bool ShowCantDrop { get; set; } = true;
     private List<TData> BoundItems
     {
         get => Items;
@@ -44,16 +52,39 @@
     [Parameter] public List<TData> Items { get; set; } = new();
     [Parameter] public EventCallback<List<TData>> ItemsChanged { get; set; }
 
-    [Parameter] public Func<DragArgs<TData>, Task<bool>> ShouldDropAsync { get; set; } = (dropItem) => Task.FromResult(true);
+    [Parameter] public Func<DragArgs<TData>, Task<bool>> CanDropAsync { get; set; } = (dropItem) => Task.FromResult(true);
     [Parameter] public Func<DragArgs<TData>, Task> OnDragEnterAsync { get; set; } = (dropItem) => Task.CompletedTask;
     [Parameter] public Func<DragArgs<TData>, Task> OnDragLeaveAsync { get; set; } = (dropItem) => Task.CompletedTask;
-    [Parameter] public Func<DragArgs<TData>, Task> BeforeDropAsync { get; set; } = (dropItem) => Task.CompletedTask;
+
+    /// <summary>
+    /// Return if you could like the item to be added to the internal list. Default true
+    /// </summary>
+    [Parameter] public Func<DragArgs<TData>, Task<bool>> BeforeDropAsync { get; set; } = (dropItem) => Task.FromResult(true);
     [Parameter] public Func<DragArgs<TData>, Task> OnDropAsync { get; set; } = (dropItem) => Task.CompletedTask;
-    [Parameter] public string DropClass { get; set; } = "outline-2 outline-dashed";
 
     [Parameter] public RenderFragment<List<TData>>? ChildContent { get; set; }
     [Parameter] public RenderFragment? CanDropTemplate { get; set; } = @Plus.StandardPlusOutline;
     [Parameter] public RenderFragment? CannotDropTemplate { get; set; } = @Ban.StandardBanSolid;
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+
+        if (firstRender)
+        {
+            Context?.DropAreas.Add(this);
+        }
+    }
+
+    async ValueTask IAsyncDisposable.DisposeAsync()
+    {
+        await ElementService.DisposeAsync();
+    }
+
+    public async Task<BoundingClientRect> GetBoundingClientRect()
+    {
+        return await ElementService.GetBoundingClientRect(container);
+    }
 
     public void RemoveDragItem(TData dragItem)
     {
@@ -65,24 +96,26 @@
             }
         }
     }
-    public void AddDragItem(TData dragItem)
+
+    public void ShowDroppableStyle(bool canDrop)
     {
-        if (dragItem is not null)
+        if (!ShowCantDrop && !canDrop)
         {
-            BoundItems.Remove(dragItem);
+            return;
         }
-    }
 
-    private void ShowDroppableStyle()
-    {
+        this.canDrop = canDrop;
         isShowingDrop = true;
-        dropClass = DropClass;
+        dropBorderClass = DropBorderClass;
+        StateHasChanged();
     }
 
-    private void HideDroppableStyle()
+    public void HideDroppableStyle()
     {
+        canDrop = false;
         isShowingDrop = false;
-        dropClass = string.Empty;
+        dropBorderClass = string.Empty;
+        StateHasChanged();
     }
 
     private async Task HandleDragEnter(DragEventArgs e)
@@ -94,15 +127,6 @@
 
         var args = e.Create(Context.DragData);
         await OnDragEnterAsync(args);
-        ShowDroppableStyle();
-        if (await ShouldDropAsync(args))
-        {
-            canDrop = true;
-        }
-        else
-        {
-            canDrop = false;
-        }
     }
     private async Task HandleDragLeave(DragEventArgs e)
     {
@@ -113,8 +137,6 @@
 
         var args = e.Create(Context.DragData);
         await OnDragLeaveAsync(e.Create(Context.DragData));
-        HideDroppableStyle();
-        canDrop = false;
     }
     private async Task HandleDrop(DragEventArgs e)
     {
@@ -124,11 +146,18 @@
         }
 
         var args = e.Create(Context.DragData);
-        if (await ShouldDropAsync(args))
+        await DropAsync(args);
+    }
+
+    public async Task DropAsync(DragArgs<TData> args)
+    {
+        if (await CanDropAsync(args))
         {
-            await BeforeDropAsync(args);
-            BoundItems.Add(Context.DragData);
-            Context?.DragItem?.OnDragComplete();
+            if (args.Data != null && await BeforeDropAsync(args))
+            {
+                BoundItems.Add(args.Data);                
+            }
+            Context?.DragItem?.OnDragToDropZoneComplete();
             await OnDropAsync(args);
         }
         HideDroppableStyle();

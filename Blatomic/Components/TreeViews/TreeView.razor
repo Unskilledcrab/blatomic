@@ -1,0 +1,17 @@
+﻿@typeparam TData
+
+@if (Items != null && ItemsTemplate != null)
+{
+    @foreach (var item in Items.GetChildrenItems())
+    {
+        <TreeItemView TData="TData" CollapseAll="CollapseAll" ItemTemplate="ItemsTemplate" OpenTemplate="OpenTemplate" CloseTemplate="CloseTemplate" Item="item" />
+    }
+}
+
+@code {
+    [Parameter] public ITree<TData>? Items { get; set; }
+    [Parameter] public RenderFragment<TData>? ItemsTemplate { get; set; }
+    [Parameter] public RenderFragment<TData>? OpenTemplate { get; set; }
+    [Parameter] public RenderFragment<TData>? CloseTemplate { get; set; }
+    [Parameter] public bool CollapseAll { get; set; } = false;
+}

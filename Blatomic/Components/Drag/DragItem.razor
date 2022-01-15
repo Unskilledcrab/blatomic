@@ -2,7 +2,9 @@
 
 @if (isShowing)
 {
-    <div class="@dragClass" draggable="true" @ondragend="HandleDragEnd" @ondragstart="HandleDragStart">
+    <div class="@dragClass b-cursor-grab" draggable="true" 
+        @ondragend="HandleDragEnd" @ondragstart="HandleDragStart" 
+        @ontouchstart="HandleTouchStart" @ontouchmove="HandleTouchStart" @ontouchend="HandleTouchEnd" @ontouchcancel="HandleTouchEnd">
         @ChildContent
     </div>
 }
@@ -15,19 +17,28 @@
     [Parameter] public RenderFragment? ChildContent { get; set; }
     [Parameter] public bool Copy { get; set; } = false;
 
-    private string dragClass => isDragging ? "opacity-50" : string.Empty;
+    private string dragClass => isDragging ? "b-opacity-50" : string.Empty;
     private bool isShowing = true;
     private bool isDragging = false;
-    private bool itemDropped = false;
+    private bool droppedInDropZone = false;
 
-    public void OnDragComplete()
+    public void OnDragToDropZoneComplete()
     {
-        itemDropped = true;
+        droppedInDropZone = true;
     }
 
-    private void HandleDragEnd(DragEventArgs e)
+    private async Task HandleDragEnd(DragEventArgs e)
     {
-        if (!Copy && itemDropped)
+        await EndDrag();
+    }
+    private async Task HandleTouchEnd(TouchEventArgs e)
+    {
+        await EndDrag(true, e);
+    }
+
+    private async Task EndDrag(bool isTouch = false, TouchEventArgs? e = null)
+    {
+        if (!Copy && droppedInDropZone)
         {
             if (DragData is not null && DropArea is not null)
             {
@@ -38,22 +49,36 @@
                 isShowing = false;
             }
         }
-        
+
         if (Context is not null)
         {
-            Context.DragItem = null;
+            if (isTouch && e != null)
+            {
+                await Context.OnTouchEnd(e);
+            }
+            Context.OnDragStop();
         }
         isDragging = false;        
         StateHasChanged();
     }
 
-    private void HandleDragStart(DragEventArgs e)
+    private async Task HandleTouchStart(TouchEventArgs e)
+    {
+        await StartDrag();
+    }
+
+    private async Task HandleDragStart(DragEventArgs e)
+    {
+        await StartDrag();
+    }
+
+    private async Task StartDrag()
     {
         isDragging = true;
         StateHasChanged();
         if (Context is not null)
         {
-            Context.DragItem ??= this;
+            await Context.OnDragStart(this);
         }
     }
 }

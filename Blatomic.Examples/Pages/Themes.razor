@@ -22,7 +22,7 @@
         This is a custom theme designed by the maker of blatomic (who is by no means a designer)
     </p>
 
-    <CodeBlock Title="Program.cs" Language="Language.CSharp" Code="builder.Services.AddBlatomic();"></CodeBlock>
+    <CodeBlock Title="Program.cs" Code="builder.Services.AddBlatomic();"></CodeBlock>
 
     <p class="mt-4">
         If you would like to customize this theme simply add an action and change the default configuration however you would like.
@@ -30,10 +30,10 @@
     </p>
 
 
-    <CodeBlock Title="Program.cs" Language="Language.CSharp" Code="@updateTheme"></CodeBlock>
+    <CodeBlock Title="Program.cs" Code="@updateTheme"></CodeBlock>
 
     <p class="mt-4">Themes can also be updated at runtime by simply injecting <b>ITheme</b> into your razor page and updating the theme</p>
-    <CodeBlock Title="Any .razor file" Language="Language.Razor" Code="@themeUpdateCode"></CodeBlock>
+    <CodeBlock Title="Any .razor file" Code="@themeUpdateCode"></CodeBlock>
 
     <p class="mt-4">Go ahead, try it</p>
     <div class="mt-2 flex space-x-4">
@@ -49,10 +49,10 @@
         Adding a new theme is simple, you just need to give it a name (here we are using "SuperButton") and then give it all of the classes that you would like to apply
     </p>
 
-    <CodeBlock Title="Any .razor file" Language="Language.HTML" Code="@addToTheme"></CodeBlock>
+    <CodeBlock Title="Any .razor file" Code="@addToTheme"></CodeBlock>
 
     <p class="mt-4">After you have added the theme you can use it anywhere you have <b>ITheme</b> injected</p>
-    <CodeBlock Title="Any .razor file" Language="Language.HTML" Code="@useTheme"></CodeBlock>
+    <CodeBlock Title="Any .razor file" Code="@useTheme"></CodeBlock>
 
 
     <h3 class="text-xl font-bold mt-6 @TwColors.Text_Slate_900 mt-12">Colors, Light, and Dark mode</h3>
@@ -63,7 +63,7 @@
         This way, you can easily use the tailwind color palette and rest assurred that your site will properly work in both light and dark mode
     </p>
 
-    <CodeBlock Title="Any .razor file" Language="Language.HTML" Code="@darkmode"></CodeBlock>
+    <CodeBlock Title="Any .razor file" Code="@darkmode"></CodeBlock>
 </div>
 
 @code {

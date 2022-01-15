@@ -9,22 +9,19 @@ namespace Blatomic.Services.JS
         {
             this.componentReference = componentReference;
             this.JSRuntime = JSRuntime;
-            referenceCount++;
         }
 
         public BaseJsModule(string wwwrootpath, IJSRuntime JSRuntime)
         {
             this.wwwrootpath = wwwrootpath;
             this.JSRuntime = JSRuntime;
-            referenceCount++;
         }
 
         protected IJSRuntime JSRuntime { get; set; }
-        protected static IJSObjectReference? module;
+        protected IJSObjectReference? module;
 
-        private string? wwwrootpath;
-        private object? componentReference;
-        private static int referenceCount = 0;
+        private readonly string? wwwrootpath;
+        private readonly object? componentReference;
 
         public async Task Import()
         {
@@ -55,10 +52,57 @@ namespace Blatomic.Services.JS
             }
         }
 
+        public async ValueTask Run(string identifier, params object?[]? args)
+        {
+            await Import();
+#pragma warning disable CS8604 // Possible null reference argument.
+            await module.InvokeVoidAsync(identifier, args);
+#pragma warning restore CS8604 // Possible null reference argument.
+        }
+
+        public async ValueTask Run(string identifier, CancellationToken cancellationToken, params object?[]? args)
+        {
+            await Import();
+#pragma warning disable CS8604 // Possible null reference argument.
+            await module.InvokeVoidAsync(identifier, cancellationToken, args);
+#pragma warning restore CS8604 // Possible null reference argument.
+        }
+
+        public async ValueTask Run(string identifier, TimeSpan timeout, params object?[]? args)
+        {
+            await Import();
+#pragma warning disable CS8604 // Possible null reference argument.
+            await module.InvokeVoidAsync(identifier, timeout, args);
+#pragma warning restore CS8604 // Possible null reference argument.
+        }
+
+        public async ValueTask<TValue> Run<TValue>(string identifier, params object?[]? args)
+        {
+            await Import();
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+            return await module.InvokeAsync<TValue>(identifier, args);
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+        }
+
+        public async ValueTask<TValue> Run<TValue>(string identifier, CancellationToken cancellationToken, params object?[]? args)
+        {
+            await Import();
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+            return await module.InvokeAsync<TValue>(identifier, cancellationToken, args);
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+        }
+
+        public async ValueTask<TValue> Run<TValue>(string identifier, TimeSpan timeout, params object?[]? args)
+        {
+            await Import();
+#pragma warning disable CS8604 // Possible null reference argument.
+            return await module.InvokeAsync<TValue>(identifier, timeout, args);
+#pragma warning restore CS8604 // Possible null reference argument.
+        }
+
         public async ValueTask DisposeAsync()
         {
-            referenceCount--;
-            if (referenceCount == 0 && module is not null)
+            if (module is not null)
             {
                 await module.DisposeAsync();
             }

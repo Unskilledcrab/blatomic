@@ -84,7 +84,7 @@
         {
             return span.IsEqual(word.ToString());
         }
-        
+
         public static bool IsBreak(this ReadOnlySpan<char> word, ILanguage syntax)
         {
             foreach (var breakCharacter in syntax.BreakCharacters)

@@ -9,12 +9,15 @@
     <h3 class="text-xl font-bold mt-6 @TwColors.Text_Slate_900">What's so special?</h3>
 
     <p class="my-2 font-medium">
-        Under Construction
+        The accordions come animated and are highly customizable. You can place a <b>RenderFragment</b> in both the <b>Header</b> and <b>Body</b> of an <b>AccordionItem</b>.
+        If you want to show them as all open on page load, you can easily do that with a the <b>AllOpen</b> parameter. 
+        Also if you would like the items that are not currently being viewed to auto collapse when they are not longer the focus,
+        you can do that by setting the <b>AutoCollapse</b> to true (or leaving off that parameter since it is the default behavior).
     </p>
 
-    <div class="mb-2 max-w-lg mx-auto @Theme.Dark.ToString()">
+    <div class="mb-2 max-w-lg @Theme.Dark.ToString()">
 
-        <AccordionContext AutoCollapse="false" AllOpen="true">
+        <AccordionContext AutoCollapse="false" AllOpen="false">
             <AccordionItem>
                 <Header>
                     <b>Test 1</b>
@@ -48,7 +51,7 @@
 
 
 @code {
-    private string defaultExample = @"<AccordionContext AutoCollapse=""false"" AllOpen=""true"">
+    private string defaultExample = @"<AccordionContext AutoCollapse=""false"" AllOpen=""false"">
     <AccordionItem>
         <Header>
             <b>Test 1</b>

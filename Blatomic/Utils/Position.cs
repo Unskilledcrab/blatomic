@@ -34,23 +34,23 @@ namespace Blatomic.Utils
             switch (position)
             {
                 case CordinalPosition.Top:
-                    return "top-0 inset-x-1/2";
+                    return "b-top-0 b-inset-x-1/2 b-mt-1 sm:b-mt-4";
                 case CordinalPosition.TopLeft:
-                    return "top-0 left-0";
+                    return "b-top-0 b-left-0 b-ml-1 b-mt-1 sm:b-ml-4 sm:b-mt-4";
                 case CordinalPosition.TopRight:
-                    return "top-0 right-0";
+                    return "b-top-0 b-right-0 b-mr-1 b-mt-1 sm:b-mr-4 sm:b-mt-4";
                 case CordinalPosition.Bottom:
-                    return "bottom-0 inset-x-1/2";
+                    return "b-bottom-0 b-inset-x-1/2 b-mb-1 sm:b-mb-4";
                 case CordinalPosition.BottomLeft:
-                    return "bottom-0 left-0";
+                    return "b-bottom-0 b-left-0 b-ml-1 b-mb-1 sm:b-ml-4 sm:b-mb-4";
                 case CordinalPosition.BottomRight:
-                    return "bottom-0 right-0";
+                    return "b-bottom-0 b-right-0 b-mr-1 b-mb-1 sm:b-mr-4 sm:b-mb-4";
                 case CordinalPosition.Left:
-                    return "left-0 inset-y-1/2";
+                    return "b-left-0 b-inset-y-1/2 b-ml-1 sm:b-ml-4";
                 case CordinalPosition.Right:
-                    return "right-0 inset-y-1/2";
+                    return "b-right-0 b-inset-y-1/2 b-mr-1 sm:b-mr-4";
                 case CordinalPosition.Center:
-                    return "inset-1/2";
+                    return "b-inset-1/2";
                 default:
                     return string.Empty;
             }
@@ -64,13 +64,13 @@ namespace Blatomic.Utils
             switch (position)
             {
                 case Position.Top:
-                    return "top-0 left-0 right-0 max-h-60";
+                    return "b-top-0 b-left-0 b-right-0 b-max-h-60";
                 case Position.Bottom:
-                    return "bottom-0 left-0 right-0 max-h-60";
+                    return "b-bottom-0 b-left-0 b-right-0 b-max-h-60";
                 case Position.Left:
-                    return "top-0 left-0 bottom-0 max-w-lg";
+                    return "b-top-0 b-left-0 b-bottom-0 b-max-w-xs sm:b-max-w-sm md:b-max-w-md lg:b-max-w-lg";
                 case Position.Right:
-                    return "top-0 bottom-0 right-0 max-w-lg";
+                    return "b-top-0 b-bottom-0 b-right-0 b-max-w-xs sm:b-max-w-sm md:b-max-w-md lg:b-max-w-lg";
                 default:
                     return string.Empty;
             }
@@ -82,13 +82,13 @@ namespace Blatomic.Utils
             switch (position)
             {
                 case Position.Top:
-                    return "bottom-full";
+                    return "b-bottom-full";
                 case Position.Bottom:
-                    return "top-full";
+                    return "b-top-full";
                 case Position.Left:
-                    return "right-full top-0";
+                    return "b-right-full b-top-0";
                 case Position.Right:
-                    return "left-full top-0";
+                    return "b-left-full b-top-0";
                 default:
                     return string.Empty;
             }
@@ -99,13 +99,13 @@ namespace Blatomic.Utils
             switch (position)
             {
                 case Position.Top:
-                    return "mb-4";
+                    return "b-mb-4";
                 case Position.Bottom:
-                    return "mt-4";
+                    return "b-mt-4";
                 case Position.Left:
-                    return "mr-4";
+                    return "b-mr-4";
                 case Position.Right:
-                    return "ml-4";
+                    return "b-ml-4";
                 default:
                     return string.Empty;
             }
@@ -116,19 +116,19 @@ namespace Blatomic.Utils
     {
         public static string ArrowStyle(this Position position)
         {
-            var defaults = "after:absolute after:border-8 after:border-solid";
-            var TB = "after:left-1/2 after:-ml-2";
-            var LR = "after:top-1/2 after:-mt-2";
+            var defaults = "after:b-absolute after:b-border-8 after:b-border-solid";
+            var TB = "after:b-left-1/2 after:b--ml-2";
+            var LR = "after:b-top-1/2 after:b--mt-2";
             switch (position)
             {
                 case Position.Top:
-                    return $"{defaults} {TB} after:top-full after:border-t-inherit after:border-r-transparent after:border-b-transparent after:border-l-transparent";
+                    return $"{defaults} {TB} after:b-top-full after:b-border-t-inherit after:b-border-r-transparent after:b-border-b-transparent after:b-border-l-transparent";
                 case Position.Bottom:
-                    return $"{defaults} {TB} after:bottom-full after:border-t-transparent after:border-r-transparent after:border-b-inherit after:border-l-transparent";
+                    return $"{defaults} {TB} after:b-bottom-full after:b-border-t-transparent after:b-border-r-transparent after:b-border-b-inherit after:b-border-l-transparent";
                 case Position.Left:
-                    return $"{defaults} {LR} after:left-full after:border-t-transparent after:border-r-transparent after:border-b-transparent after:border-l-inherit";
+                    return $"{defaults} {LR} after:b-left-full after:b-border-t-transparent after:b-border-r-transparent after:b-border-b-transparent after:b-border-l-inherit";
                 case Position.Right:
-                    return $"{defaults} {LR} after:right-full after:border-t-transparent after:border-r-inherit after:border-b-transparent after:border-l-transparent";
+                    return $"{defaults} {LR} after:b-right-full after:b-border-t-transparent after:b-border-r-inherit after:b-border-b-transparent after:b-border-l-transparent";
                 default:
                     return string.Empty;
             }

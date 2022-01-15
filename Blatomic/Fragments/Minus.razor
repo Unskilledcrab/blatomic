@@ -1,0 +1,23 @@
+﻿@code {
+    public static RenderFragment<string> BaseMinusOutline = classes => __builder =>
+    {
+        <svg xmlns="http://www.w3.org/2000/svg" class="@classes" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
+        </svg>
+    };
+    public static RenderFragment<string> BaseMinusSolid = classes => __builder =>
+    {
+        <svg xmlns="http://www.w3.org/2000/svg" class="@classes" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
+        </svg>
+    };
+
+    public static RenderFragment StandardMinusOutline = __builder =>
+    {
+        @BaseMinusOutline("b-h-6 b-w-6");
+    };
+    public static RenderFragment StandardMinusSolid = __builder =>
+    {
+        @BaseMinusSolid("b-h-6 b-w-6");
+    };
+}

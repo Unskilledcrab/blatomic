@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 
 namespace Blatomic.Components.CodeBlock
 {
-
     public class CSharpLanguage : ILanguage
     {
         /// <summary>
@@ -24,7 +23,7 @@ namespace Blatomic.Components.CodeBlock
         /// </summary>
         public TokenPalette SingleLineCommentPalette { get; set; } = new()
         {
-            Color = "text-green-300",
+            Color = "b-text-green-300",
             Tokens = new HashSet<string>()
             {
                 "//"
@@ -36,7 +35,7 @@ namespace Blatomic.Components.CodeBlock
         /// </summary>
         public TokenPalette StringLiteralPalette { get; set; } = new()
         {
-            Color = "text-orange-400",
+            Color = "b-text-orange-400",
             Tokens = new HashSet<string>()
             {
                @"""",
@@ -50,7 +49,7 @@ namespace Blatomic.Components.CodeBlock
         public TokenPalette[] KeywordPalette { get; set; } = new TokenPalette[] {
             new()
             {
-                Color = "text-blue-500",
+                Color = "b-text-blue-500",
                 Tokens = new()
                 {
                     "using",
@@ -98,7 +97,7 @@ namespace Blatomic.Components.CodeBlock
             },
             new()
             {
-                Color = "text-purple-400",
+                Color = "b-text-purple-400",
                 Tokens = new()
                 {
                     "@code",
@@ -108,6 +107,7 @@ namespace Blatomic.Components.CodeBlock
                     "@page",
                     "@foreach",
                     "@if",
+                    "@implements",
 
                     "var",
                     "await",
@@ -123,11 +123,12 @@ namespace Blatomic.Components.CodeBlock
             },
             new()
             {
-                Color = "text-emerald-500",
+                Color = "b-text-emerald-500",
                 Tokens = new()
                 {
                     "List",
                     "Task",
+                    "ValueTask",
                 }
             },
         };
@@ -137,7 +138,7 @@ namespace Blatomic.Components.CodeBlock
         /// </summary>
         public TokenPalette SymbolPalette { get; set; } = new()
         {
-            Color = "text-white",
+            Color = "b-text-white",
             Tokens = new()
             {
                 "(",
@@ -160,7 +161,7 @@ namespace Blatomic.Components.CodeBlock
         {
             new TokenPalette()
             {
-                Color = "text-sky-300",
+                Color = "b-text-sky-300",
                 Tokens = new()
                 {
                     "=",
@@ -169,7 +170,7 @@ namespace Blatomic.Components.CodeBlock
             },
             new TokenPalette()
             {
-                Color = "text-yellow-400",
+                Color = "b-text-yellow-400",
                 Tokens = new()
                 {
                     "(",
@@ -184,7 +185,7 @@ namespace Blatomic.Components.CodeBlock
         {
             new TokenPalette()
             {
-                Color = "text-green-500",
+                Color = "b-text-green-500",
                 Tokens = new()
                 {
                     "<",

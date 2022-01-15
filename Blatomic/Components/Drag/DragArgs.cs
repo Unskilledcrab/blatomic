@@ -4,6 +4,10 @@ namespace Blatomic.Components.Drag
 {
     public class DragArgs<TData> : EventArgs
     {
+        public DragArgs(TData data)
+        {
+            Data = data;
+        }
         public DragArgs(DragEventArgs e, TData data)
         {
             DragEventArgs = e;

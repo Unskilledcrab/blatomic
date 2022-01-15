@@ -36,23 +36,23 @@
             switch (roundedStyle)
             {
                 case Effects.RoundedStyle.None:
-                    return "rounded-none";
+                    return "b-rounded-none";
                 case Effects.RoundedStyle.XS:
-                    return "rounded-sm";
+                    return "b-rounded-sm";
                 case Effects.RoundedStyle.S:
-                    return "rounded";
+                    return "b-rounded";
                 case Effects.RoundedStyle.M:
-                    return "rounded-md";
+                    return "b-rounded-md";
                 case Effects.RoundedStyle.L:
-                    return "rounded-lg";
+                    return "b-rounded-lg";
                 case Effects.RoundedStyle.XL:
-                    return "rounded-xl";
+                    return "b-rounded-xl";
                 case Effects.RoundedStyle.XXL:
-                    return "rounded-2xl";
+                    return "b-rounded-2xl";
                 case Effects.RoundedStyle.XXXL:
-                    return "rounded-3xl";
+                    return "b-rounded-3xl";
                 case Effects.RoundedStyle.Full:
-                    return "rounded-full";
+                    return "b-rounded-full";
                 default:
                     break;
             }

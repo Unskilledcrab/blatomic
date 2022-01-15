@@ -6,8 +6,72 @@
 </CascadingValue>
 
 @code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
     public TData? DragData => DragItem is not null ? DragItem.DragData : default(TData);
     public DragItem<TData>? DragItem { get; set; }
+    public List<DropArea<TData>> DropAreas { get; set; } = new();
 
-    [Parameter] public RenderFragment? ChildContent { get; set; }
-} 
+    public async Task OnDragStart(DragItem<TData>? dragItem)
+    {
+        if (dragItem == null)
+        {
+            return;
+        }
+
+        if (dragItem is DragItem<TData> item)
+        {
+            DragItem = item;
+
+            if (item.DragData is TData data)
+            {
+                foreach (var dropArea in DropAreas)
+                {
+                    if (await dropArea.CanDropAsync(new DragArgs<TData>(data)))
+                    {
+                        dropArea.ShowDroppableStyle(true);
+                    }
+                    else
+                    {
+                        dropArea.ShowDroppableStyle(false);
+                    }
+                }
+            }
+        }
+    }
+
+    public void OnDragStop()
+    {
+        DragItem = null;
+        foreach (var dropArea in DropAreas)
+        {
+            dropArea.HideDroppableStyle();
+        }
+    }
+
+    public async Task OnTouchEnd(TouchEventArgs e)
+    {
+        var endPoint = e.ChangedTouches[0];
+        var endX = endPoint.ClientX;
+        var endY = endPoint.ClientY;
+        foreach (var dropArea in DropAreas)
+        {
+            var boundingClientRect = await dropArea.GetBoundingClientRect();
+            var rectXstart = boundingClientRect.X;
+            var rectXend = boundingClientRect.X + boundingClientRect.Width;
+            var rectYstart = boundingClientRect.Y;
+            var rectYend = boundingClientRect.Y + boundingClientRect.Height;
+
+            var isInX = endX >= rectXstart && endX <= rectXend;
+            var isInY = endY >= rectYstart && endY <= rectYend;
+
+            if (isInX && isInY)
+            {
+                if (DragItem != null && DragItem.DragData is TData data)
+                {
+                    await dropArea.DropAsync(new DragArgs<TData>(data));
+                }
+            }
+        }
+    }
+}
