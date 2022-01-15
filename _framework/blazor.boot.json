@@ -7,9 +7,9 @@
   "linkerEnabled": true,
   "resources": {
     "assembly": {
-      "Blatomic.dll": "sha256-j+JzRumRLZGkekD1CmLjHUa3WBmyXJB9sswpMyXAbqk=",
-      "Blatomic.Examples.dll": "sha256-VxG9zxh9bIhWyLHgt+GbcyiQyNQBmJtPGf4oYSpM\/O8=",
-      "Blatomic.WASM.dll": "sha256-NLL5pRd8PiF7KhoSW53AmphoeW+NFnqQ2cJ16Cj0zgs=",
+      "Blatomic.dll": "sha256-Lh+Hd9AS+2lxhC0\/DjnWEt0ricbdeSVecQkVlDi168o=",
+      "Blatomic.Examples.dll": "sha256-TAjM6NlpH+FJosy4+OvvtdnqdKE\/zwULAx\/Sc5paCEE=",
+      "Blatomic.WASM.dll": "sha256-XXT+Hr1dklHMFOcYYBXsB+IyLJgnf3xoZJ4WITK+vxM=",
       "Blazored.LocalStorage.dll": "sha256-ItMv+HytRb8SgPKYiz75PK0k+DFgN1E247PZT\/8lODs=",
       "Blazy.dll": "sha256-WCGByHtaguPfgbughfBDDqpNgrYNkHovHeCZ33VKR3I=",
       "Microsoft.AspNetCore.Components.dll": "sha256-98Ww44BvnySA\/cyJahM2w8olMgxe9vjggfKi3BJlGsM=",
@@ -53,7 +53,7 @@
       "System.Net.Http.dll": "sha256-vjJ4F1z1P2Y7k6aDt0Z6ma+4Cz9ipmYqBmbKN5pVl48=",
       "System.Net.Primitives.dll": "sha256-R8E7iySN1pAQhPLouDlyFJ9IaUNThdMB\/HizJSy+XHE=",
       "System.ObjectModel.dll": "sha256-XNb74V045Ina3D40UN0gaz54gC0hmNz1EKScz6CDTPk=",
-      "System.Private.CoreLib.dll": "sha256-K3btBPOLElpQIluuMc6IktXcrPppxoR0cFnYrOZb1EQ=",
+      "System.Private.CoreLib.dll": "sha256-Oq5Edbmcwwmfkp6lWhSnBDhjEL\/bS7XqLLWJeL8KfX0=",
       "System.Private.Runtime.InteropServices.JavaScript.dll": "sha256-U3xP94XuZ1H8IRffJYLTmWHwFgQoF3e\/VMZAr8BFsnE=",
       "System.Private.Uri.dll": "sha256-CTyq2e6ztMLvFW18SUopqIxOzq7fu9TxlUgdyGT5TDc=",
       "System.Private.Xml.dll": "sha256-ySb1kpGLrcZcH7mv\/A0RWh6S+Xlt9tIqLeU8ftEdI2c=",
