@@ -107,7 +107,6 @@
         this.canDrop = canDrop;
         isShowingDrop = true;
         dropBorderClass = DropBorderClass;
-        StateHasChanged();
     }
 
     public void HideDroppableStyle()
@@ -115,7 +114,6 @@
         canDrop = false;
         isShowingDrop = false;
         dropBorderClass = string.Empty;
-        StateHasChanged();
     }
 
     private async Task HandleDragEnter(DragEventArgs e)

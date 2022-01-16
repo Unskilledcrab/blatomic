@@ -31,7 +31,8 @@
             {
                 foreach (var dropArea in DropAreas)
                 {
-                    if (await dropArea.CanDropAsync(new DragArgs<TData>(data)))
+                    var isAlreadyInDropArea = item.DropArea != null && item.DropArea == dropArea;
+                    if (!isAlreadyInDropArea && await dropArea.CanDropAsync(new DragArgs<TData>(data)))
                     {
                         dropArea.ShowDroppableStyle(true);
                     }
@@ -43,6 +44,7 @@
                         }
                     }
                 }
+                StateHasChanged();
             }
         }
     }
@@ -54,6 +56,7 @@
         {
             dropArea.HideDroppableStyle();
         }
+        StateHasChanged();
     }
 
     public async Task OnTouchEnd(TouchEventArgs e)
