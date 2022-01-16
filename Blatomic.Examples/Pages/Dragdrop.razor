@@ -6,7 +6,7 @@
 <div class="leading-relaxed @TwColors.Text_Slate_600">
     <h1 class="text-2xl font-bold @TwColors.Text_Slate_900">Drag & Drop</h1>
 
-    <h3 class="text-xl font-bold mt-6 @TwColors.Text_Slate_900">What is it?</h3>    
+    <h3 class="text-xl font-bold mt-6 @TwColors.Text_Slate_900">What is it?</h3>
 
     <p class="my-2 font-medium">
         The drag and drop component makes it very easy to make items <b>draggable</b> and associate data with the item.
@@ -55,16 +55,20 @@
         </li>
         <li>
             <p>
-                Next we have a <b>DragItem</b>, this has a property <b>DragData</b> that we have set to <b>5</b> (which matches the <b>int</b> datatype from the <b>DragContext</b>).
-                Finally we have the <b>Copy</b> property set to <b>true</b> so that we produce a copy of the object after we drop it instead of it disappearing.
+                Next we have a <b>DragItem</b>, this has a property <b>DragData</b> that we have set to <b>5</b> (which
+                matches the <b>int</b> datatype from the <b>DragContext</b>).
+                Finally we have the <b>Copy</b> property set to <b>true</b> so that we produce a copy of the object
+                after we drop it instead of it disappearing.
             </p>
             <p class="italic">
-                Note: we <b>do not</b> need to declare the <b>DragData</b> or the <b>Copy</b> property for this example to work.
+                Note: we <b>do not</b> need to declare the <b>DragData</b> or the <b>Copy</b> property for this example
+                to work.
             </p>
         </li>
         <li>
             <p>
-                Finally we have the <b>DropArea</b> where we have set the <b>Context</b> to <b>Items</b> so that we can recieve all of the items that are in or have been dropped into that area
+                Finally we have the <b>DropArea</b> where we have set the <b>Context</b> to <b>Items</b> so that we can
+                recieve all of the items that are in or have been dropped into that area
             </p>
         </li>
     </ol>
@@ -76,8 +80,10 @@
     <h3 class="text-xl font-bold mt-12 @TwColors.Text_Slate_900">Advanced Usage</h3>
 
     <p class="my-2">
-        Now lets take a deeper look into what we can do with drag and drop. In the example below we can see that the <b>Success Card</b> can not be dragged into
-        the second area because it <b>can not</b> take data that is equal to 5. However, our new <b>Danger Card</b> can be dragged into that area because
+        Now lets take a deeper look into what we can do with drag and drop. In the example below we can see that the
+        <b>Success Card</b> can not be dragged into
+        the second area because it <b>can not</b> take data that is equal to 5. However, our new <b>Danger Card</b> can
+        be dragged into that area because
         it contains the number <b>4</b>.
     </p>
 
@@ -111,7 +117,7 @@
                 </div>
             </DropArea>
             <DropArea Context="Items"
-                      CanDropAsync="@((item) => item.Data != 5 ? Task.FromResult(true) : Task.FromResult(false))">
+                CanDropAsync="@((item) => item.Data != 5 ? Task.FromResult(true) : Task.FromResult(false))">
                 <div class="flex flex-col rounded-lg @Theme.Dark.All">
                     <div class="p-4 border-b border-gray-500">I can not take data that equals 5</div>
                     @foreach (var item in Items)
@@ -126,11 +132,259 @@
             </DropArea>
         </DragContext>
     </div>
-     
+
     <CodeBlock Title=".razor" Code="@secondExample" />
+
+    <h3 class="text-xl font-bold mt-12 @TwColors.Text_Slate_900">Advanced Example</h3>
+
+    <p class="my-2">
+        Let's make the one thing that everyone associates with drag and drop. A Kanban Board.
+    </p>
+
+    <div class="mb-2 overflow-auto flex justify-between">
+        <DragContext TData="Card" ShowAllDropAreas="false">
+            <DropArea Context="Items" Items="@cards" OnDropCompleteAsync="MarkToDoCard">
+                <div class="border border-gray-400 p-4 w-96">
+                    <h2 class="border-b border-gray-500 mb-2">Backlog</h2>
+                    <div class="flex flex-col space-y-2">
+                        @foreach (var item in Items)
+                        {
+                            @CardFragment(item)
+                        }
+                    </div>
+                </div>
+            </DropArea>
+            <DropArea Context="Items" TData="Card" CanDropAsync="SeverityCheck" OnDropCompleteAsync="MarkInProgressCard">
+                <div class="border border-gray-400 p-4 w-96">
+                    <h2 class="border-b border-gray-500 mb-2">Severe Items</h2>
+                    <div class="flex flex-col space-y-2">
+                        @foreach (var item in Items)
+                        {
+                            @CardFragment(item)
+                        }
+                    </div>
+                </div>
+            </DropArea>
+            <DropArea Context="Items" TData="Card" CanDropAsync="ProgressCheck" OnDropCompleteAsync="CompleteCard">
+                <div class="border border-gray-400 p-4 w-96">
+                    <h2 class="border-b border-gray-500 mb-2">Completed</h2>
+                    <div class="flex flex-col space-y-2">
+                        @foreach (var item in Items)
+                        {
+                            @CardFragment(item)
+                        }
+                    </div>
+                </div>
+            </DropArea>
+        </DragContext>
+    </div>
+    
+    <CodeBlock Title=".razor" Code="@kanbanExample" />
 </div>
 
 @code {
+    Task<bool> SeverityCheck(DragArgs<Card> card)
+    {
+        var severity = card?.Data?.Severity;
+        return Task.FromResult(severity == "Medium");
+    }
+    Task<bool> ProgressCheck(DragArgs<Card> card)
+    {
+        return Task.FromResult(card?.Data?.Status == "In Progress");
+    }
+    Task MarkToDoCard(DragArgs<Card> card)
+    {        
+        card.Data.Status = "To Do";
+        card.Data.Severity = "Medium";
+        return Task.CompletedTask;
+    }
+    Task MarkInProgressCard(DragArgs<Card> card)
+    {        
+        card.Data.Status = "In Progress";
+        card.Data.Severity = "High";
+        return Task.CompletedTask;
+    }
+    Task CompleteCard(DragArgs<Card> card)
+    {
+        card.Data.Status = "Complete";
+        card.Data.Severity = "Done";
+        return Task.CompletedTask;
+    }
+
+    List<Card> cards = new()
+    {
+        new Card()
+        {
+            Name = "Install Blatomic",
+            Description = "Need to go to the docs and go through the install page",
+            Severity ="Medium",
+            Status = "To Do"
+        },
+        new Card()
+        {
+            Name = "Learn Blatomic",
+            Description = "Go through the docs and get aquanted with all of the components and services",
+            Severity ="Medium",
+            Status = "To Do"
+        },
+        new Card()
+        {
+            Name = "Have Fun with Blatomic",
+            Description = "Use blatomic in a personal project and give it a star on github if you like 😉",
+            Severity ="Medium",
+            Status = "To Do"
+        },
+    };
+
+    class Card
+    {
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public string Severity { get; set; }
+        public string Status { get; set; }
+    }
+
+    private RenderFragment<Card> CardFragment = card => __builder =>
+    {
+        string color = "bg-green-600 dark:bg-green-400";
+        if (@card.Severity == "High")
+        {
+            color = "bg-red-600 dark:b-bg-red-400";
+        }
+        else if  (@card.Severity == "Medium")
+        {
+            color = "bg-yellow-600 dark:b-bg-yellow-500";
+        }
+        <DragItem TData="Card" DragData="@card">
+            <div class="flex flex-col rounded-lg text-white dark:text-black @color">
+                <div class="p-2 border-b border-gray-500">
+                    @card.Name - <b>@card.Status</b> (@card.Severity)
+                </div>
+                <div class="p-2">@card.Description</div>
+            </div>
+    </DragItem>
+    };
+
+    private string kanbanExample = @"<DragContext TData=""Card"" ShowAllDropAreas=""false"">
+    <DropArea Context=""Items"" Items=""@cards"" OnDropCompleteAsync=""MarkToDoCard"">
+        <div class=""border border-gray-400 p-4 w-96"">
+            <h2 class=""border-b border-gray-500 mb-2"">Backlog</h2>
+            <div class=""flex flex-col space-y-2"">
+                @foreach (var item in Items)
+                {
+                    @CardFragment(item)
+                }
+            </div>
+        </div>
+    </DropArea>
+    <DropArea Context=""Items"" TData=""Card"" CanDropAsync=""SeverityCheck"" OnDropCompleteAsync=""MarkInProgressCard"">
+        <div class=""border border-gray-400 p-4 w-96"">
+            <h2 class=""border-b border-gray-500 mb-2"">Severe Items</h2>
+            <div class=""flex flex-col space-y-2"">
+                @foreach (var item in Items)
+                {
+                    @CardFragment(item)
+                }
+            </div>
+        </div>
+    </DropArea>
+    <DropArea Context=""Items"" TData=""Card"" CanDropAsync=""ProgressCheck"" OnDropCompleteAsync=""CompleteCard"">
+        <div class=""border border-gray-400 p-4 w-96"">
+            <h2 class=""border-b border-gray-500 mb-2"">Completed</h2>
+            <div class=""flex flex-col space-y-2"">
+                @foreach (var item in Items)
+                {
+                    @CardFragment(item)
+                }
+            </div>
+        </div>
+    </DropArea>
+</DragContext>
+
+@code {
+    Task<bool> SeverityCheck(DragArgs<Card> card)
+    {
+        var severity = card?.Data?.Severity;
+        return Task.FromResult(severity == ""Medium"");
+    }
+    Task<bool> ProgressCheck(DragArgs<Card> card)
+    {
+        return Task.FromResult(card?.Data?.Status == ""In Progress"");
+    }
+    Task MarkToDoCard(DragArgs<Card> card)
+    {        
+        card.Data.Status = ""To Do"";
+        card.Data.Severity = ""Medium"";
+        return Task.CompletedTask;
+    }
+    Task MarkInProgressCard(DragArgs<Card> card)
+    {        
+        card.Data.Status = ""In Progress"";
+        card.Data.Severity = ""High"";
+        return Task.CompletedTask;
+    }
+    Task CompleteCard(DragArgs<Card> card)
+    {
+        card.Data.Status = ""Complete"";
+        card.Data.Severity = ""Done"";
+        return Task.CompletedTask;
+    }
+
+    List<Card> cards = new()
+    {
+        new Card()
+        {
+            Name = ""Install Blatomic"",
+            Description = ""Need to go to the docs and go through the install page"",
+            Severity =""Medium"",
+            Status = ""To Do""
+        },
+        new Card()
+        {
+            Name = ""Learn Blatomic"",
+            Description = ""Go through the docs and get aquanted with all of the components and services"",
+            Severity =""Medium"",
+            Status = ""To Do""
+        },
+        new Card()
+        {
+            Name = ""Have Fun with Blatomic"",
+            Description = ""Use blatomic in a personal project and give it a star on github if you like 😉"",
+            Severity =""Medium"",
+            Status = ""To Do""
+        },
+    };
+
+    class Card
+    {
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public string Severity { get; set; }
+        public string Status { get; set; }
+    }
+
+    private RenderFragment<Card> CardFragment = card => __builder =>
+    {
+        string color = ""bg-green-600 dark:bg-green-400"";
+        if (@card.Severity == ""High"")
+        {
+            color = ""bg-red-600 dark:b-bg-red-400"";
+        }
+        else if  (@card.Severity == ""Medium"")
+        {
+            color = ""bg-yellow-600 dark:b-bg-yellow-500"";
+        }
+        <DragItem TData=""Card"" DragData=""@card"">
+            <div class=""flex flex-col rounded-lg text-white dark:text-black @color"">
+                <div class=""p-2 border-b border-gray-500"">
+                    @card.Name - <b>@card.Status</b> (@card.Severity)
+                </div>
+                <div class=""p-2"">@card.Description</div>
+            </div>
+        </DragItem>
+    };
+}";
+
     private string firstExample = @"@inject ITheme Theme
 <DragContext TData=""int"">
     <DragItem DragData=""5"" Copy=""true"">

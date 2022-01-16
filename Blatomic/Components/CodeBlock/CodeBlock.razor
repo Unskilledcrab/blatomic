@@ -38,7 +38,7 @@
     private string markup = string.Empty;
     private string copyButtonText = "Copy";
 
-    protected override void OnInitialized()
+    protected override void OnParametersSet()
     {
         if (!string.IsNullOrWhiteSpace(Code))
         {
@@ -47,7 +47,7 @@
                     ShowLineNumbers = ShowLineNumber
                 }.ParseCode(Code, Language);
         }
-        base.OnInitialized();
+        base.OnParametersSet();
     }
 
     async ValueTask IAsyncDisposable.DisposeAsync()

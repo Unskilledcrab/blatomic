@@ -13,5 +13,10 @@ namespace Blatomic.Services.JS
         {
             return Run<BoundingClientRect>("GetBoundingClientRect", element);
         }
+
+        public ValueTask<IEnumerable<BoundingClientRect>> GetChildrenBoundingClientRect(ElementReference element)
+        {
+            return Run<IEnumerable<BoundingClientRect>>("GetChildrenBoundingClientRect", element);
+        }
     }
 }
