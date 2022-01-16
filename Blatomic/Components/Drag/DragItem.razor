@@ -4,6 +4,7 @@
 @if (isShowing)
 {
     <div class="@dragClass b-cursor-grab" draggable="true" 
+        @ref="dragElement"
         @ondragend="HandleDragEnd" 
         @ondragstart="HandleDragStart"
         @ontouchstart="HandleTouchStart"
@@ -22,10 +23,20 @@
     [Parameter] public RenderFragment? ChildContent { get; set; }
     [Parameter] public bool Copy { get; set; } = false;
 
+    private ElementReference dragElement;
     private string dragClass => isDragging ? "b-opacity-50" : string.Empty;
     private bool isShowing = true;
     private bool isDragging = false;
     private bool droppedInDropZone = false;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await WindowService.TouchDragScrollPrevention(dragElement);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
 
     public void OnDragToDropZoneComplete()
     {
@@ -38,7 +49,6 @@
     }
     private async Task HandleTouchEnd(TouchEventArgs e)
     {
-        await WindowService.EnableTouchScroll();
         await EndDrag(true, e);
     }
 
@@ -71,7 +81,6 @@
 
     private async Task HandleTouchStart(TouchEventArgs e)
     {
-        await WindowService.DisableTouchScroll();
         await StartDrag();
     }
 
