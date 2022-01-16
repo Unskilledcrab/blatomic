@@ -7,6 +7,10 @@
 
 @code {
     [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>
+    /// Set to true if you want to show all drop areas in the context, including where the user isn't able to drop with the item
+    /// </summary>
+    [Parameter] public bool ShowAllDropAreas { get; set; } = false;
 
     public TData? DragData => DragItem is not null ? DragItem.DragData : default(TData);
     public DragItem<TData>? DragItem { get; set; }
@@ -33,7 +37,10 @@
                     }
                     else
                     {
-                        dropArea.ShowDroppableStyle(false);
+                        if (ShowAllDropAreas)
+                        {
+                            dropArea.ShowDroppableStyle(false);
+                        }
                     }
                 }
             }

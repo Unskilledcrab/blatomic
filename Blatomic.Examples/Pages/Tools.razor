@@ -1,0 +1,36 @@
+﻿@page "/tools"
+@inject ITheme Theme
+
+<PageTitle>Tools</PageTitle>
+
+<div class="leading-relaxed @TwColors.Text_Slate_600">
+    <h1 class="text-2xl font-bold @TwColors.Text_Slate_900">Tools</h1>
+
+    <p class="my-2 font-medium">
+        These are just some personal tools that I've made that have assisted me with building this project.
+        You can place any text below to show it in the code block 
+        <i>
+            (except it will convert single quotes to double quotes)
+        </i>
+    </p>
+
+    <textarea class="mb-2 w-full h-80" placeholder="input strings with single quotes here" @bind="@Value"></textarea>
+
+    <CodeBlock Title=".razor" Code="@output" />
+</div>
+
+
+@code {
+    private string output = "test";
+    private string value;
+    public string Value
+    {
+        get => value;
+        set
+        {
+            output = value.Replace($"\"", @"""""");
+            this.value = value;
+            StateHasChanged();
+        }
+    }
+}

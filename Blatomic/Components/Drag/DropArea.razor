@@ -60,7 +60,7 @@
     /// Return if you could like the item to be added to the internal list. Default true
     /// </summary>
     [Parameter] public Func<DragArgs<TData>, Task<bool>> BeforeDropAsync { get; set; } = (dropItem) => Task.FromResult(true);
-    [Parameter] public Func<DragArgs<TData>, Task> OnDropAsync { get; set; } = (dropItem) => Task.CompletedTask;
+    [Parameter] public Func<DragArgs<TData>, Task> OnDropCompleteAsync { get; set; } = (dropItem) => Task.CompletedTask;
 
     [Parameter] public RenderFragment<List<TData>>? ChildContent { get; set; }
     [Parameter] public RenderFragment? CanDropTemplate { get; set; } = @Plus.StandardPlusOutline;
@@ -69,7 +69,7 @@
     protected override void OnAfterRender(bool firstRender)
     {
         base.OnAfterRender(firstRender);
-
+        
         if (firstRender)
         {
             Context?.DropAreas.Add(this);
@@ -158,7 +158,7 @@
                 BoundItems.Add(args.Data);                
             }
             Context?.DragItem?.OnDragToDropZoneComplete();
-            await OnDropAsync(args);
+            await OnDropCompleteAsync(args);
         }
         HideDroppableStyle();
     }

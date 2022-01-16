@@ -8,6 +8,7 @@ namespace Blatomic.Services.JS
         {
             services.AddTransient<ClipboardService>();
             services.AddTransient<ElementService>();
+            services.AddTransient<WindowService>();
             return services;
         }
     }
