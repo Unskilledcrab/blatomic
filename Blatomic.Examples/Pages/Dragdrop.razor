@@ -144,7 +144,7 @@
     <div class="mb-2 overflow-auto flex justify-between">
         <DragContext TData="Card" ShowAllDropAreas="false">
             <DropArea Context="Items" Items="@cards" OnDropCompleteAsync="MarkToDoCard">
-                <div class="border border-gray-400 p-4 w-96">
+                <div class="border border-gray-400 p-4 w-48 sm:w-96">
                     <h2 class="border-b border-gray-500 mb-2">Backlog</h2>
                     <div class="flex flex-col space-y-2">
                         @foreach (var item in Items)
@@ -155,7 +155,7 @@
                 </div>
             </DropArea>
             <DropArea Context="Items" TData="Card" CanDropAsync="SeverityCheck" OnDropCompleteAsync="MarkInProgressCard">
-                <div class="border border-gray-400 p-4 w-96">
+                <div class="border border-gray-400 p-4 w-48 sm:w-96">
                     <h2 class="border-b border-gray-500 mb-2">Severe Items</h2>
                     <div class="flex flex-col space-y-2">
                         @foreach (var item in Items)
@@ -166,7 +166,7 @@
                 </div>
             </DropArea>
             <DropArea Context="Items" TData="Card" CanDropAsync="ProgressCheck" OnDropCompleteAsync="CompleteCard">
-                <div class="border border-gray-400 p-4 w-96">
+                <div class="border border-gray-400 p-4 w-48 sm:w-96">
                     <h2 class="border-b border-gray-500 mb-2">Completed</h2>
                     <div class="flex flex-col space-y-2">
                         @foreach (var item in Items)
