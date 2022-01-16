@@ -4,10 +4,11 @@
 @if (isShowing)
 {
     <div class="@dragClass b-cursor-grab" draggable="true" 
+        @ref="dragElement"
         @ondragend="HandleDragEnd" 
         @ondragstart="HandleDragStart"
         @ontouchstart="HandleTouchStart"
-        @ontouchmove="HandleTouchStart"
+        @ontouchmove="HandleTouchMove"
         @ontouchend="HandleTouchEnd" 
         @ontouchcancel="HandleTouchEnd">
         @ChildContent
@@ -22,10 +23,20 @@
     [Parameter] public RenderFragment? ChildContent { get; set; }
     [Parameter] public bool Copy { get; set; } = false;
 
+    private ElementReference dragElement;
     private string dragClass => isDragging ? "b-opacity-50" : string.Empty;
     private bool isShowing = true;
     private bool isDragging = false;
     private bool droppedInDropZone = false;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await WindowService.TouchDragScrollPrevention(dragElement);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
 
     public void OnDragToDropZoneComplete()
     {
@@ -38,7 +49,6 @@
     }
     private async Task HandleTouchEnd(TouchEventArgs e)
     {
-        await WindowService.EnableTouchScroll();
         await EndDrag(true, e);
     }
 
@@ -69,25 +79,32 @@
         StateHasChanged();
     }
 
+    private async Task HandleTouchMove(TouchEventArgs e)
+    {
+        if (Context is not null)
+        {
+            await Context.OnTouchMove(e);
+        }
+    }
+
     private async Task HandleTouchStart(TouchEventArgs e)
     {
-        await WindowService.DisableTouchScroll();
-        await StartDrag();
+        await StartDrag(touchArgs: e);
     }
 
     private async Task HandleDragStart(DragEventArgs e)
     {
-        await StartDrag();
+        await StartDrag(dragArgs: e);
     }
 
-    private async Task StartDrag()
+    private async Task StartDrag(TouchEventArgs? touchArgs = null, DragEventArgs? dragArgs = null)
     {
         droppedInDropZone = false;
         isDragging = true;
         StateHasChanged();
         if (Context is not null)
         {
-            await Context.OnDragStart(this);
+            await Context.OnDragStart(this, touchArgs, dragArgs);
         }
     }
 }

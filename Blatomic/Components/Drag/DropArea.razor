@@ -4,7 +4,7 @@
 @inject ElementService ElementService
 
 <div @ref="container" class="b-relative" ondragover="event.preventDefault();"
-    ondragstart="event.dataTransfer.setData('', event.target.id);" @ondragenter="HandleDragEnter">
+     ondragstart="event.dataTransfer.setData('', event.target.id);" @ondragenter="InternalHandleDragEnter">
 
     <CascadingValue Value="this">
         @if (ChildContent is not null)
@@ -25,7 +25,7 @@
             }
         </div>
         <div class="b-absolute b-z-20 b-inset-0 @DropBorderClass"
-             @ondragleave="HandleDragLeave" @ondrop="HandleDrop">
+         @ondragleave="InternalHandleDragLeave" @ondrop="InternalHandleDrop">
         </div>
     }
 </div>
@@ -55,21 +55,41 @@
     [Parameter] public Func<DragArgs<TData>, Task<bool>> CanDropAsync { get; set; } = (dropItem) => Task.FromResult(true);
     [Parameter] public Func<DragArgs<TData>, Task> OnDragEnterAsync { get; set; } = (dropItem) => Task.CompletedTask;
     [Parameter] public Func<DragArgs<TData>, Task> OnDragLeaveAsync { get; set; } = (dropItem) => Task.CompletedTask;
-
     /// <summary>
     /// Return if you could like the item to be added to the internal list. Default true
     /// </summary>
     [Parameter] public Func<DragArgs<TData>, Task<bool>> BeforeDropAsync { get; set; } = (dropItem) => Task.FromResult(true);
     [Parameter] public Func<DragArgs<TData>, Task> OnDropCompleteAsync { get; set; } = (dropItem) => Task.CompletedTask;
 
+    [Parameter] public Func<DragArgs<TData>, bool> CanDrop { get; set; } = (dropItem) => true;
+    [Parameter] public Action<DragArgs<TData>>? OnDragEnter { get; set; }
+    [Parameter] public Action<DragArgs<TData>>? OnDragLeave { get; set; }
+    /// <summary>
+    /// Return if you could like the item to be added to the internal list. Default true
+    /// </summary>
+    [Parameter] public Func<DragArgs<TData>, bool> BeforeDrop { get; set; } = (dropItem) => true;
+    [Parameter] public Action<DragArgs<TData>>? OnDropComplete { get; set; }
+
     [Parameter] public RenderFragment<List<TData>>? ChildContent { get; set; }
     [Parameter] public RenderFragment? CanDropTemplate { get; set; } = @Plus.StandardPlusOutline;
     [Parameter] public RenderFragment? CannotDropTemplate { get; set; } = @Ban.StandardBanSolid;
 
+    private TData? data
+    {
+        get
+        {
+            if (Context == null)
+            {
+                return default(TData);
+            }
+            return Context.DragData;
+        }
+    }
+
     protected override void OnAfterRender(bool firstRender)
     {
         base.OnAfterRender(firstRender);
-        
+
         if (firstRender)
         {
             Context?.DropAreas.Add(this);
@@ -97,17 +117,19 @@
         }
     }
 
-    public void ShowDroppableStyle(bool canDrop)
+    public async Task ShowDroppableStyleAsync(DragArgs<TData> args)
     {
-        if (!ShowCantDrop && !canDrop)
+        if (await HandleCanDropAsync(args))
         {
-            return;
+            canDrop = true;
+        }
+        else
+        {
+            canDrop = false;
         }
 
-        this.canDrop = canDrop;
         isShowingDrop = true;
         dropBorderClass = DropBorderClass;
-        StateHasChanged();
     }
 
     public void HideDroppableStyle()
@@ -115,51 +137,65 @@
         canDrop = false;
         isShowingDrop = false;
         dropBorderClass = string.Empty;
-        StateHasChanged();
     }
 
-    private async Task HandleDragEnter(DragEventArgs e)
+    public async Task HandleOnDragEnterAsync(DragArgs<TData> args)
     {
-        if (Context == null || Context.DragData == null)
-        {
-            return;
+        if (isShowingDrop)
+        {            
+            await OnDragEnterAsync(args);
+            OnDragEnter?.Invoke(args);
         }
-
-        var args = e.Create(Context.DragData);
-        await OnDragEnterAsync(args);
     }
-    private async Task HandleDragLeave(DragEventArgs e)
+    public async Task HandleOnDragLeaveAsync(DragArgs<TData> args)
     {
-        if (Context == null || Context.DragData == null)
+        if (isShowingDrop)
         {
-            return;
+            await OnDragLeaveAsync(args);
+            OnDragLeave?.Invoke(args);
         }
-
-        var args = e.Create(Context.DragData);
-        await OnDragLeaveAsync(e.Create(Context.DragData));
     }
-    private async Task HandleDrop(DragEventArgs e)
+    public async Task HandleOnDropCompleteAsync(DragArgs<TData> args)
     {
-        if (Context == null || Context.DragData == null)
-        {
-            return;
-        }
-
-        var args = e.Create(Context.DragData);
-        await DropAsync(args);
+        await OnDropCompleteAsync(args);
+        OnDropComplete?.Invoke(args);
+    }
+    public async Task<bool> HandleBeforeDropAsync(DragArgs<TData> args)
+    {
+        return await BeforeDropAsync(args) && BeforeDrop.Invoke(args);
+    }
+    public async Task<bool> HandleCanDropAsync(DragArgs<TData> args)
+    {
+        return await CanDropAsync(args) && CanDrop.Invoke(args);
     }
 
-    public async Task DropAsync(DragArgs<TData> args)
+    public async Task HandleDropAsync(DragArgs<TData> args)
     {
-        if (await CanDropAsync(args))
+        if (await HandleCanDropAsync(args))
         {
-            if (args.Data != null && await BeforeDropAsync(args))
+            if (args.Data != null && await HandleBeforeDropAsync(args))
             {
-                BoundItems.Add(args.Data);                
+                BoundItems.Add(args.Data);
             }
             Context?.DragItem?.OnDragToDropZoneComplete();
-            await OnDropCompleteAsync(args);
+            await HandleOnDropCompleteAsync(args);
         }
         HideDroppableStyle();
+    }
+
+    private async Task InternalHandleDragEnter(DragEventArgs e)
+    {
+        var args = new DragArgs<TData>(data, null, e);
+        await HandleOnDragEnterAsync(args);
+    }
+    private async Task InternalHandleDragLeave(DragEventArgs e)
+    {
+        var args = new DragArgs<TData>(data, null, e);
+        await HandleOnDragLeaveAsync(args);
+    }
+    private async Task InternalHandleDrop(DragEventArgs e)
+    {
+        var args = new DragArgs<TData>(data, null, e);
+        await HandleDropAsync(args);
     }
 }

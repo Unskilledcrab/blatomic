@@ -18,5 +18,10 @@ namespace Blatomic.Services.JS
         {
             return Run("EnableTouchScroll");
         }
+
+        public ValueTask TouchDragScrollPrevention(ElementReference element)
+        {
+            return Run("TouchDragScrollPrevention", element);
+        }
     }
 }

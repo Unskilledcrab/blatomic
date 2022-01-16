@@ -1,5 +1,6 @@
 ﻿@page "/dragdrop"
 @inject ITheme Theme
+@inject ToastService ToastService
 
 <PageTitle>Drag & Drop</PageTitle>
 
@@ -15,7 +16,7 @@
         on where they can and cannot place the dragged item. This will also work on touch devices like mobile!
     </p>
 
-    <div class="mb-2 max-w-2xl mx-auto flex justify-between p-4 border border-gray-400">
+    <div class="mb-2 max-w-2xl flex justify-between p-4 border border-gray-400">
         <DragContext TData="int">
             <DragItem DragData="5" Copy="true">
                 <div class="flex flex-col rounded-lg @Theme.Success.All">
@@ -87,7 +88,7 @@
         it contains the number <b>4</b>.
     </p>
 
-    <div class="mb-2 max-w-4xl mx-auto overflow-auto flex justify-between p-4 border border-gray-400">
+    <div class="mb-2 max-w-4xl overflow-auto flex justify-between p-4 border border-gray-400">
         <DragContext TData="int">
             <div class="flex flex-col space-y-4">
                 <DragItem DragData="5" Copy="true">
@@ -143,8 +144,8 @@
 
     <div class="mb-2 overflow-auto flex justify-between">
         <DragContext TData="Card" ShowAllDropAreas="false">
-            <DropArea Context="Items" Items="@cards" OnDropCompleteAsync="MarkToDoCard">
-                <div class="border border-gray-400 p-4 w-96">
+            <DropArea Context="Items" Items="@cards" OnDropComplete="MarkToDoCard">
+                <div class="border border-gray-400 p-4 w-48 sm:w-96">
                     <h2 class="border-b border-gray-500 mb-2">Backlog</h2>
                     <div class="flex flex-col space-y-2">
                         @foreach (var item in Items)
@@ -154,8 +155,8 @@
                     </div>
                 </div>
             </DropArea>
-            <DropArea Context="Items" TData="Card" CanDropAsync="SeverityCheck" OnDropCompleteAsync="MarkInProgressCard">
-                <div class="border border-gray-400 p-4 w-96">
+            <DropArea Context="Items" TData="Card" CanDrop="SeverityCheck" OnDropComplete="MarkInProgressCard" OnDragEnter="ShowToastEnter" OnDragLeave="ShowToastLeave">
+                <div class="border border-gray-400 p-4 w-48 sm:w-96">
                     <h2 class="border-b border-gray-500 mb-2">Severe Items</h2>
                     <div class="flex flex-col space-y-2">
                         @foreach (var item in Items)
@@ -165,8 +166,8 @@
                     </div>
                 </div>
             </DropArea>
-            <DropArea Context="Items" TData="Card" CanDropAsync="ProgressCheck" OnDropCompleteAsync="CompleteCard">
-                <div class="border border-gray-400 p-4 w-96">
+            <DropArea Context="Items" TData="Card" CanDrop="ProgressCheck" OnDropComplete="CompleteCard">
+                <div class="border border-gray-400 p-4 w-48 sm:w-96">
                     <h2 class="border-b border-gray-500 mb-2">Completed</h2>
                     <div class="flex flex-col space-y-2">
                         @foreach (var item in Items)
@@ -183,32 +184,47 @@
 </div>
 
 @code {
-    Task<bool> SeverityCheck(DragArgs<Card> card)
+    void ShowToastEnter(DragArgs<Card> card)
+    {
+        ToastService.AddToast(new Toast { Header = "Transfer?", Message = $"{card.Data?.Name}" });
+    }
+    void ShowToastLeave(DragArgs<Card> card)
+    {
+        ToastService.AddToast(new Toast { Header = "Nope", Message = $"{card.Data?.Name}" });
+    }
+    bool SeverityCheck(DragArgs<Card> card)
     {
         var severity = card?.Data?.Severity;
-        return Task.FromResult(severity == "Medium");
+        return severity == "Medium";
     }
-    Task<bool> ProgressCheck(DragArgs<Card> card)
+    bool ProgressCheck(DragArgs<Card> card)
     {
-        return Task.FromResult(card?.Data?.Status == "In Progress");
+        return card?.Data?.Status == "In Progress";
     }
-    Task MarkToDoCard(DragArgs<Card> card)
-    {        
-        card.Data.Status = "To Do";
-        card.Data.Severity = "Medium";
-        return Task.CompletedTask;
-    }
-    Task MarkInProgressCard(DragArgs<Card> card)
-    {        
-        card.Data.Status = "In Progress";
-        card.Data.Severity = "High";
-        return Task.CompletedTask;
-    }
-    Task CompleteCard(DragArgs<Card> card)
+    void MarkToDoCard(DragArgs<Card> card)
     {
-        card.Data.Status = "Complete";
-        card.Data.Severity = "Done";
-        return Task.CompletedTask;
+        if (card.Data != null)
+        {
+            card.Data.Status = "To Do";
+            card.Data.Severity = "Medium";
+        }
+    }
+    void MarkInProgressCard(DragArgs<Card> card)
+    {
+        if (card.Data != null)
+        {
+            card.Data.Status = "In Progress";
+            card.Data.Severity = "High";
+        }
+        ToastService.AddToast(new Toast { Header = "New Work Item!", Message = $"{card.Data?.Name} has been moved to a Severe Item" });
+    }
+    void CompleteCard(DragArgs<Card> card)
+    {
+        if (card.Data != null)
+        {
+            card.Data.Status = "Complete";
+            card.Data.Severity = "Done";
+        }
     }
 
     List<Card> cards = new()
@@ -238,10 +254,10 @@
 
     class Card
     {
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public string Severity { get; set; }
-        public string Status { get; set; }
+        public string? Name { get; set; }
+        public string? Description { get; set; }
+        public string? Severity { get; set; }
+        public string? Status { get; set; }
     }
 
     private RenderFragment<Card> CardFragment = card => __builder =>
