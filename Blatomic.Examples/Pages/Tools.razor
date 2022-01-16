@@ -8,12 +8,17 @@
 
     <p class="my-2 font-medium">
         These are just some personal tools that I've made that have assisted me with building this project.
+    </p>
+    
+    <h3 class="text-xl font-bold mt-12 @TwColors.Text_Slate_900">Code Block Creator</h3>
+    <p class="my-2 font-medium">
         You can place any text below to show it in the code block 
         <i>
             (except it will convert single quotes to double quotes)
-        </i>
+        </i>.
+        This is used to make all of the strings that are sent to code blocks since they need to 
+        be escaped in C# when you have an <b>@("@")</b> symbol
     </p>
-
     <textarea class="mb-2 w-full h-80" placeholder="input strings with single quotes here" @bind="@Value"></textarea>
 
     <CodeBlock Title=".razor" Code="@output" />
@@ -21,7 +26,7 @@
 
 
 @code {
-    private string output = "test";
+    private string output;
     private string value;
     public string Value
     {

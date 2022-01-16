@@ -29,7 +29,7 @@
         Here we can manipulate the value of the progress bar and we are displaying that value to the user
     </p>
 
-    <p class="my-2 max-w-lg mx-auto">
+    <p class="my-2 max-w-lg">
         <ProgressBar @bind-Percentage="@progress">@($"{progress}%")</ProgressBar>
         <div class="flex justify-around mt-2">
             <Button OnClickedAsync="(() => progress = 0)">0</Button>
