@@ -1,4 +1,6 @@
-﻿@attribute [CascadingTypeParameter(nameof(TData))]
+﻿@using System.Linq
+
+@attribute [CascadingTypeParameter(nameof(TData))]
 @typeparam TData
 
 <CascadingValue Value="this">
@@ -16,7 +18,9 @@
     public DragItem<TData>? DragItem { get; set; }
     public List<DropArea<TData>> DropAreas { get; set; } = new();
 
-    public async Task OnDragStart(DragItem<TData>? dragItem)
+    private List<DropArea<TData>> InsideTouchDropArea = new();
+
+    public async Task OnDragStart(DragItem<TData>? dragItem, TouchEventArgs? touchArgs = null, DragEventArgs? dragEventArgs = null)
     {
         if (dragItem == null)
         {
@@ -32,15 +36,20 @@
                 foreach (var dropArea in DropAreas)
                 {
                     var isAlreadyInDropArea = item.DropArea != null && item.DropArea == dropArea;
-                    if (!isAlreadyInDropArea && await dropArea.CanDropAsync(new DragArgs<TData>(data)))
-                    {
-                        dropArea.ShowDroppableStyle(true);
-                    }
-                    else
-                    {
-                        if (ShowAllDropAreas)
+                    DragArgs<TData> dragArgs = new DragArgs<TData>(data, touchArgs, dragEventArgs);
+
+                    if (!isAlreadyInDropArea)
+                    {                        
+                        if (await dropArea.HandleCanDropAsync(dragArgs))
                         {
-                            dropArea.ShowDroppableStyle(false);
+                            await dropArea.ShowDroppableStyleAsync(dragArgs);
+                        }
+                        else
+                        {
+                            if (ShowAllDropAreas)
+                            {
+                                await dropArea.ShowDroppableStyleAsync(dragArgs);
+                            }
                         }
                     }
                 }
@@ -59,7 +68,34 @@
         StateHasChanged();
     }
 
+    public async Task OnTouchMove(TouchEventArgs e)
+    {
+        var newInsideTouchDropArea = await GetAreasOverTouch(e)
+                .Select(x => x.dropArea)
+                .ToListAsync();
+
+        var dragArgs = new DragArgs<TData>(e,DragData);
+        foreach (var dropArea in InsideTouchDropArea.Except(newInsideTouchDropArea))
+        {            
+            await dropArea.HandleOnDragLeaveAsync(dragArgs);
+        }
+        foreach (var dropArea in newInsideTouchDropArea.Except(InsideTouchDropArea))
+        {            
+            await dropArea.HandleOnDragEnterAsync(dragArgs);
+        }
+
+        InsideTouchDropArea = newInsideTouchDropArea;
+    }
+
     public async Task OnTouchEnd(TouchEventArgs e)
+    {
+        await foreach (var item in GetAreasOverTouch(e))
+        {
+            await item.dropArea.HandleDropAsync(new DragArgs<TData>(e,item.data));
+        }
+    }
+
+    private async IAsyncEnumerable<(DropArea<TData> dropArea,TData data)> GetAreasOverTouch(TouchEventArgs e)
     {
         var endPoint = e.ChangedTouches[0];
         var endX = endPoint.ClientX;
@@ -79,7 +115,7 @@
             {
                 if (DragItem != null && DragItem.DragData is TData data)
                 {
-                    await dropArea.DropAsync(new DragArgs<TData>(data));
+                    yield return (dropArea,data);
                 }
             }
         }

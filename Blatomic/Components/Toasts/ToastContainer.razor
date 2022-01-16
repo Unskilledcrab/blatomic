@@ -5,7 +5,7 @@
 @inject ToastService toastService
 @inject ITheme Theme
 
-<div class="b-fixed @Position.ToastStyle() b-p-4 b-rounded b-overflow-auto">
+<div class="b-fixed b-z-[1000] @Position.ToastStyle() b-p-4 b-rounded b-overflow-auto">
     <div class="b-flex b-flex-col b-space-y-4">
         @foreach (var toast in toasts.GetItems())
         {
@@ -17,11 +17,11 @@
             }
             else
             {
-                <div tabindex="0" 
-                     @onclick="@(() => PauseToastTimer(toast))" 
-                     @onmouseover="@(() => PauseToastTimer(toast))" 
-                     @onmouseout="@(() => StartToastTimer(toast))" 
-                     class="b-transition hover:b-scale-105 b-max-w-xs sm:b-max-w-sm b-shadow-lg dark:b-shadow-white/5 b-divide-y b-divide-gray-500 b-rounded b-bg-gray-200/90 dark:b-bg-gray-800/90 b-text-black dark:b-text-white">
+                <div tabindex="0"
+             @onclick="@(() => PauseToastTimer(toast))"
+             @onmouseover="@(() => PauseToastTimer(toast))"
+             @onmouseout="@(() => StartToastTimer(toast))"
+             class="b-transition hover:b-scale-105 b-max-w-xs sm:b-max-w-sm b-shadow-lg dark:b-shadow-white/5 b-divide-y b-divide-gray-500 b-rounded b-bg-gray-200/90 dark:b-bg-gray-800/90 b-text-black dark:b-text-white">
                     <div class="b-flex b-justify-between b-items-center b-p-2">
                         <div class="b-flex b-items-center">
                             <span class="b-inline-block b-h-5 b-w-5 b-bg-blue-400 b-rounded b-mr-2"></span>
@@ -52,7 +52,7 @@
     [Parameter] public RenderFragment<ToastWrapper>? ToastTemplate { get; set; }
 
     private ThreadSafeList<ToastWrapper> toasts = new();
-    private System.Timers.Timer timer;
+    private System.Timers.Timer? timer;
     public static int ToastTickRate = 100;
 
     public void AddToast(Toast toast)
@@ -60,18 +60,21 @@
         var toastWrapper = new ToastWrapper(toast);
         toasts.Add(toastWrapper);
         toastWrapper.OnElapsed += TimedRemove;
-        timer.Elapsed += toastWrapper.TimerTick;
+        if (timer != null)
+        {
+            timer.Elapsed += toastWrapper.TimerTick;
+        }
         StartRefreshing();
         StateHasChanged();
     }
 
     private void PauseToastTimer(ToastWrapper toastWrapper)
     {
-        timer.Stop();
+        timer?.Stop();
     }
     private void StartToastTimer(ToastWrapper toastWrapper)
     {
-        timer.Start();
+        timer?.Start();
     }
 
     private async void ToastTick(object? sender, ElapsedEventArgs e)
@@ -83,13 +86,13 @@
     {
         if (toasts.Count == 0)
         {
-            timer.Stop();
+            timer?.Stop();
         }
     }
 
     private void StartRefreshing()
     {
-        timer.Start();
+        timer?.Start();
     }
 
     private void TimedRemove(object? sender, ElapsedEventArgs e)
@@ -105,7 +108,10 @@
     private async void RemoveToast(ToastWrapper toastWrapper, bool refreshUI = true)
     {
         toastWrapper.OnElapsed -= TimedRemove;
-        timer.Elapsed -= toastWrapper.TimerTick;
+        if (timer != null)
+        {
+            timer.Elapsed -= toastWrapper.TimerTick;
+        }
         toasts.Remove(toastWrapper);
         PauseRefresher();
         if (refreshUI)
@@ -134,7 +140,10 @@
             RemoveToast(toasts.IndexOf(i), false);
         }
         toastService.OnAddToast -= AddToast;
-        timer.Elapsed -= ToastTick;
-        timer.Dispose();
+        if (timer != null)
+        {
+            timer.Elapsed -= ToastTick;
+            timer.Dispose();
+        }
     }
 }
