@@ -140,6 +140,10 @@
 
     <p class="my-2">
         Let's make the one thing that everyone associates with drag and drop. A Kanban Board.
+        Here we are making use of the <b>CanDrop, OnDropComplete, OnDragEnter, & OnDragLeave</b>
+        event hook. Notice that we are using the synchronous versions because we are not having
+        to complete any asynchronous tasks. If we did need to, every event hook has an <b>Async</b>
+        equivalent
     </p>
 
     <div class="mb-2 overflow-auto flex justify-between">
@@ -281,9 +285,11 @@
     </DragItem>
     };
 
-    private string kanbanExample = @"<DragContext TData=""Card"" ShowAllDropAreas=""false"">
-    <DropArea Context=""Items"" Items=""@cards"" OnDropCompleteAsync=""MarkToDoCard"">
-        <div class=""border border-gray-400 p-4 w-96"">
+    private string kanbanExample = @"@inject ToastService ToastService
+
+<DragContext TData=""Card"" ShowAllDropAreas=""false"">
+    <DropArea Context=""Items"" Items=""@cards"" OnDropComplete=""MarkToDoCard"">
+        <div class=""border border-gray-400 p-4 w-48 sm:w-96"">
             <h2 class=""border-b border-gray-500 mb-2"">Backlog</h2>
             <div class=""flex flex-col space-y-2"">
                 @foreach (var item in Items)
@@ -293,8 +299,8 @@
             </div>
         </div>
     </DropArea>
-    <DropArea Context=""Items"" TData=""Card"" CanDropAsync=""SeverityCheck"" OnDropCompleteAsync=""MarkInProgressCard"">
-        <div class=""border border-gray-400 p-4 w-96"">
+    <DropArea Context=""Items"" TData=""Card"" CanDrop=""SeverityCheck"" OnDropComplete=""MarkInProgressCard"" OnDragEnter=""ShowToastEnter"" OnDragLeave=""ShowToastLeave"">
+        <div class=""border border-gray-400 p-4 w-48 sm:w-96"">
             <h2 class=""border-b border-gray-500 mb-2"">Severe Items</h2>
             <div class=""flex flex-col space-y-2"">
                 @foreach (var item in Items)
@@ -304,8 +310,8 @@
             </div>
         </div>
     </DropArea>
-    <DropArea Context=""Items"" TData=""Card"" CanDropAsync=""ProgressCheck"" OnDropCompleteAsync=""CompleteCard"">
-        <div class=""border border-gray-400 p-4 w-96"">
+    <DropArea Context=""Items"" TData=""Card"" CanDrop=""ProgressCheck"" OnDropComplete=""CompleteCard"">
+        <div class=""border border-gray-400 p-4 w-48 sm:w-96"">
             <h2 class=""border-b border-gray-500 mb-2"">Completed</h2>
             <div class=""flex flex-col space-y-2"">
                 @foreach (var item in Items)
@@ -318,32 +324,47 @@
 </DragContext>
 
 @code {
-    Task<bool> SeverityCheck(DragArgs<Card> card)
+    void ShowToastEnter(DragArgs<Card> card)
+    {
+        ToastService.AddToast(new Toast { Header = ""Transfer?"", Message = $""{card.Data?.Name}"" });
+    }
+    void ShowToastLeave(DragArgs<Card> card)
+    {
+        ToastService.AddToast(new Toast { Header = ""Nope"", Message = $""{card.Data?.Name}"" });
+    }
+    bool SeverityCheck(DragArgs<Card> card)
     {
         var severity = card?.Data?.Severity;
-        return Task.FromResult(severity == ""Medium"");
+        return severity == ""Medium"";
     }
-    Task<bool> ProgressCheck(DragArgs<Card> card)
+    bool ProgressCheck(DragArgs<Card> card)
     {
-        return Task.FromResult(card?.Data?.Status == ""In Progress"");
+        return card?.Data?.Status == ""In Progress"";
     }
-    Task MarkToDoCard(DragArgs<Card> card)
-    {        
-        card.Data.Status = ""To Do"";
-        card.Data.Severity = ""Medium"";
-        return Task.CompletedTask;
-    }
-    Task MarkInProgressCard(DragArgs<Card> card)
-    {        
-        card.Data.Status = ""In Progress"";
-        card.Data.Severity = ""High"";
-        return Task.CompletedTask;
-    }
-    Task CompleteCard(DragArgs<Card> card)
+    void MarkToDoCard(DragArgs<Card> card)
     {
-        card.Data.Status = ""Complete"";
-        card.Data.Severity = ""Done"";
-        return Task.CompletedTask;
+        if (card.Data != null)
+        {
+            card.Data.Status = ""To Do"";
+            card.Data.Severity = ""Medium"";
+        }
+    }
+    void MarkInProgressCard(DragArgs<Card> card)
+    {
+        if (card.Data != null)
+        {
+            card.Data.Status = ""In Progress"";
+            card.Data.Severity = ""High"";
+        }
+        ToastService.AddToast(new Toast { Header = ""New Work Item!"", Message = $""{card.Data?.Name} has been moved to a Severe Item"" });
+    }
+    void CompleteCard(DragArgs<Card> card)
+    {
+        if (card.Data != null)
+        {
+            card.Data.Status = ""Complete"";
+            card.Data.Severity = ""Done"";
+        }
     }
 
     List<Card> cards = new()
@@ -373,10 +394,10 @@
 
     class Card
     {
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public string Severity { get; set; }
-        public string Status { get; set; }
+        public string? Name { get; set; }
+        public string? Description { get; set; }
+        public string? Severity { get; set; }
+        public string? Status { get; set; }
     }
 
     private RenderFragment<Card> CardFragment = card => __builder =>

@@ -3,14 +3,15 @@
 
 @if (isShowing)
 {
-    <div class="@dragClass b-cursor-grab" draggable="true" 
-        @ref="dragElement"
-        @ondragend="HandleDragEnd" 
-        @ondragstart="HandleDragStart"
-        @ontouchstart="HandleTouchStart"
-        @ontouchmove="HandleTouchMove"
-        @ontouchend="HandleTouchEnd" 
-        @ontouchcancel="HandleTouchEnd">
+    <div class="@dragClass b-cursor-grab" 
+         draggable="true" 
+         @ref="dragElement"
+         @ondragend="HandleDragEnd" 
+         @ondragstart="HandleDragStart"
+         @ontouchstart="HandleTouchStart"
+         @ontouchmove="HandleTouchMove"
+         @ontouchend="HandleTouchEnd" 
+         @ontouchcancel="HandleTouchEnd">
         @ChildContent
     </div>
 }
