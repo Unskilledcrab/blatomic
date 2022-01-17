@@ -16,6 +16,7 @@
 		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
 		<SignAssembly>False</SignAssembly>
 		<Version></Version>
+		<PackageIcon>blatomic-icon.png</PackageIcon>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -31,7 +32,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="wwwroot\" />
+	  <None Include="wwwroot\images\blatomic-icon.png">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
 	</ItemGroup>
 
 	<Target Name="CheckForNpm" BeforeTargets="NpmInstall">
