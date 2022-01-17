@@ -1,0 +1,22 @@
+﻿<Select TData="int?" Items="@numbers" IsMultiSelect="true">
+    <PlaceHolderTemplate>
+        <p class="px-4">Select...</p>
+    </PlaceHolderTemplate>
+    <SelectedItemsTemplate Context="Items">
+        <div class="flex -space-x-2">
+            @foreach (var item in Items)
+            {
+                <div class="h-10 w-10 border-2 border-white rounded-full bg-green-300 text-black flex justify-center items-center">
+                    @item
+                </div>
+            }
+        </div>
+    </SelectedItemsTemplate>
+    <ItemTemplate Context="Item">
+        <p class="px-4">#@Item</p>
+    </ItemTemplate>
+</Select>
+
+@code {
+    private int?[] numbers = new int?[] { 1, 2, 3, 4, 5 };
+}

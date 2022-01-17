@@ -1,0 +1,72 @@
+﻿<TreeView Items="@test" Context="item">
+    <ItemsTemplate>
+        @item
+    </ItemsTemplate>
+</TreeView>
+
+@code {
+    private ITree<string> test = TreeBuilder.Create<string>()
+        .AddChild("1.1")
+        .AddChild("1.2")
+        .AddChild("1.3").GoTo()
+            .AddChild("1.3.1")
+            .AddChild("1.3.2").GoTo()
+                .AddChild("1.3.3.1")
+                .AddChild("1.3.3.2")
+                .AddChild("1.3.3.3").GoTo()
+                    .AddChild("1.3.3.3.1")
+                    .AddChild("1.3.3.3.2")
+                    .AddChild("1.3.3.3.3").GoTo()
+                        .AddChild("1.3.3.3.3.1")
+                        .AddChild("1.3.3.3.3.2").GoToParent()
+                    .GoToParent()
+                .GoToParent()
+            .AddChild("1.3.3").GoToParent()
+        .AddChild("1.3")
+        .AddChild("1.4")
+        .AddChild("1.5")
+        .AddChild("1.6").GoTo()
+            .AddChild("1.6.1")
+            .AddChild("1.6.2")
+            .AddChild("1.6.2.1").GoTo()
+                .AddChild("1.6.2.2")
+                .AddChild("1.6.2.3")
+        .Build();
+
+
+    private ITree<string> defaultExample = new Tree<string>()
+        {
+            Children = new List<ITreeItem<string>>()
+            {
+                new TreeItem<string>("test 1"),
+                new TreeItem<string>("test 2")
+                {
+                    Children = new List<ITreeItem<string>>()
+                    {
+                        new TreeItem<string>("SubChild 1"),
+                        new TreeItem<string>("SubChild 2")
+                        {
+                            Children = new List<ITreeItem<string>>()
+                            {
+                                new TreeItem<string>("SS 1"),
+                                new TreeItem<string>("SS 2")
+                                {
+                                    Children = new List<ITreeItem<string>>()
+                                    {
+                                        new TreeItem<string>("SSSS 1"),
+                                        new TreeItem<string>("SSSS 2"),
+                                        new TreeItem<string>("SSSS 3"),
+                                    }
+                                },
+                                new TreeItem<string>("SS 3"),
+                                new TreeItem<string>("SS 4"),
+                            }
+                        },
+                        new TreeItem<string>("SubChild 3"),
+                    }
+                },
+                new TreeItem<string>("test 3"),
+                new TreeItem<string>("test 4"),
+            }
+        };
+}

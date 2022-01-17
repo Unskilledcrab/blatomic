@@ -1,16 +1,18 @@
 ﻿@typeparam TData
 @inject WindowService WindowService
+@implements IAsyncDisposable
 
 @if (isShowing)
 {
-    <div class="@dragClass b-cursor-grab" draggable="true" 
-        @ref="dragElement"
-        @ondragend="HandleDragEnd" 
-        @ondragstart="HandleDragStart"
-        @ontouchstart="HandleTouchStart"
-        @ontouchmove="HandleTouchMove"
-        @ontouchend="HandleTouchEnd" 
-        @ontouchcancel="HandleTouchEnd">
+    <div class="@dragClass b-cursor-grab" 
+         draggable="true" 
+         @ref="dragElement"
+         @ondragend="HandleDragEnd" 
+         @ondragstart="HandleDragStart"
+         @ontouchstart="HandleTouchStart"
+         @ontouchmove="HandleTouchMove"
+         @ontouchend="HandleTouchEnd" 
+         @ontouchcancel="HandleTouchEnd">
         @ChildContent
     </div>
 }
@@ -36,6 +38,11 @@
             await WindowService.TouchDragScrollPrevention(dragElement);
         }
         await base.OnAfterRenderAsync(firstRender);
+    }
+    
+    async ValueTask IAsyncDisposable.DisposeAsync()
+    {
+        await WindowService.DisposeAsync();
     }
 
     public void OnDragToDropZoneComplete()

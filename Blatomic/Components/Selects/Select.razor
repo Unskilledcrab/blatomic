@@ -1,77 +1,141 @@
 ﻿@typeparam TData
 
-<div tabindex="0" @onfocus="ShowDropdown" @onfocusout="HideDropdown" class="b-flex b-justify-between b-relative b-rounded focus:b-ring-2">
-    <div>
-        @if (selectedItem == null)
+<div tabindex="0"
+     @onfocus="(() => BoundIsOpen = true)"
+     @onfocusout="(() => BoundIsOpen = false)">
+    <Dropdown @bind-IsOpen="BoundIsOpen"
+              Position="Position">
+        <ChildContent>
+            <div class="b-flex b-justify-between b-items-center">
+                <div>
+                    @if (BoundSelectedItem == null && BoundSelectedItems.IsNullOrEmpty())
+                    {
+                        @PlaceHolderTemplate
+                    }
+                    else if (SelectedTemplate != null && BoundSelectedItem != null)
+                    {
+                        @SelectedTemplate(BoundSelectedItem)
+                    }
+                    else if (SelectedItemsTemplate != null && BoundSelectedItems.HasAny())
+                    { 
+                        @SelectedItemsTemplate(BoundSelectedItems)
+                    }
+                    else if (ItemTemplate != null && BoundSelectedItem != null)
+                    {
+                        @ItemTemplate(BoundSelectedItem)
+                    }
+                </div>
+                @Down.BaseDownSolid("b-shrink-0 b-h-10 b-w-10 b-px-2")
+            </div>
+        </ChildContent>
+        <DropdownContent>
+            <div @onclick:stopPropagation>
+                @if (ItemTemplate != null && Items != null)
+                {
+                    @foreach (var item in internalItems)
+                    {
+                        <div @onclick="(() => OnSelectedItem(item))"
+                             class="@(item.IsSelected ? SelectedStyle : DefaultStyle) b-cursor-pointer">
+                            @ItemTemplate(item.Data)
+                        </div>
+                    }
+                }
+            </div>
+        </DropdownContent>
+    </Dropdown>
+</div>
+
+@code {
+    [Parameter] public string DefaultStyle { get; set; } = "b-bg-white b-text-black hover:b-bg-blue-300";
+    [Parameter] public string SelectedStyle { get; set; } = "b-text-black b-bg-blue-200";
+    [Parameter] public RenderFragment? PlaceHolderTemplate { get; set; }
+    [Parameter][EditorRequired] public RenderFragment<TData?>? ItemTemplate { get; set; }
+    [Parameter] public RenderFragment<TData>? SelectedTemplate { get; set; }
+    [Parameter] public RenderFragment<IEnumerable<TData?>>? SelectedItemsTemplate { get; set; }
+    [Parameter][EditorRequired] public IEnumerable<TData?>? Items { get; set; }
+    [Parameter] public bool IsMultiSelect { get; set; } = false;
+    [Parameter] public Position Position { get; set; } = Position.Bottom;
+
+    [Parameter] public bool IsOpen { get; set; } = false;
+    [Parameter] public EventCallback<bool> IsOpenChanged { get; set; }
+    private bool BoundIsOpen
+    {
+        get => IsOpen;
+        set
         {
-            @PlaceHolderTemplate
+            IsOpen = value;
+            IsOpenChanged.InvokeAsync(value);
         }
-        else
+    }
+
+    [Parameter] public TData? SelectedItem { get; set; }
+    [Parameter] public EventCallback<TData?> SelectedItemChanged { get; set; }
+    private TData? BoundSelectedItem
+    {
+        get => SelectedItem;
+        set
         {
-            @if (SelectedTemplate != null)
+            SelectedItem = value;
+            SelectedItemChanged.InvokeAsync(value);
+        }
+    }
+
+    [Parameter] public IEnumerable<TData?>? SelectedItems { get; set; }
+    [Parameter] public EventCallback<IEnumerable<TData?>> SelectedItemsChanged { get; set; }
+    private IEnumerable<TData?>? BoundSelectedItems
+    {
+        get => SelectedItems;
+        set
+        {
+            SelectedItems = value;
+            SelectedItemsChanged.InvokeAsync(value);
+        }
+    }
+
+    class SelectItem
+    {
+        public bool IsSelected { get; set; } = false;
+        public TData? Data { get; set; }
+    }
+
+    private List<SelectItem> internalItems = new();
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        internalItems.Clear();
+        if (Items == null)
+        {
+            return;
+        }
+
+        foreach (var item in Items)
+        {
+            if ((BoundSelectedItems != null && BoundSelectedItems.Contains(item)) || (BoundSelectedItem != null && BoundSelectedItem.Equals(item)))
             {
-                @SelectedTemplate(selectedItem)
-            }
-            else if (OptionTemplate != null)
-            {
-                @OptionTemplate(selectedItem)
+                internalItems.Add(new SelectItem{ IsSelected = true, Data = item });
             }
             else
             {
-                @selectedItem
+                internalItems.Add(new SelectItem{ IsSelected = false, Data = item });                
             }
         }
-    </div>
-    <div class="b-p-4">
-        <svg xmlns="http://www.w3.org/2000/svg" class="b-h-6 b-w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-        </svg>
-    </div>
-    <div class="b-absolute b-top-full b-mt-1 b-divide-y b-w-full b-bg-gray-800 dark:b-bg-gray-200 @showingStyle" @onclick:stopPropagation="true">
-        @if (OptionTemplate != null && Items != null)
-        {
-            @foreach (var item in Items)
-            {
-                <div @onclick="(() => OnSelectedItem(item))" class="hover:b-bg-blue-300 b-cursor-pointer">
-                    @OptionTemplate(item)
-                </div>
-            }
-        }
-    </div>
-</div>
-<div @ref="select" tabindex="0"></div>
-
-@code {
-    [Parameter] public RenderFragment? PlaceHolderTemplate { get; set; }
-    [Parameter] public RenderFragment<TData>? OptionTemplate { get; set; }
-    [Parameter] public RenderFragment<TData>? SelectedTemplate { get; set; }
-    [Parameter] public IEnumerable<TData>? Items { get; set; }
-    [Parameter] public EventCallback<TData> OnItemSelect { get; set; }
-    [Parameter] public bool IsMultiSelect { get; set; } = false;
-
-    private TData? selectedItem;
-    private bool isDropdownShowing = false;
-    private ElementReference select;
-    private string showingStyle => isDropdownShowing ? "b-visible" : "b-hidden";
-
-    public void ShowDropdown()
-    {
-        isDropdownShowing = true;
     }
 
-    public async Task HideDropdown()
+    private void OnSelectedItem(SelectItem item)
     {
-        isDropdownShowing = false;
-        await select.FocusAsync();
-    }
-
-    public async Task OnSelectedItem(TData item)
-    {
-        await OnItemSelect.InvokeAsync(item);
-        selectedItem = item;
         if (!IsMultiSelect)
         {
-            await HideDropdown();
+            internalItems.ForEach(i => i.IsSelected = false);
+            item.IsSelected = true;
+            BoundSelectedItem = item.Data;
+            BoundIsOpen = false;
+            return;
         }
+
+        var selectedItem = internalItems.First(i => i == item);
+        selectedItem.IsSelected = !selectedItem.IsSelected;
+        BoundSelectedItems = internalItems.Where(i => i.IsSelected).Select(i => i.Data);
     }
 }
