@@ -1,0 +1,36 @@
+﻿@page "/dropdowns"
+@inject ITheme Theme
+
+<PageTitle>Dropdowns</PageTitle>
+
+<div class="leading-relaxed @TwColors.Text_Slate_600">
+    <h1 class="text-2xl font-bold @TwColors.Text_Slate_900">Dropdowns</h1>
+
+    <h3 class="text-xl font-bold mt-6 @TwColors.Text_Slate_900">What's so special?</h3>
+
+    <p class="my-2 font-medium">
+        You can make anything at all be a dropdown. Here we are showing our blatomic icon as a clickable dropdown
+    </p>
+    
+    <div class="mb-2 h-12 w-12">
+        <Example1 />
+    </div>
+
+    <CodeBlock Title=".razor" Code="@example1" />
+</div>
+
+
+@code {
+    private string example1 = @"<Dropdown Position=""Position.Right"">
+    <ChildContent>
+        <div class=""p-4"">
+            @Fragments.BlatomicIcon.StandardIcon
+        </div>
+    </ChildContent>
+    <DropdownContent>
+        <div class=""bg-gray-300 text-black"">
+            The blatomic icon is an SVG so that it can scale nicely to fit all viewports, isn't that nice?
+        </div>
+    </DropdownContent>
+</Dropdown>";
+}

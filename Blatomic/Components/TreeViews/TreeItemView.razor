@@ -6,7 +6,7 @@
         <div>
             @if (Item.HasChildren())
             {
-                <div class="inline" @onclick="(() => ToggleCollapse())" @onclick:stopPropagation="true">
+                <div class="inline b-cursor-pointer" @onclick="(() => ToggleCollapse())" @onclick:stopPropagation="true">
                 @if (isCollapsed)
                 {
                     @if (OpenTemplate != null)

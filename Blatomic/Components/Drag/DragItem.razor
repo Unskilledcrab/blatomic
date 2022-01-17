@@ -1,5 +1,6 @@
 ﻿@typeparam TData
 @inject WindowService WindowService
+@implements IAsyncDisposable
 
 @if (isShowing)
 {
@@ -37,6 +38,11 @@
             await WindowService.TouchDragScrollPrevention(dragElement);
         }
         await base.OnAfterRenderAsync(firstRender);
+    }
+    
+    async ValueTask IAsyncDisposable.DisposeAsync()
+    {
+        await WindowService.DisposeAsync();
     }
 
     public void OnDragToDropZoneComplete()
