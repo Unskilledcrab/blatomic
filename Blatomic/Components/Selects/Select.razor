@@ -1,9 +1,12 @@
 ﻿@typeparam TData
+@inject ITheme Theme
 
 <div tabindex="0"
+     class="@Palette?.All"
      @onfocus="(() => BoundIsOpen = true)"
      @onfocusout="(() => BoundIsOpen = false)">
     <Dropdown @bind-IsOpen="BoundIsOpen"
+              Palette="Palette"
               Position="Position">
         <ChildContent>
             <div class="b-flex b-justify-between b-items-center">
@@ -17,7 +20,7 @@
                         @SelectedTemplate(BoundSelectedItem)
                     }
                     else if (SelectedItemsTemplate != null && BoundSelectedItems.HasAny())
-                    { 
+                    {
                         @SelectedItemsTemplate(BoundSelectedItems)
                     }
                     else if (ItemTemplate != null && BoundSelectedItem != null)
@@ -29,30 +32,29 @@
             </div>
         </ChildContent>
         <DropdownContent>
-            <div @onclick:stopPropagation>
-                @if (ItemTemplate != null && Items != null)
+            @if (ItemTemplate != null && Items != null)
+            {
+                @foreach (var item in internalItems)
                 {
-                    @foreach (var item in internalItems)
-                    {
-                        <div @onclick="(() => OnSelectedItem(item))"
-                             class="@(item.IsSelected ? SelectedStyle : DefaultStyle) b-cursor-pointer">
-                            @ItemTemplate(item.Data)
-                        </div>
-                    }
+                    <div @onclick="(() => OnSelectedItem(item))"
+                         class="@(item.IsSelected ? SelectedPalette?.All : DefaultStyle) b-cursor-pointer">
+                        @ItemTemplate(item.Data)
+                    </div>
                 }
-            </div>
+            }
         </DropdownContent>
     </Dropdown>
 </div>
 
 @code {
-    [Parameter] public string DefaultStyle { get; set; } = "b-bg-white b-text-black hover:b-bg-blue-300";
-    [Parameter] public string SelectedStyle { get; set; } = "b-text-black b-bg-blue-200";
+    [Parameter] public Palette? Palette { get; set; }
+    [Parameter] public string DefaultStyle { get; set; } = "hover:b-bg-blue-300";
+    [Parameter] public Palette? SelectedPalette { get; set; }
     [Parameter] public RenderFragment? PlaceHolderTemplate { get; set; }
-    [Parameter][EditorRequired] public RenderFragment<TData?>? ItemTemplate { get; set; }
+    [Parameter] [EditorRequired] public RenderFragment<TData?>? ItemTemplate { get; set; }
     [Parameter] public RenderFragment<TData>? SelectedTemplate { get; set; }
     [Parameter] public RenderFragment<IEnumerable<TData?>>? SelectedItemsTemplate { get; set; }
-    [Parameter][EditorRequired] public IEnumerable<TData?>? Items { get; set; }
+    [Parameter] [EditorRequired] public IEnumerable<TData?>? Items { get; set; }
     [Parameter] public bool IsMultiSelect { get; set; } = false;
     [Parameter] public Position Position { get; set; } = Position.Bottom;
 
@@ -100,6 +102,20 @@
 
     private List<SelectItem> internalItems = new();
 
+    protected override void OnInitialized()
+    {
+        if (Palette is null)
+        {
+            Palette = Theme.Form;
+        }
+        if (SelectedPalette is null)
+        {
+            SelectedPalette = Theme.Primary;
+        }
+
+        base.OnInitialized();
+    }
+
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
@@ -114,11 +130,11 @@
         {
             if ((BoundSelectedItems != null && BoundSelectedItems.Contains(item)) || (BoundSelectedItem != null && BoundSelectedItem.Equals(item)))
             {
-                internalItems.Add(new SelectItem{ IsSelected = true, Data = item });
+                internalItems.Add(new SelectItem { IsSelected = true, Data = item });
             }
             else
             {
-                internalItems.Add(new SelectItem{ IsSelected = false, Data = item });                
+                internalItems.Add(new SelectItem { IsSelected = false, Data = item });
             }
         }
     }

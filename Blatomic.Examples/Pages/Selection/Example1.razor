@@ -3,10 +3,10 @@
         <p class="px-4">Select...</p>
     </PlaceHolderTemplate>
     <SelectedItemsTemplate Context="Items">
-        <div class="flex -space-x-2">
+        <div class="flex -space-x-2 p-2">
             @foreach (var item in Items)
             {
-                <div class="h-10 w-10 border-2 border-white rounded-full bg-green-300 text-black flex justify-center items-center">
+                <div class="h-6 w-6 border-2 border-white rounded-full bg-green-300 text-black flex justify-center items-center">
                     @item
                 </div>
             }

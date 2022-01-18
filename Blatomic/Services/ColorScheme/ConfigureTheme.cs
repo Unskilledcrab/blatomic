@@ -18,6 +18,7 @@ namespace Blatomic.Services.ColorScheme
                 configureTheme(theme);
             }
             services.AddSingleton<ITheme>(theme);
+            services.AddScoped<ThemeService>();
             return services;
         }
     }

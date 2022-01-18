@@ -35,6 +35,14 @@
             <CodeBlock Title="Program.cs" Code="builder.Services.AddBlatomic();" />
         </li>
         <li>
+            <p>
+                Last you will need to add the blatomic wrapper component to your App.razor. 
+                This will automatically configure and setup services needed for some components
+                and for <b>Themes</b>
+            </p>
+            <CodeBlock Title="App.razor" Code="@wrapper" />
+        </li>
+        <li>
             <p>That's it, you are off to the races!</p>
         </li>
     </ol>
@@ -58,4 +66,20 @@
 @using Blatomic.Components.Modals
 @using Blatomic.Components.Progress
 @using Blatomic.Components.Guides";
+    private string wrapper = @"@using Blatomic.Components.BlatomicWrapper
+
+<BlatomicWrapper> // Here is where we need to add the wrapper
+    <Router AppAssembly=""@typeof(MainLayout).Assembly"">
+        <Found Context=""routeData"">
+            <RouteView RouteData=""@routeData"" DefaultLayout=""@typeof(MainLayout)"" />
+            <FocusOnNavigate RouteData=""@routeData"" Selector=""h1"" />
+        </Found>
+        <NotFound>
+            <PageTitle>Not found</PageTitle>
+            <LayoutView Layout=""@typeof(MainLayout)"">
+                <p role=""alert"">Sorry, there's nothing at this address.</p>
+            </LayoutView>
+        </NotFound>
+    </Router>
+</BlatomicWrapper> // Here is where we need to add the wrapper";
 }

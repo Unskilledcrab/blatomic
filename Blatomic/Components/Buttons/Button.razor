@@ -2,14 +2,14 @@
 
 @inject ITheme Theme
 
-<button type="@Type" class="@Color @css" style="@style" disabled="@isDisabled" @onclick="@ClickHandler">
+<button type="@Type" class="@Palette?.All @css" style="@style" disabled="@isDisabled" @onclick="@ClickHandler">
     @InnerContent()
 </button>
 
 @code {
     private bool isDisabled => IsDisabled || (IsLoading && DisableWhenLoading);
 
-    [Parameter] public string Color { get; set; } = string.Empty;
+    [Parameter] public Palette? Palette { get; set; }
     [Parameter] public RenderFragment? LoadingTemplate { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
@@ -21,9 +21,9 @@
 
     protected override void OnInitialized()
     {
-        if (Color == string.Empty)
+        if (Palette is null)
         {
-            Color = Theme.Primary.All;
+            Palette = Theme.Primary;
         }
 
         base.OnInitialized();

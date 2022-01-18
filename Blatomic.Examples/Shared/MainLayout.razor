@@ -1,17 +1,14 @@
 ﻿@inherits LayoutComponentBase
-@inject Blatomic.Services.ColorScheme.ITheme Theme
+@inject ITheme Theme
+@inject ThemeService ThemeService
 @inject NavigationManager Nav
 
 @implements IDisposable
 
 <PageTitle>Blatomic Examples</PageTitle>
 
-
-<ToastContainer/>
-<div class="@darkClass">
-
+<BlatomicWrapper>
     <div class="@Theme.Light.All fixed inset-0 overflow-y-auto">
-
         <main>
             @*Top bar*@
             <div class="sticky w-full top-0 z-10 @Theme.Primary.Background.ToString()">
@@ -22,8 +19,8 @@
                                 <a href="" class="text-xl flex items-center font-bold"><span class="inline-block mr-1">@Blatomic.Fragments.BlatomicIcon.LargeIcon</span> Blatomic</a>
                             </div>
                             <div>
-                                <Button OnClickedAsync="(() => darkMode = !darkMode)" Color="@Theme.Light.All">
-                                    @(darkMode ? "Light" : "Dark")
+                                <Button OnClickedAsync="ToggleDarkMode" Palette="@Theme.Light">
+                                    @(ThemeService.IsDarkMode ? "Light" : "Dark")
                                 </Button>
                                 <a class="ml-2 font-bold" href="https://github.com/Unskilledcrab/blatomic" target="_blank">Github</a>
                             </div>
@@ -42,15 +39,12 @@
                 @if (showNav)
                 {
                     <div class="@showNav lg:hidden">
-                        <div class="fixed z-10 inset-0 dark:bg-white/50 bg-black/50" @onclick="(() => ToggleNavMenu())">
-                        </div>
+                        <Backdrop OnBackdropClick="ToggleNavMenu" />
                         <div class="fixed z-20 top-0 bottom-0 px-16 py-8 @TwColors.Bg_White overflow-y-auto">
                             <div class="flex">
                                 <NavMenu />
-                                <div class="absolute top-6 right-2 h-15 w-15 cursor-pointer hover:text-white hover:bg-gray-300 p-1 rounded" @onclick="() => ToggleNavMenu()">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                    </svg>
+                                <div class="absolute top-6 right-2">
+                                    <DismissButton OnClickAsync="ToggleNavMenu" />
                                 </div>
                             </div>
                         </div>
@@ -74,12 +68,9 @@
             </div>
         </main>
     </div>
-</div>
+</BlatomicWrapper>
 
 @code {
-    private string darkClass => darkMode ? "dark b-dark" : string.Empty;
-    private bool darkMode = true;
-
     private string navClass => showNav ? "block" : "hidden";
     private bool showNav = false;
 
@@ -98,6 +89,10 @@
     private void ToggleNavMenu()
     {
         showNav = !showNav;
+    }
+    private void ToggleDarkMode()
+    {
+        ThemeService.ToggleMode();
     }
 
     public void Dispose()

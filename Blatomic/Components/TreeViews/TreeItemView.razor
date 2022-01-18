@@ -2,7 +2,7 @@
 
 @if (Item != null)
 {
-    <div class="b-border-l-4 b-border-l-blue-500 b-pl-3">
+    <div class="b-pl-3 @borderStyle">
         <div>
             @if (Item.HasChildren())
             {
@@ -54,10 +54,12 @@
     [Parameter] public RenderFragment<TData>? OpenTemplate { get; set; }
     [Parameter] public RenderFragment<TData>? CloseTemplate { get; set; }
     [Parameter] public bool CollapseAll { get; set; } = false;
+    [Parameter] public bool ShowBorder { get; set; } = false;
 
     private bool isSelfCollapsed = true;
     private bool isCollapsed => isSelfCollapsed || CollapseAll;
     private string collapsedStyle => isCollapsed ? "b-hidden" : "b-visible";
+    private string borderStyle => ShowBorder ? "b-border-l-4" : string.Empty;
 
     public void ToggleCollapse()
     {

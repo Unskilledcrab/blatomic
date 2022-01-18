@@ -1,26 +1,34 @@
-﻿@if (!isDismissed)
+﻿@inject ITheme Theme
+
+@if (!isDismissed)
 {
     <div class="b-flex b-justify-between b-items-center b-p-4">
         <div class="b-flex b-grow">
             <div class="b-mr-2 b-shrink-0">@Info.StandardInfo</div>
             <div class="b-grow">@ChildContent</div>
         </div>
-        <div @onclick="Dismiss" class="b-shrink-0 b-cursor-pointer hover:b-text-white hover:b-bg-gray-300 b-p-1 b-rounded">
-            @if (IsDismissable)
-            {
-                <svg xmlns="http://www.w3.org/2000/svg" class="b-h-6 b-w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            }
-        </div>
+        @if (IsDismissable)
+        {
+            <DismissButton OnClickAsync="Dismiss" />
+        }
     </div>
 }
 
 @code {
     [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public Palette? Palette { get; set; }
     [Parameter] public bool IsDismissable { get; set; } = false;
 
     private bool isDismissed = false;
+
+    protected override void OnInitialized()
+    {
+        if (Palette is null)
+        {
+            Palette = Theme.Warning;
+        }
+        base.OnInitialized();
+    }
 
     public void Dismiss()
     {

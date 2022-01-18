@@ -1,0 +1,9 @@
+﻿<div @onclick="OnClickAsync" class="b-shrink-0 b-cursor-pointer hover:b-text-white hover:b-bg-gray-300 b-p-1 b-rounded">
+    <svg xmlns="http://www.w3.org/2000/svg" class="b-h-6 b-w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+    </svg>
+</div>
+
+@code {
+    [Parameter] public EventCallback OnClickAsync { get; set; }
+}

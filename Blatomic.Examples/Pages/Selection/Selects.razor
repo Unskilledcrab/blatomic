@@ -14,7 +14,7 @@
         multiple items. Then we can take those select items and display them however we would like.
     </p>
     
-    <div class="mb-2 @Theme.Dark.All">
+    <div class="mb-2 max-w-xs">
         <Example1 />
     </div>
 
@@ -28,10 +28,10 @@
         <p class=""px-4"">Select...</p>
     </PlaceHolderTemplate>
     <SelectedItemsTemplate Context=""Items"">
-        <div class=""flex -space-x-2"">
+        <div class=""flex -space-x-2 p-2"">
             @foreach (var item in Items)
             {
-                <div class=""h-10 w-10 border-2 border-white rounded-full bg-green-300 text-black flex justify-center items-center"">
+                <div class=""h-6 w-6 border-2 border-white rounded-full bg-green-300 text-black flex justify-center items-center"">
                     @item
                 </div>
             }
