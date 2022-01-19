@@ -1,5 +1,9 @@
-﻿<div class="b-fixed b-z-10 b-inset-0 dark:b-bg-white/50 b-bg-black/50" @onclick="OnBackdropClick"></div>
+﻿<div class="b-fixed @ZIndexClass b-inset-0 dark:b-bg-white/50 b-bg-black/50" b-overflow-auto @onclick="OnBackdropClick">
+    @ChildContent    
+</div>
 
 @code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
     [Parameter] public EventCallback<MouseEventArgs> OnBackdropClick { get; set; }
+    [Parameter] public string ZIndexClass { get; set; } = "b-z-10";
 }

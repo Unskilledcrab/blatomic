@@ -49,7 +49,7 @@
                 <div class="p-4 space-y-2">
                     <p>We have updated our terms of service, do you accept our new policies?</p>
                     <NotificationContainer ShowNotification="@(!canProceed)">
-                        <Button Color="@Theme.Success.All"
+                        <Button Palette="@Theme.Success"
                                 OnClickedAsync="@(() => canProceed = true)">
                             I Agree
                         </Button>
@@ -90,7 +90,7 @@
         <div class=""p-4"">
             <p>We have updated our terms of service, do you accept our new policies?</p>
             <NotificationContainer ShowNotification=""@(!canProceed)"">
-                <Button Color=""@Theme.Success.All""
+                <Button Palette=""@Theme.Success""
                         OnClickedAsync=""@(() => canProceed = true)"">
                     I Agree
                 </Button>

@@ -1,7 +1,7 @@
 ﻿@inject ITheme Theme
 
 <div class="b-w-full b-h-fit b-bg-gray-200 b-rounded-full">
-    <div class="b-transition-[width] @Size.GetStyle() b-flex b-justify-center b-items-center b-rounded-full @Colors" style="width: @width">
+    <div class="b-transition-[width] @Size.GetStyle() b-flex b-justify-center b-items-center b-rounded-full @Palette?.All" style="width: @width">
         @if (percentage != 0)
         {
             @ChildContent
@@ -38,16 +38,16 @@
     public EventCallback<double> PercentageChanged { get; set; }
 
     [Parameter] public RenderFragment? ChildContent { get; set; }
-    [Parameter] public string Colors { get; set; } = string.Empty;
     [Parameter] public ProgressBarSize Size { get; set; } = ProgressBarSize.Medium;
+    [Parameter] public Palette? Palette { get; set; } 
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
 
-        if (Colors == string.Empty)
+        if (Palette == Palette)
         {
-            Colors = Theme.Primary.All;
+            Palette = Theme.Primary;
         }
     }
 }

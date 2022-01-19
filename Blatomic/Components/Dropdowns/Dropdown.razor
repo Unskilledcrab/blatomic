@@ -1,9 +1,12 @@
-﻿<div tabindex="0" 
+﻿@inject ITheme Theme
+
+<div tabindex="0" 
      class="b-relative b-cursor-pointer"
-     @onclick="(() => BoundIsOpen = !BoundIsOpen)">
+     @onclick="(() => BoundIsOpen = !BoundIsOpen)"
+     @onfocusout="(() => BoundIsOpen = false)">
         @ChildContent
-    <div class="b-absolute @Position.AbsoluteStyle() @display"
-         @onfocusout="(() => BoundIsOpen = false)">
+    <div class="b-absolute b-cursor-auto @Palette?.All @Shadow.Standard(ShadowType.Regular) @Position.AbsoluteStyle() @display"         
+         @onclick:stopPropagation>
         @DropdownContent
     </div>
 </div>
@@ -12,10 +15,15 @@
     [Parameter] public Position Position { get; set; } = Position.Bottom;
     [Parameter] public RenderFragment? ChildContent { get; set; }
     [Parameter] public RenderFragment? DropdownContent { get; set; }
+    /// <summary>
+    /// This palette is used to style the dropdown content since it is 
+    /// absolutely positioned and can not inherit styling
+    /// </summary>
+    [Parameter] public Palette? Palette { get; set; }
 
     [Parameter] public bool IsOpen { get; set; } = false;
     [Parameter] public EventCallback<bool> IsOpenChanged { get; set; }
-    
+
     private bool BoundIsOpen
     {
         get => IsOpen;
@@ -26,4 +34,13 @@
         }
     }
     private string display => BoundIsOpen ? "b-visible" : "b-hidden";
+
+    protected override void OnInitialized()
+    {
+        if (Palette is null)
+        {
+            Palette = Theme.Light;
+        }
+        base.OnInitialized();
+    }
 }

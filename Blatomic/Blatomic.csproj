@@ -16,6 +16,7 @@
 		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
 		<SignAssembly>False</SignAssembly>
 		<Version></Version>
+		<PackageIcon>blatomic-icon.png</PackageIcon>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -27,11 +28,15 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.1" />
 		<PackageReference Include="Microsoft.AspNetCore.Razor" Version="2.2.0" />
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.0.1" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
 		<PackageReference Include="System.Linq.Async" Version="5.1.0" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="wwwroot\" />
+	  <None Include="wwwroot\images\blatomic-icon.png">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
 	</ItemGroup>
 
 	<Target Name="CheckForNpm" BeforeTargets="NpmInstall">

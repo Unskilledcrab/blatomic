@@ -15,4 +15,17 @@
             return $"{Text} {Background} {Border} {Outline} {Ring}";
         }
     }
+
+    public static class PaletteExtensions
+    {
+        public static string GetPaletteCode(this Palette? palette, ITheme theme)
+        {
+            if (palette == null)
+            {
+                return string.Empty;
+            }
+
+            return $"Palette=\"Theme.{theme.GetPaletteName(palette)}\"";
+        }
+    }
 }

@@ -3,55 +3,53 @@
 <CascadingValue Value="this">
     <div class="b-flex b-flex-col">
 
-        <div class="b-flex b-items-start b-justify-around b-p-4 b-max-width-full b-overflow-x-auto @PanelColors">
+        <div class="b-flex b-items-start b-justify-around b-p-4 b-overflow-x-auto @PalettePanel?.All">
             @for (var i = 0; i < steps.Count; i++)
             {
                 var stepCount = i;
-                <a class="b-shrink-0 b-flex-initial b-flex b-flex-col b-items-center b-cursor-pointer b-relative" @onclick="@(() => GoToStep(stepCount))">
-                    <div class="b-rounded-full b-z-[1] b-h-8 b-w-8 b-p-1 b-text-center b-align-middle b-transition b-duration-500 @(i <= currentStepIndex ? FillActiveColors : FillInactiveColors)">@(i + 1)</div>
+                <a class="b-shrink-0 b-flex b-flex-col b-items-center b-cursor-pointer b-relative" @onclick="@(() => GoToStep(stepCount))">
+                    <div class="b-rounded-full b-z-[1] b-h-8 b-w-8 b-flex b-justify-center b-items-center b-transition b-duration-500 @(i <= currentStepIndex ? activeColors : inactiveColors)">
+                        <span>@(i + 1)</span>
+                    </div>
                     <div>@steps[i].Title</div>
                     @if (i > 0)
                     {
                         <div class="b-absolute b-left-0 b-w-1/2 b-mt-3">
-                            <div class="b-w-full b-h-1 b-pointer-events-none b-transition b-duration-1000 @(i <= currentStepIndex ? FillActiveColors : FillInactiveColors)"></div>
+                            <div class="b-w-full b-h-1 b-pointer-events-none b-transition b-duration-1000 @(i <= currentStepIndex ? activeColors : inactiveColors)"></div>
                         </div>
                     }
                     @if (i < steps.Count - 1)
                     {
                         <div class="b-absolute b-right-0 b-w-1/2 b-mt-3">
-                            <div class="b-w-full b-h-1 b-pointer-events-none b-transition b-duration-1000 @(currentStepIndex > i ? FillActiveColors : FillInactiveColors)"></div>
+                            <div class="b-w-full b-h-1 b-pointer-events-none b-transition b-duration-1000 @(currentStepIndex > i ? activeColors : inactiveColors)"></div>
                         </div>
                     }
                 </a>
                 @if (i < steps.Count - 1)
                 {
-                    <div class="b-w-full b-border-2 b-mt-3 b-transition b-duration-1000  @(i < currentStepIndex ? FillActiveColors : FillInactiveColors)"></div>
+                    <div class="b-w-full b-border-2 b-mt-3 b-transition b-duration-1000  @(i < currentStepIndex ? activeColors : inactiveColors)"></div>
                 }
             }
         </div>
-        <div class="b-grow @ContentColors">
+        <div class="b-grow @PaletteContent?.All">
             @ContentArea
             @ChildContent
         </div>
-        <div class="b-flex @buttonJustify b-items-center b-p-4 @PanelColors">
+        <div class="b-p-4 b-flex b-items-center @buttonJustify @PalettePanel?.All">
             @if (currentStepIndex != 0)
             {
-                <div class="b-justify-self-start">
-                    <Button OnClickedAsync="PreviousStep"
-                        RoundedStyle="RoundedStyle.XL">
-                        Previous
-                    </Button>
-                </div>
+                <Button OnClickedAsync="PreviousStep"
+                    RoundedStyle="RoundedStyle.XL">
+                    Previous
+                </Button>
             }
             @if (currentStepIndex != steps.Count - 1)
             {
-                <div class="b-justify-self-end">
-                    <Button OnClickedAsync="@(() => NextStep())"
-                        RoundedStyle="RoundedStyle.XL"
-                        IsDisabled="!IsStepComplete">
-                        Next
-                    </Button>
-                </div>
+                <Button OnClickedAsync="@(() => NextStep())"
+                    RoundedStyle="RoundedStyle.XL"
+                    IsDisabled="!IsStepComplete">
+                    Next
+                </Button>
             }
         </div>
 
@@ -59,10 +57,10 @@
 </CascadingValue>
 
 @code {
-    [Parameter] public string PanelColors { get; set; } = "b-bg-gray-200 dark:b-bg-gray-800 b-text-gray-900 dark:b-text-gray-100";
-    [Parameter] public string ContentColors { get; set; } = "b-bg-gray-100 dark:b-bg-gray-900 b-text-gray-900 dark:b-text-gray-100";
-    [Parameter] public string FillActiveColors { get; set; } = "b-bg-green-400 dark:b-bg-green-600 b-border-green-400 dark:b-border-green-600";
-    [Parameter] public string FillInactiveColors { get; set; } = "b-bg-gray-300 dark:b-bg-gray-700 b-border-gray-300 dark:b-border-gray-700";
+    [Parameter] public Palette? PalettePanel { get; set; }
+    [Parameter] public Palette? PaletteContent { get; set; }
+    [Parameter] public Palette? PaletteStepActive { get; set; }
+    [Parameter] public Palette? PaletteStepInactive { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
     private string buttonJustify => currentStepIndex == 0 ? "b-justify-end" : "b-justify-between";
@@ -70,6 +68,49 @@
     private List<Step> steps = new();
     private RenderFragment? ContentArea { get; set; }
     private bool IsStepComplete => steps == null || currentStepIndex >= steps.Count ? false : steps[currentStepIndex].IsStepComplete;
+    private string activeColors => PaletteStepActive?.All ?? string.Empty;
+    private string inactiveColors => PaletteStepInactive?.All ?? string.Empty;
+
+    protected override void OnInitialized()
+    {
+        if (PalettePanel is null)
+        {
+            PalettePanel = new Palette
+                {
+                    Text = new ColorPair("b-text-black", "dark:b-text-white"),
+                    Background = new ColorPair("b-bg-gray-200", "dark:b-bg-gray-800"),
+                    Border = new ColorPair("b-border-gray-200", "dark:b-border-gray-800"),
+                };
+        }
+        if (PaletteContent is null)
+        {
+            PaletteContent = new Palette
+                {
+                    Text = new ColorPair("b-text-black", "dark:b-text-white"),
+                    Background = new ColorPair("b-bg-gray-100", "dark:b-bg-gray-900"),
+                    Border = new ColorPair("b-border-gray-100", "dark:b-border-gray-900"),
+                };
+        }
+        if (PaletteStepActive is null)
+        {
+            PaletteStepActive = new Palette
+                {
+                    Text = new ColorPair("b-text-white", "dark:b-text-black"),
+                    Background = new ColorPair("b-bg-green-600", "dark:b-bg-green-400"),
+                    Border = new ColorPair("b-border-green-600", "dark:b-border-green-400"),
+                };
+        }
+        if (PaletteStepInactive is null)
+        {
+            PaletteStepInactive = new Palette
+                {
+                    Text = new ColorPair("b-text-white", "dark:b-text-black"),
+                    Background = new ColorPair("b-bg-gray-700", "dark:b-bg-gray-300"),
+                    Border = new ColorPair("b-border-gray-700", "dark:b-border-gray-300"),
+                };
+        }
+        base.OnInitialized();
+    }
 
     public void GoToStep(int step)
     {

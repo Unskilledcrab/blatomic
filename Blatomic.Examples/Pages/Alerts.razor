@@ -13,9 +13,13 @@
         then the user will essentially remove that element from the page when they dismiss it.
     </p>
 
-    <div class="mb-2 @Theme.Dark.ToString()">
+    <div class="w-52 mb-2">
+        <ThemeSelector @bind-SelectedPalette="selectedPalette" />
+    </div>
 
-        <Alert IsDismissable="true">
+    <div class="mb-2">
+
+        <Alert IsDismissable="true" Palette="selectedPalette">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
         </Alert>
 
@@ -26,7 +30,10 @@
 
 
 @code {
-    private string defaultExample = @"<Alert IsDismissable=""true"">
+    private Palette? selectedPalette;
+
+    private string defaultExample => string.Format(@"@inject ITheme Theme
+<Alert IsDismissable=""true"" {0}>
     Lorem ipsum ...
-</Alert>";
+</Alert>",selectedPalette.GetPaletteCode(Theme));
 }

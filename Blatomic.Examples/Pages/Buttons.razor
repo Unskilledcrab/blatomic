@@ -39,7 +39,7 @@
 
     <NotificationContainer ShowNotification="true">
         <Button HoverStyle="HoverStyle.Ring"
-                Color="@Theme.Success.All"
+                Palette="@Theme.Success"
                 OnClickedAsync="@OnClickAsync">
             <ChildContent>
                 Test Button
@@ -72,7 +72,7 @@
     private string customExample = @"@inject ITheme Theme
 <NotificationContainer ShowNotification=""true"">
     <Button HoverStyle=""HoverStyle.Ring""
-            Color=""@Theme.Success.All""
+            Palette=""@Theme.Success""
             OnClickedAsync=""@OnClickAsync"">
         <ChildContent>
             Test Button

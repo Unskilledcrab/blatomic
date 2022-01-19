@@ -19,7 +19,7 @@
         This is used to make all of the strings that are sent to code blocks since they need to 
         be escaped in C# when you have an <b>@("@")</b> symbol
     </p>
-    <textarea class="mb-2 w-full h-80" placeholder="input strings with single quotes here" @bind="@Value"></textarea>
+    <textarea class="mb-2 w-full h-80 @Theme.Light.Text.ToString() bg-white dark:bg-black p-2" placeholder="input strings with single quotes here" @bind="@Value"></textarea>
 
     <CodeBlock Title=".razor" Code="@output" />
 </div>

@@ -1,5 +1,6 @@
 ﻿@page "/themes"
 @inject ITheme Theme
+@inject ThemeService ThemeService
 @inject NavigationManager Nav
 
 <PageTitle>Themes</PageTitle>
@@ -61,23 +62,21 @@
         To make things easier we have added all of the colors in tailwind to a static <b>TwColors</b> class.
         With this class you can get all of the tailwind colors with their associated dark counter part.
         This way, you can easily use the tailwind color palette and rest assurred that your site will properly work in both light and dark mode
+        Note: you may need to modify the colors a bit but it should give you a good starting point for developing a light and dark
+        themed palette.
     </p>
 
     <CodeBlock Title="Any .razor file" Code="@darkmode"></CodeBlock>
 </div>
 
 @code {
-
-
-    private void UpdateTheme()
+    private async Task UpdateTheme()
     {
-        Theme.Primary = new TwTheme().Success;
-        Nav.NavigateTo(Nav.Uri, true);
+        await ThemeService.UpdateTheme(theme => theme.Primary = theme.Success);
     }
-    private void ResetTheme()
+    private async Task ResetTheme()
     {
-        Theme.Primary = new TwTheme().Primary;
-        Nav.NavigateTo(Nav.Uri, true);
+        await ThemeService.UpdateTheme(theme => theme.Primary = new TwTheme().Primary);
     }
 
     private string darkmode = @"<div class=""@TwColors.Bg_Slate_800 @TwColors.Text_Blue_200 rounded-lg p-2 mt-0.5 mb-2"">
@@ -85,34 +84,44 @@
 </div>";
     private string useTheme = @"@inject ITheme Theme
 
-<Button Color=""@Theme.Get(""SuperButton"")"">
+<Button Palette=""@Theme.Get(""SuperButton"").All"">
     My Themed Super Button
 </Button>";
     private string addToTheme = @"@inject ITheme Theme
 
 // This is a shorthand extension method
-Theme.Add(""SuperButton"", ""bg-fuschia-300 dark:bg-fuschia-700 text-white dark:text-black"");
+Theme.Add(""SuperButton"", new Palette()
+    {
+        Text = new ColorPair(""b-text-white"", ""dark:b-text-black""),
+        Background = new ColorPair(""b-bg-blue-600"", ""dark:b-bg-blue-400""), // here we are overriding the background
+        Border = new ColorPair(""b-border-red-500"", ""dark:b-border-red-500""),
+        Outline = new ColorPair(""b-outline-red-500"", ""dark:b-outline-red-500""),
+        Ring = new ColorPair(""b-ring-red-400"", ""dark:b-ring-red-600""),
+    });";
 
-// You can directly access the CustomTheme dictionary if you'd like
-Theme.Custom.Add(""SuperButton"", ""bg-fuschia-300 dark:bg-fuschia-700 text-white dark:text-black"");";
-
-    private string updateTheme = @"builder.Services.AddBlatomic((theme) => theme.Danger = ""bg-blue-100 dark:bg-blue-900"");";
-    private string themeUpdateCode => @"@inject ITheme Theme
+    private string updateTheme = @"builder.Services.AddBlatomic((theme) => theme.Danger = new Palette()
+    {
+        Text = new ColorPair(""b-text-white"", ""dark:b-text-black""),
+        Background = new ColorPair(""b-bg-blue-600"", ""dark:b-bg-blue-400""), // here we are overriding the background
+        Border = new ColorPair(""b-border-red-500"", ""dark:b-border-red-500""),
+        Outline = new ColorPair(""b-outline-red-500"", ""dark:b-outline-red-500""),
+        Ring = new ColorPair(""b-ring-red-400"", ""dark:b-ring-red-600""),
+    });";
+    private string themeUpdateCode => @"@inject ThemeService ThemeService
+@inject ITheme Theme
 @inject NavigationManager Nav
 
 <Button OnClickedAsync=""UpdateTheme"">Update Primary Theme</Button>
 <Button OnClickedAsync=""ResetTheme"">Reset Primary Theme</Button>
 
 @code {
-    private void UpdateTheme()
+    private async Task UpdateTheme()
     {
-        Theme.Primary = new TwTheme().Success; // Update the theme to success palette
-        Nav.NavigateTo(Nav.Uri, true); // Refreshes the page so everything re-renders
+        await ThemeService.UpdateTheme(theme => theme.Primary = theme.Success);
     }
-    private void ResetTheme()
+    private async Task ResetTheme()
     {
-        Theme.Primary = new TwTheme().Primary;
-        Nav.NavigateTo(Nav.Uri, true);
+        await ThemeService.UpdateTheme(theme => theme.Primary = new TwTheme().Primary);
     }
 }";
 

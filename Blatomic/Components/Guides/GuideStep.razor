@@ -6,10 +6,10 @@
             @ChildContent
         </div>
     </CascadingValue>
-    <div class="b-absolute b-p-4 b-shadow-md b-rounded-lg @positionStyle @marginStyle @arrowStyle @activeVisibility @Theme.Light">
+    <div class="b-absolute b-p-4 b-rounded-lg b-border-2 @Shadow.Standard(ShadowType.Medium) @positionStyle @marginStyle @arrowStyle @activeVisibility @Palette?.All">
         @HelpContent
         <div class="b-flex b-justify-around b-items-center b-pt-4">
-            <Button OnClickedAsync="EndGuide" Color="@Theme.Danger.All" RoundedStyle="RoundedStyle.Full">End</Button>
+            <Button OnClickedAsync="EndGuide" Palette="@Theme.SecondaryOutline" RoundedStyle="RoundedStyle.Full">End</Button>
             @if (hasPrevious)
             {
                 <Button OnClickedAsync="PreviousStep" RoundedStyle="RoundedStyle.Full">Previous</Button>
@@ -31,6 +31,7 @@
     [Parameter] public RenderFragment? HelpContent { get; set; }
     [Parameter] public int Step { get; set; } = 0;
     [Parameter] public Position Position { get; set; } = Position.Bottom;
+    [Parameter] public Palette? Palette { get; set; }
 
     public int internalIndex = 0;
     public string guid { get; } = $"a{Guid.NewGuid()}";
@@ -52,6 +53,11 @@
 
     protected override void OnInitialized()
     {
+        if (Palette is null)
+        {
+            Palette = Theme.Light;
+        }
+
         base.OnInitialized();
         Context?.AddStep(this);
         StepContext?.AddSubStep(this);

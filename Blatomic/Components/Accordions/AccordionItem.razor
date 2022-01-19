@@ -1,4 +1,6 @@
-﻿<div tabindex="0" class="b-p-4 flex b-justify-between b-items-center b-cursor-pointer b-border-b b-border-gray-300 b-transition focus:b-ring-4 @headShowStyle" @onclick="ToggleBody">
+﻿@inject ITheme Theme
+
+<div tabindex="0" class="b-p-4 flex b-justify-between b-items-center b-cursor-pointer b-border-b b-border-gray-300 b-transition focus:b-ring-4 @headShowStyle" @onclick="ToggleBody">
     <div>
         @Header
     </div>
@@ -19,6 +21,7 @@
     [CascadingParameter] public AccordionContext? Parent {get; set;}
     [Parameter] public RenderFragment? Header { get; set; }
     [Parameter] public RenderFragment? Body { get; set; }
+    [Parameter] public Palette? Palette { get; set; }
     [Parameter] public string ShowHeaderStyle { get; set; } = "b-bg-blue-200 b-text-blue-600";
 
     private bool isShowing = false;
@@ -29,6 +32,12 @@
     protected override void OnInitialized()
     {
         Parent?.AddChild(this);
+
+        if (Palette is null)
+        {
+            Palette = Theme.Form;
+        }
+
         base.OnInitialized();
     }
 

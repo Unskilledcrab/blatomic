@@ -1,0 +1,56 @@
+﻿@implements IDisposable
+@inject ITheme Theme
+@inject ThemeService ThemeService
+@inject ILocalStorageService LocalStorage
+
+<div class="@(isDarkMode ? "dark b-dark" : string.Empty)">
+    <Blatomic.Components.Toasts.ToastContainer />
+
+    @ChildContent
+</div>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    private bool isDarkMode = true;
+
+    protected override void OnInitialized()
+    {
+        ThemeService.OnModeToggle += ToggleDarkMode;
+        ThemeService.OnSaveTheme += SaveThemeAsync;
+        isDarkMode = ThemeService.IsDarkMode;
+        base.OnInitialized();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            if (await LocalStorage.ContainKeyAsync(Theme.SaveKey))
+            {
+                var savedTheme = await LocalStorage.GetItemAsync<ITheme>(Theme.SaveKey);
+                Theme.Update(savedTheme);
+                StateHasChanged();
+            }
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private void ToggleDarkMode(bool isDarkMode)
+    {
+        this.isDarkMode = isDarkMode;
+        StateHasChanged();
+    }
+
+    private async Task SaveThemeAsync(ITheme theme)
+    {
+        await LocalStorage.SetItemAsync<ITheme>(theme.SaveKey, theme);
+        StateHasChanged();
+    }
+
+    void IDisposable.Dispose()
+    {
+        ThemeService.OnModeToggle -= ToggleDarkMode;
+        ThemeService.OnSaveTheme -= SaveThemeAsync;
+    }
+}
