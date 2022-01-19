@@ -33,7 +33,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Include="wwwroot\images\blatomic-icon.png">
+	  <Resource Include="blatomic-icon.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="blatomic-icon.png">
 	    <Pack>True</Pack>
 	    <PackagePath>\</PackagePath>
 	  </None>
