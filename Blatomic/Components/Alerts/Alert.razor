@@ -2,9 +2,12 @@
 
 @if (!isDismissed)
 {
-    <div class="b-flex b-justify-between b-items-center b-p-4">
+    <div role="alert" class="b-flex b-justify-between b-items-center b-p-2 b-rounded @Palette?.All">
         <div class="b-flex b-grow">
-            <div class="b-mr-2 b-shrink-0">@Info.StandardInfo</div>
+            @if (ShowIcon)
+            {                
+                <div class="b-mr-2 b-shrink-0">@Info.StandardInfo</div>
+            }
             <div class="b-grow">@ChildContent</div>
         </div>
         @if (IsDismissable)
@@ -18,6 +21,7 @@
     [Parameter] public RenderFragment? ChildContent { get; set; }
     [Parameter] public Palette? Palette { get; set; }
     [Parameter] public bool IsDismissable { get; set; } = false;
+    [Parameter] public bool ShowIcon { get; set; } = true;
 
     private bool isDismissed = false;
 

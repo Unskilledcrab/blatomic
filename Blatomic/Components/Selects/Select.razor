@@ -13,7 +13,14 @@
                 <div>
                     @if (BoundSelectedItem == null && BoundSelectedItems.IsNullOrEmpty())
                     {
-                        @PlaceHolderTemplate
+                        if (PlaceHolderTemplate != null)
+                        {
+                            @PlaceHolderTemplate
+                        }
+                        else
+                        {
+                            <p class="px-4">Select...</p>
+                        }
                     }
                     else if (SelectedTemplate != null && BoundSelectedItem != null)
                     {
@@ -25,7 +32,7 @@
                     }
                     else if (ItemTemplate != null && BoundSelectedItem != null)
                     {
-                        @ItemTemplate(BoundSelectedItem)
+                        @ItemTemplate(new SelectItem() { Data = BoundSelectedItem })
                     }
                 </div>
                 @Down.BaseDownSolid("b-shrink-0 b-h-10 b-w-10 b-px-2")
@@ -38,7 +45,7 @@
                 {
                     <div @onclick="(() => OnSelectedItem(item))"
                          class="@(item.IsSelected ? SelectedPalette?.All : DefaultStyle) b-cursor-pointer">
-                        @ItemTemplate(item.Data)
+                        @ItemTemplate(item)
                     </div>
                 }
             }
@@ -51,10 +58,11 @@
     [Parameter] public string DefaultStyle { get; set; } = "hover:b-bg-blue-300";
     [Parameter] public Palette? SelectedPalette { get; set; }
     [Parameter] public RenderFragment? PlaceHolderTemplate { get; set; }
-    [Parameter] [EditorRequired] public RenderFragment<TData?>? ItemTemplate { get; set; }
+    [Parameter] [EditorRequired] public RenderFragment<SelectItem>? ItemTemplate { get; set; }
     [Parameter] public RenderFragment<TData>? SelectedTemplate { get; set; }
     [Parameter] public RenderFragment<IEnumerable<TData?>>? SelectedItemsTemplate { get; set; }
     [Parameter] [EditorRequired] public IEnumerable<TData?>? Items { get; set; }
+    private IEnumerable<TData?>? ItemsPrevious { get; set; }
     [Parameter] public bool IsMultiSelect { get; set; } = false;
     [Parameter] public Position Position { get; set; } = Position.Bottom;
 
@@ -94,7 +102,7 @@
         }
     }
 
-    class SelectItem
+    public class SelectItem
     {
         public bool IsSelected { get; set; } = false;
         public TData? Data { get; set; }
@@ -120,12 +128,12 @@
     {
         base.OnParametersSet();
 
-        internalItems.Clear();
-        if (Items == null)
+        if (Items == null || Items == ItemsPrevious)
         {
             return;
         }
 
+        internalItems.Clear();
         foreach (var item in Items)
         {
             if ((BoundSelectedItems != null && BoundSelectedItems.Contains(item)) || (BoundSelectedItem != null && BoundSelectedItem.Equals(item)))
@@ -137,15 +145,25 @@
                 internalItems.Add(new SelectItem { IsSelected = false, Data = item });
             }
         }
+        ItemsPrevious = Items;
     }
 
     private void OnSelectedItem(SelectItem item)
     {
         if (!IsMultiSelect)
         {
-            internalItems.ForEach(i => i.IsSelected = false);
-            item.IsSelected = true;
-            BoundSelectedItem = item.Data;
+            if (item.IsSelected)
+            {
+                item.IsSelected = !item.IsSelected;
+                BoundSelectedItem = default;
+            }
+            else
+            {
+                internalItems.ForEach(i => i.IsSelected = false);
+                item.IsSelected = true;
+                BoundSelectedItem = item.Data;
+            }
+                
             BoundIsOpen = false;
             return;
         }

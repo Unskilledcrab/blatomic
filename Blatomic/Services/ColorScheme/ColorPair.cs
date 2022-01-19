@@ -15,8 +15,8 @@ namespace Blatomic.Services.ColorScheme
             Dark = dark;
         }
 
-        public string Light { get; set; }
-        public string Dark { get; set; }
+        public string Light { get; set; } = string.Empty;
+        public string Dark { get; set; } = string.Empty;
 
         public override string ToString()
         {

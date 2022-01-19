@@ -1,0 +1,40 @@
+﻿@inject ITheme Theme
+
+<Select TData="ThemeNames" 
+        Items="palettes" 
+        SelectedItemChanged="((item) => BoundSelectedPalette = item?.Palette)">
+    <SelectedTemplate>
+        <p class="b-px-2">@context.Name</p>
+    </SelectedTemplate>
+    <ItemTemplate>
+        <div class="b-p-2 @context.Data.Palette.All">@context.Data.Name</div>
+    </ItemTemplate>
+</Select>
+
+@code {
+    [Parameter] public Palette? SelectedPalette { get; set; }
+    [Parameter] public EventCallback<Palette?> SelectedPaletteChanged { get; set; }
+    private Palette? BoundSelectedPalette
+    {
+        get => SelectedPalette;
+        set
+        {
+            SelectedPalette = value;
+            SelectedPaletteChanged.InvokeAsync(value);
+        }
+    }
+
+    class ThemeNames
+    {
+        public string Name { get; set; } = string.Empty;
+        public Palette Palette { get; set; } = new Palette();
+    }
+
+    IEnumerable<ThemeNames?>? palettes;
+
+    protected override void OnInitialized()
+    {
+        palettes = Theme.GetAllPalettes().Select(x => new ThemeNames{Name = x.name, Palette = x.palette});
+        base.OnInitialized();
+    }
+}

@@ -53,6 +53,10 @@
 
     public void AddToast(Toast toast)
     {
+        if (toast.Palette is null)
+        {
+            toast.Palette = Theme.Info;
+        }
         var toastWrapper = new ToastWrapper(toast);
         toasts.Add(toastWrapper);
         toastWrapper.OnElapsed += TimedRemove;
