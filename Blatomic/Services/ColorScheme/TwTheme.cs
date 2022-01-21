@@ -11,6 +11,8 @@ public class TwTheme : ITheme
         Border = new ColorPair("b-border-blue-500", "dark:b-border-blue-500"),
         Outline = new ColorPair("b-outline-blue-500", "dark:b-outline-blue-500"),
         Ring = new ColorPair("b-ring-blue-400", "dark:b-ring-blue-600"),
+        Decoration = new ColorPair("b-decoration-blue-400", "dark:b-decoration-blue-600"),
+        Accent = new ColorPair("b-accent-blue-400", "dark:b-accent-blue-600"),
     };
     public virtual Palette PrimaryOutline { get; set; } = new Palette()
     {
@@ -19,6 +21,8 @@ public class TwTheme : ITheme
         Border = new ColorPair("b-border-2 b-border-blue-500", "dark:b-border-blue-500"),
         Outline = new ColorPair("b-outline-blue-500", "dark:b-outline-blue-500"),
         Ring = new ColorPair("b-ring-blue-400", "dark:b-ring-blue-600"),
+        Decoration = new ColorPair("b-decoration-blue-400", "dark:b-decoration-blue-600"),
+        Accent = new ColorPair("b-accent-blue-400", "dark:b-accent-blue-600"),
     };
 
     public virtual Palette Secondary { get; set; } = new Palette()
@@ -28,6 +32,8 @@ public class TwTheme : ITheme
         Border = new ColorPair("b-border-gray-500", "dark:b-border-gray-500"),
         Outline = new ColorPair("b-outline-gray-500", "dark:b-outline-gray-500"),
         Ring = new ColorPair("b-ring-gray-400", "dark:b-ring-gray-600"),
+        Decoration = new ColorPair("b-decoration-gray-400", "dark:b-decoration-gray-600"),
+        Accent = new ColorPair("b-accent-gray-400", "dark:b-accent-gray-600"),
     };
     public virtual Palette SecondaryOutline { get; set; } = new Palette()
     {
@@ -36,6 +42,8 @@ public class TwTheme : ITheme
         Border = new ColorPair("b-border-2 b-border-gray-500", "dark:b-border-gray-500"),
         Outline = new ColorPair("b-outline-gray-500", "dark:b-outline-gray-500"),
         Ring = new ColorPair("b-ring-gray-400", "dark:b-ring-gray-600"),
+        Decoration = new ColorPair("b-decoration-gray-400", "dark:b-decoration-gray-600"),
+        Accent = new ColorPair("b-accent-gray-400", "dark:b-accent-gray-600"),
     };
 
     public virtual Palette Success { get; set; } = new Palette()
@@ -45,6 +53,8 @@ public class TwTheme : ITheme
         Border = new ColorPair("b-border-green-500", "dark:b-border-green-500"),
         Outline = new ColorPair("b-outline-green-500", "dark:b-outline-green-500"),
         Ring = new ColorPair("b-ring-green-400", "dark:b-ring-green-600"),
+        Decoration = new ColorPair("b-decoration-green-400", "dark:b-decoration-green-600"),
+        Accent = new ColorPair("b-accent-green-400", "dark:b-accent-green-600"),
     };
     public virtual Palette SuccessOutline { get; set; } = new Palette()
     {
@@ -53,6 +63,8 @@ public class TwTheme : ITheme
         Border = new ColorPair("b-border-2 b-border-green-500", "dark:b-border-green-500"),
         Outline = new ColorPair("b-outline-green-500", "dark:b-outline-green-500"),
         Ring = new ColorPair("b-ring-green-400", "dark:b-ring-green-600"),
+        Decoration = new ColorPair("b-decoration-green-400", "dark:b-decoration-green-600"),
+        Accent = new ColorPair("b-accent-green-400", "dark:b-accent-green-600"),
     };
 
     public virtual Palette Danger { get; set; } = new Palette()
@@ -62,6 +74,8 @@ public class TwTheme : ITheme
         Border = new ColorPair("b-border-red-500", "dark:b-border-red-500"),
         Outline = new ColorPair("b-outline-red-500", "dark:b-outline-red-500"),
         Ring = new ColorPair("b-ring-red-400", "dark:b-ring-red-600"),
+        Decoration = new ColorPair("b-decoration-red-400", "dark:b-decoration-red-600"),
+        Accent = new ColorPair("b-accent-red-400", "dark:b-accent-red-600"),
     };
     public virtual Palette DangerOutline { get; set; } = new Palette()
     {
@@ -70,6 +84,8 @@ public class TwTheme : ITheme
         Border = new ColorPair("b-border-2 b-border-red-500", "dark:b-border-red-500"),
         Outline = new ColorPair("b-outline-red-500", "dark:b-outline-red-500"),
         Ring = new ColorPair("b-ring-red-400", "dark:b-ring-red-600"),
+        Decoration = new ColorPair("b-decoration-red-400", "dark:b-decoration-red-600"),
+        Accent = new ColorPair("b-accent-red-400", "dark:b-accent-red-600"),
     };
 
     public virtual Palette Warning { get; set; } = new Palette()
@@ -79,6 +95,8 @@ public class TwTheme : ITheme
         Border = new ColorPair("b-border-yellow-500", "dark:b-border-yellow-500"),
         Outline = new ColorPair("b-outline-yellow-500", "dark:b-outline-yellow-500"),
         Ring = new ColorPair("b-ring-yellow-400", "dark:b-ring-yellow-600"),
+        Decoration = new ColorPair("b-decoration-yellow-400", "dark:b-decoration-yellow-600"),
+        Accent = new ColorPair("b-accent-yellow-400", "dark:b-accent-yellow-600"),
     };
     public virtual Palette WarningOutline { get; set; } = new Palette()
     {
@@ -87,6 +105,8 @@ public class TwTheme : ITheme
         Border = new ColorPair("b-border-2 b-border-yellow-500", "dark:b-border-yellow-500"),
         Outline = new ColorPair("b-outline-yellow-500", "dark:b-outline-yellow-500"),
         Ring = new ColorPair("b-ring-yellow-400", "dark:b-ring-yellow-600"),
+        Decoration = new ColorPair("b-decoration-yellow-400", "dark:b-decoration-yellow-600"),
+        Accent = new ColorPair("b-accent-yellow-400", "dark:b-accent-yellow-600"),
     };
 
     public virtual Palette Info { get; set; } = new Palette()
@@ -96,6 +116,8 @@ public class TwTheme : ITheme
         Border = new ColorPair("b-border-sky-500", "dark:b-border-sky-500"),
         Outline = new ColorPair("b-outline-sky-500", "dark:b-outline-sky-500"),
         Ring = new ColorPair("b-ring-sky-400", "dark:b-ring-sky-600"),
+        Decoration = new ColorPair("b-decoration-sky-400", "dark:b-decoration-sky-600"),
+        Accent = new ColorPair("b-accent-sky-400", "dark:b-accent-sky-600"),
     };
     public virtual Palette InfoOutline { get; set; } = new Palette()
     {
@@ -104,6 +126,8 @@ public class TwTheme : ITheme
         Border = new ColorPair("b-border-2 b-border-sky-500", "dark:b-border-sky-500"),
         Outline = new ColorPair("b-outline-sky-500", "dark:b-outline-sky-500"),
         Ring = new ColorPair("b-ring-sky-400", "dark:b-ring-sky-600"),
+        Decoration = new ColorPair("b-decoration-sky-400", "dark:b-decoration-sky-600"),
+        Accent = new ColorPair("b-accent-sky-400", "dark:b-accent-sky-600"),
     };
 
     public virtual Palette Light { get; set; } = new Palette()
@@ -113,6 +137,8 @@ public class TwTheme : ITheme
         Border = new ColorPair("b-border-gray-300", "dark:b-border-gray-700"),
         Outline = new ColorPair("b-outline-gray-300", "dark:b-outline-gray-700"),
         Ring = new ColorPair("b-ring-gray-400", "dark:b-ring-gray-600"),
+        Decoration = new ColorPair("b-decoration-gray-400", "dark:b-decoration-gray-600"),
+        Accent = new ColorPair("b-accent-gray-400", "dark:b-accent-gray-600"),
     };
     public virtual Palette LightOutline { get; set; } = new Palette()
     {
@@ -121,6 +147,8 @@ public class TwTheme : ITheme
         Border = new ColorPair("b-border-2 b-border-gray-300", "dark:b-border-gray-700"),
         Outline = new ColorPair("b-outline-gray-300", "dark:b-outline-gray-700"),
         Ring = new ColorPair("b-ring-gray-400", "dark:b-ring-gray-600"),
+        Decoration = new ColorPair("b-decoration-gray-400", "dark:b-decoration-gray-600"),
+        Accent = new ColorPair("b-accent-gray-400", "dark:b-accent-gray-600"),
     };
 
     public virtual Palette Dark { get; set; } = new Palette()
@@ -130,6 +158,8 @@ public class TwTheme : ITheme
         Border = new ColorPair("b-border-gray-700", "dark:b-border-gray-300"),
         Outline = new ColorPair("b-outline-gray-700", "dark:b-outline-gray-300"),
         Ring = new ColorPair("b-ring-gray-600", "dark:b-ring-gray-400"),
+        Decoration = new ColorPair("b-decoration-gray-400", "dark:b-decoration-gray-600"),
+        Accent = new ColorPair("b-accent-gray-400", "dark:b-accent-gray-600"),
     };
     public virtual Palette DarkOutline { get; set; } = new Palette()
     {
@@ -138,6 +168,8 @@ public class TwTheme : ITheme
         Border = new ColorPair("b-border-2 b-border-gray-700", "dark:b-border-gray-300"),
         Outline = new ColorPair("b-outline-gray-700", "dark:b-outline-gray-300"),
         Ring = new ColorPair("b-ring-gray-600", "dark:b-ring-gray-400"),
+        Decoration = new ColorPair("b-decoration-gray-400", "dark:b-decoration-gray-600"),
+        Accent = new ColorPair("b-accent-gray-400", "dark:b-accent-gray-600"),
     };
 
     public virtual Palette Form { get; set; } = new Palette()
@@ -147,6 +179,8 @@ public class TwTheme : ITheme
         Border = new ColorPair("b-border b-border-gray-300", "dark:b-border-gray-700"),
         Outline = new ColorPair("b-outline-gray-300", "dark:b-outline-gray-700"),
         Ring = new ColorPair("b-ring-gray-400", "dark:b-ring-gray-600"),
+        Decoration = new ColorPair("b-decoration-gray-400", "dark:b-decoration-gray-600"),
+        Accent = new ColorPair("b-accent-gray-400", "dark:b-accent-gray-600"),
     };
     public virtual CustomTheme Custom { get; set; } = new();
 

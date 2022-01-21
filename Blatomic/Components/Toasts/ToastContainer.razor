@@ -5,7 +5,7 @@
 @inject ToastService toastService
 @inject ITheme Theme
 
-<div class="b-fixed b-z-[1000] @Position.ToastStyle() b-p-4 b-rounded b-overflow-auto">
+<div class="b-fixed b-z-[1000] b-max-h-screen @Position.Style() b-p-6 b-rounded b-overflow-auto">
     <div class="b-flex b-flex-col b-space-y-4">
         @foreach (var toast in toasts.GetItems())
         {
@@ -21,7 +21,7 @@
                      @onclick="@(() => PauseToastTimer(toast))"
                      @onmouseover="@(() => PauseToastTimer(toast))"
                      @onmouseout="@(() => StartToastTimer(toast))"
-                     class="b-transition hover:b-scale-105 b-max-w-xs sm:b-max-w-sm @Shadow.Standard(ShadowType.Medium) b-divide-y b-divide-gray-500 b-rounded b-bg-gray-200/90 dark:b-bg-gray-800/90 b-text-black dark:b-text-white">
+                     class="b-max-w-xs sm:b-max-w-sm b-divide-y b-divide-gray-500 b-rounded b-bg-gray-200/90 dark:b-bg-gray-800/90 b-text-black dark:b-text-white @Shadow.Lift()">
                     <div class="b-flex b-justify-between b-items-center b-p-2">
                         <div class="b-flex b-items-center">
                             <span class="b-inline-block b-h-5 b-w-5 @toast.Toast.Palette?.Background.ToString() b-rounded b-mr-2"></span>

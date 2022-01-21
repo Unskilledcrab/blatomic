@@ -2,12 +2,14 @@
 
 <Select TData="ThemeNames" 
         Items="palettes" 
-        SelectedItemChanged="((item) => BoundSelectedPalette = item?.Palette)">
+        Palette="BoundSelectedPalette"
+        SelectedItem="selectedTheme"
+        SelectedItemChanged="UpdateSelectedItem">
     <SelectedTemplate>
         <p class="b-px-2">@context.Name</p>
     </SelectedTemplate>
     <ItemTemplate>
-        <div class="b-p-2 @context.Data.Palette.All">@context.Data.Name</div>
+        <div class="b-p-2 @context.Data?.Palette.All">@context.Data?.Name</div>
     </ItemTemplate>
 </Select>
 
@@ -30,11 +32,20 @@
         public Palette Palette { get; set; } = new Palette();
     }
 
+    private ThemeNames? selectedTheme;
     IEnumerable<ThemeNames?>? palettes;
+
+    void UpdateSelectedItem(ThemeNames selectedTheme)
+    {
+        BoundSelectedPalette = selectedTheme?.Palette;
+        this.selectedTheme = selectedTheme;
+    }
 
     protected override void OnInitialized()
     {
         palettes = Theme.GetAllPalettes().Select(x => new ThemeNames{Name = x.name, Palette = x.palette});
+        selectedTheme = palettes.FirstOrDefault(x => x?.Name == nameof(ITheme.Primary));
+        BoundSelectedPalette = selectedTheme?.Palette;
         base.OnInitialized();
     }
 }
