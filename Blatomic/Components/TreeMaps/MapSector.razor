@@ -1,0 +1,75 @@
+﻿@typeparam TData
+
+@if (Items is not null && Items.HasAny())
+{
+    var itemsAmount = allItemsAmount.ToArray();
+    double totalPercentage = (itemsAmount[0] / Total) * 100;
+    var commonClasses = "b-overflow-hidden";
+    var property = SplitWidth ? "width: " : "height: ";
+    if (Items.Count > 1)
+    {
+        var flow = SplitWidth ? "b-flex b-flex-col" : "b-flex";
+        double percentage = (itemsAmount[0] / itemsAmount.Sum()) * 100;
+        double remaining = 100 - percentage;
+        <div class="b-border-2 b-border-current @commonClasses" style="@($"{property}{percentage}%;")">
+            @if (DataTemplate is not null)
+            {
+                var mapData = new Blatomic.Components.TreeMaps.TreeMap<TData>.MapData(){ Data = Items[0], Percentage = totalPercentage };
+                @DataTemplate(mapData)
+            }
+            else
+            {                
+                @Items[0]
+            }
+        </div>
+        <div class="@flow @commonClasses" style="@($"{property}{remaining}%;")">
+            @{
+                var leftover = Items.Skip(1).ToList();
+            }
+            <MapSector TData="TData" 
+                       MapProperty="MapProperty" 
+                       DataTemplate="DataTemplate" 
+                       Items="@leftover" 
+                       SplitWidth="@(!SplitWidth)" 
+                       Total="@Total"/>
+        </div>
+    }
+    else
+    {
+        <div class="b-border-2 b-border-current @commonClasses" style="@($"{property}100%")">
+            @if (DataTemplate is not null)
+            {
+                var mapData = new Blatomic.Components.TreeMaps.TreeMap<TData>.MapData(){ Data = Items[0], Percentage = totalPercentage };
+                @DataTemplate(mapData)
+            }
+            else
+            {                
+                @Items[0]
+            }
+        </div>
+    }
+}
+
+
+@code {
+    [Parameter] public List<TData>? Items { get; set; }
+    [Parameter] public bool SplitWidth { get; set; } = true;
+    [Parameter] public double Total { get; set; }
+    [Parameter] public RenderFragment<Blatomic.Components.TreeMaps.TreeMap<TData>.MapData>? DataTemplate { get; set; }
+    [Parameter][EditorRequired] public Func<TData,double>? MapProperty { get; set; }
+
+    private IEnumerable<double> allItemsAmount {
+        get 
+        {
+            if (Items is null || MapProperty is null)
+            {
+                yield break;
+            }
+
+            foreach (var item in Items)
+            {
+                yield return MapProperty(item);
+            }
+        }
+    }
+}
