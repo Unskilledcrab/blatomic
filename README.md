@@ -6,4 +6,8 @@
 # blatomic
 A blazor component library utilizing tailwind styled components
 
- Checkout our [getting started](https://unskilledcrab.github.io/blatomic/) github page for setup and all of our components
+Checkout our [getting started](https://unskilledcrab.github.io/blatomic/) github page for setup and all of our components
+
+## Getting started
+- Pushing to the **releases/github** branch will trigger an action to deploy that branch to the github page
+- Tagging and creating a new release with trigger an action to deploy an update to nuget
