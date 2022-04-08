@@ -1,5 +1,5 @@
 ﻿@typeparam TData
-<div class="b-flex b-w-full b-h-full">
+<div class="b-flex b-w-full b-h-full b-m-[2px]">
     <MapSector TData="TData"
                MapProperty="MapProperty"
                DataTemplate="DataTemplate"
@@ -31,7 +31,7 @@
         {
             foreach (var child in treeNode.Children)
             {
-                value += MapProperty(child.Data);
+                value += GetNodeValue(child);
             }
             return value;
         }
@@ -48,12 +48,18 @@
     {
         public TData Data { get; set; }
         public List<TreeNode> Children { get; set; } = new();
-        public bool NewSector { get; set; } = false;
+        public double Height { get; set; } = 0;
+        public double Width { get; set; } = 0;
     }
 
     private void SquarifyTree()
     {
         SquarifySector(treeNodes, width, height);
+    }
+
+    private double AspectRatio(double height, double width)
+    {
+        return Math.Abs(height - width);
     }
 
     private void SquarifySector(List<TreeNode> sectorNodes, double width, double height)
@@ -67,8 +73,8 @@
         var proposedWidth = width * percentage;
         var proposedHeight = height * percentage;
 
-        var widthRatio = Math.Abs(Math.Abs(proposedWidth / height) - 1);
-        var heightRatio = Math.Abs(Math.Abs(proposedHeight / width) - 1);
+        var widthRatio = AspectRatio(height, proposedWidth);
+        var heightRatio = AspectRatio(proposedHeight, width);
 
         var isColumn = widthRatio < heightRatio ? true : false;
         var direction = isColumn ? Direction.Column : Direction.Row;
@@ -79,6 +85,8 @@
         // Try to fit as many items in that sector without sacrifying aspect ratio
         var calculatedWidth = width;
         var calculatedHeight = height;
+        var totalSectorValue = firstNodeValue;
+
         if (direction == Direction.Column)
         {
             calculatedWidth = proposedWidth;
@@ -87,7 +95,7 @@
         {
             calculatedHeight = proposedHeight;
         }
-        var totalSectorValue = firstNodeValue;
+
         while (newLowestRatio <= previousLowestRatio)
         {
             nodesInsideSector += 1;
@@ -112,29 +120,11 @@
                 var insideNodeHeight = calculatedHeight * insideNodePercentage;
                 var insideNodeWidth = calculatedWidth * insideNodePercentage;
 
-                var insideNodeWidthRatio = Math.Abs(Math.Abs(insideNodeWidth / calculatedHeight) - 1);
-                var insideNodeHeightRatio = Math.Abs(Math.Abs(insideNodeHeight / calculatedWidth) - 1);
+                var insideNodeWidthRatio = AspectRatio(calculatedHeight,insideNodeWidth);
+                var insideNodeHeightRatio = AspectRatio(insideNodeHeight,calculatedWidth);
             }
         }
     }
-
-    private Direction GetSectorDirection(List<TreeNode> treeNodes, double width, double height)
-    {
-        var total = treeNodes.Sum(node => GetNodeValue(node));
-        var value = GetNodeValue(treeNodes.First());
-
-        var percentage = value / total;
-
-        var proposedWidth = width * percentage;
-        var proposedHeight = height * percentage;
-
-        var widthRatio = Math.Abs(Math.Abs(proposedWidth / height) - 1);
-        var heightRatio = Math.Abs(Math.Abs(proposedHeight / width) - 1);
-
-        var isColumn = widthRatio < heightRatio ? true : false;
-        return isColumn ? Direction.Column : Direction.Row;
-    }
-
 
     private void CreateTreeNodes()
     {

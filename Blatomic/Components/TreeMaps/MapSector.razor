@@ -11,7 +11,7 @@
         var flow = SplitWidth ? "b-flex b-flex-col" : "b-flex";
         double percentage = (itemsAmount[0] / itemsAmount.Sum()) * 100;
         double remaining = 100 - percentage;
-        <div class="b-border-2 b-border-current @commonClasses" style="@($"{property}{percentage}%;")">
+        <div class="b-outline b-outline-2 b-outline-current @commonClasses" style="@($"{property}{percentage}%;")">
             @if (DataTemplate is not null)
             {
                 var mapData = new Blatomic.Components.TreeMaps.TreeMap<TData>.MapData(){ Data = Items[0], Percentage = totalPercentage };
@@ -22,7 +22,7 @@
                 @Items[0]
             }
         </div>
-        <div class="@flow @commonClasses" style="@($"{property}{remaining}%;")">
+        <div class="@flow" style="@($"{property}{remaining}%;")">
             @{
                 var leftover = Items.Skip(1).ToList();
             }
@@ -36,7 +36,7 @@
     }
     else
     {
-        <div class="b-border-2 b-border-current @commonClasses" style="@($"{property}100%")">
+        <div class="b-outline b-outline-2 b-outline-current @commonClasses" style="@($"{property}100%")">
             @if (DataTemplate is not null)
             {
                 var mapData = new Blatomic.Components.TreeMaps.TreeMap<TData>.MapData(){ Data = Items[0], Percentage = totalPercentage };
