@@ -5,32 +5,74 @@
         @item.Name
     </ItemsTemplate>
 </TreeView>
+<hr />
+<TreeView Items="@siblingNodes" Context="item">
+    <ItemsTemplate>
+        @item.Name
+    </ItemsTemplate>
+</TreeView>
+<hr />
+<TreeView Items="@childNodes" Context="item">
+    <ItemsTemplate>
+        @item.Name
+    </ItemsTemplate>
+</TreeView>
+<hr />
+<TreeView Items="@parentNodes" Context="item">
+    <ItemsTemplate>
+        @item.Name
+    </ItemsTemplate>
+</TreeView>
+<hr />
+<TreeView Items="@leafNodes" Context="item">
+    <ItemsTemplate>
+        @item.Name
+    </ItemsTemplate>
+</TreeView>
+
+@rootNode.Data?.Name
 
 @code {
-    private class Hierarchy : IHierarchy<int?>
+    private class Hierarchy
     {
-        public int? Id { get; set; }     
-        public int? ParentId { get; set; }
-        public string Name { get; set; }
+        public int Id { get; set; }
+        public int ParentId { get; set; }
+        public string Name { get; set; } = "";
     }
 
     private List<Hierarchy> testHierarchy = new()
         {
-            new() { Id = 1, ParentId = null, Name = "Top Level 1" },
-                    new() { Id = 12, ParentId = 3, Name = "Top Level 1.2.1" },
-                new() { Id = 5, ParentId = 4, Name = "Top Level 2.1" },
+            new() { Id = 1, ParentId = 0, Name = "Top Level 1" },
                 new() { Id = 2, ParentId = 1, Name = "Top Level 1.1" },
-            new() { Id = 4, ParentId = null, Name = "Top Level 2" },
-                new() { Id = 10, ParentId = 1, Name = "Top Level 1.3" },
                 new() { Id = 3, ParentId = 1, Name = "Top Level 1.2" },
-                        new() { Id = 14, ParentId = 13, Name = "Top Level 2.3.1.1" },
+                    new() { Id = 12, ParentId = 3, Name = "Top Level 1.2.1" },
+                new() { Id = 10, ParentId = 1, Name = "Top Level 1.3" },
                 new() { Id = 11, ParentId = 1, Name = "Top Level 1.4" },
+            new() { Id = 4, ParentId = 0, Name = "Top Level 2" },
+                new() { Id = 5, ParentId = 4, Name = "Top Level 2.1" },
                 new() { Id = 6, ParentId = 4, Name = "Top Level 2.2" },
                 new() { Id = 7, ParentId = 4, Name = "Top Level 2.3" },
                     new() { Id = 13, ParentId = 7, Name = "Top Level 2.3.1" },
+                        new() { Id = 14, ParentId = 13, Name = "Top Level 2.3.1.1" },
                 new() { Id = 8, ParentId = 4, Name = "Top Level 2.4" },
-            new() { Id = 9, ParentId = null, Name = "Top Level 3" },
+            new() { Id = 9, ParentId = 0, Name = "Top Level 3" },
         };
 
-    private IEnumerable<IHierarchyNode<Hierarchy>> hierarchyData => testHierarchy.ToHierarchy<Hierarchy,int?>();
+    private IEnumerable<IHierarchyNode<Hierarchy>> hierarchyData => testHierarchy.ToHierarchy(t => t.Id, t => t.ParentId);
+    private IEnumerable<IHierarchyNode<Hierarchy>> siblingNodes = new List<HierarchyNode<Hierarchy>>();
+    private IEnumerable<IHierarchyNode<Hierarchy>> childNodes = new List<HierarchyNode<Hierarchy>>();
+    private IEnumerable<IHierarchyNode<Hierarchy>> parentNodes = new List<HierarchyNode<Hierarchy>>();
+    private IEnumerable<IHierarchyNode<Hierarchy>> leafNodes = new List<HierarchyNode<Hierarchy>>();
+    private IHierarchyNode<Hierarchy> rootNode = new HierarchyNode<Hierarchy>();
+
+    protected override void OnInitialized()
+    {
+        var newHierarchy = testHierarchy.ToHierarchy(t => t.Id, t => t.ParentId);
+        var node = newHierarchy.FirstOrDefault(n => n.Data?.Id == 7);
+        siblingNodes = node.GetAllSiblingNodes().ToList();
+        childNodes = node.GetAllChildrenNodes().ToList();
+        parentNodes = node.GetAllParentNodes().ToList();
+        leafNodes = node.GetLeafNodes().ToList();
+        rootNode = node.GetRootNode();
+    }
 }
