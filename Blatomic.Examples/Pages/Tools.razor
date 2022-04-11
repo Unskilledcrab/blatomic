@@ -9,23 +9,71 @@
     <p class="my-2 font-medium">
         These are just some personal tools that I've made that have assisted me with building this project.
     </p>
-    
+
     <h3 class="text-xl font-bold mt-12 @TwColors.Text_Slate_900">Code Block Creator</h3>
     <p class="my-2 font-medium">
-        You can place any text below to show it in the code block 
+        You can place any text below to show it in the code block
         <i>
             (except it will convert single quotes to double quotes)
         </i>.
-        This is used to make all of the strings that are sent to code blocks since they need to 
+        This is used to make all of the strings that are sent to code blocks since they need to
         be escaped in C# when you have an <b>@("@")</b> symbol
     </p>
     <textarea class="mb-2 w-full h-80 @Theme.Light.Text.ToString() bg-white dark:bg-black p-2" placeholder="input strings with single quotes here" @bind="@Value"></textarea>
 
     <CodeBlock Title=".razor" Code="@output" />
+
+    <div style="height: 800px; width: 800px;">
+        <TreeMap Data="test" MapProperty="((item) => item.Cases)">
+            <DataTemplate>
+                <div class="@GetColorCoded(context.Percentage).All h-full w-full p-2">
+                    @context.Data?.Country
+                </div>
+            </DataTemplate>
+        </TreeMap>
+    </div>
 </div>
 
 
 @code {
+
+    private class CovidCases
+    {
+        public string Country { get; set; }
+        public double Cases { get; set; }
+    }
+
+    private List<CovidCases> test = new()
+        {
+            new CovidCases { Country = "NeverLand1", Cases = 5 },
+            new CovidCases { Country = "NeverLand2", Cases = 90 },
+            new CovidCases { Country = "NeverLand3", Cases = 50 },
+            new CovidCases { Country = "NeverLand4", Cases = 30 },
+            new CovidCases { Country = "NeverLand5", Cases = 30 },
+            new CovidCases { Country = "NeverLand6", Cases = 200 },
+            new CovidCases { Country = "NeverLand7", Cases = 400 },
+        };
+
+    private Palette GetColorCoded(double percentage)
+    {
+        if (percentage < 10)
+        {
+            return Theme.Success;
+        }
+        else if (percentage >= 10 && percentage < 20)
+        {
+            return Theme.Info;            
+        }
+        else if (percentage >= 20 && percentage < 30)
+        {
+            return Theme.Warning;            
+        }
+        else
+        {
+            return Theme.Danger;            
+        }
+    }
+
     private string output = string.Empty;
     private string value = string.Empty;
     public string Value

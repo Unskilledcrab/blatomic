@@ -1,0 +1,31 @@
+﻿@page "/checks"
+@inject ITheme Theme
+
+<PageTitle>Checks</PageTitle>
+
+<div class="leading-relaxed @TwColors.Text_Slate_600">
+    <h1 class="text-2xl font-bold @TwColors.Text_Slate_900">Checks</h1>
+
+    <h3 class="text-xl font-bold mt-6 @TwColors.Text_Slate_900">What's so special?</h3>
+
+    <p class="my-2 font-medium">
+        Our checkboxs can use any palette in the themes you have defined.
+    </p>
+    
+    <div class="mb-2 max-w-xs">
+        <Example1 />
+    </div>
+
+    <CodeBlock Title=".razor" Code="@example1" />
+</div>
+
+
+@code {
+    private string example1 = @"<Checkbox @bind-Checked=""@isChecked"">
+    This is a checkbox, yay!!
+</Checkbox>
+
+@code {
+    private bool isChecked = true;
+}";
+}

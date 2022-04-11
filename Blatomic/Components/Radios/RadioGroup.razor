@@ -1,0 +1,27 @@
+﻿<CascadingValue IsFixed="true" Value="this">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    [Parameter] public string GroupName { set; get; } = $"a{Guid.NewGuid()}";
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    private List<Radio> radios = new();
+
+    public void AddRadio(Radio radio)
+    {
+        radios.Add(radio);
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            foreach (var radio in radios)
+            {
+                radio.UpdateGroupName(GroupName);
+            }
+        }
+        base.OnAfterRender(firstRender);
+    }
+}

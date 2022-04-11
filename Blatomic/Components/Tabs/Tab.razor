@@ -1,0 +1,13 @@
+﻿@code {
+    [CascadingParameter] TabContext? Context { get; set; }    
+    [Parameter] public RenderFragment? HeaderContent { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public Palette? PaletteHeader { get; set; }
+    [Parameter] public Palette? PaletteContent { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Context?.AddTab(this);
+        base.OnInitialized();
+    }
+}

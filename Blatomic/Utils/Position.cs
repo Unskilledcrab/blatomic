@@ -29,26 +29,26 @@ namespace Blatomic.Utils
 
     public static class CordinalPositionExtensions
     {
-        public static string ToastStyle(this CordinalPosition position)
+        public static string Style(this CordinalPosition position)
         {
             switch (position)
             {
                 case CordinalPosition.Top:
-                    return "b-top-0 b-inset-x-1/2 b-mt-1 sm:b-mt-4";
+                    return "b-top-0 b-inset-x-1/2";
                 case CordinalPosition.TopLeft:
-                    return "b-top-0 b-left-0 b-ml-1 b-mt-1 sm:b-ml-4 sm:b-mt-4";
+                    return "b-top-0 b-left-0 b-ml-1";
                 case CordinalPosition.TopRight:
-                    return "b-top-0 b-right-0 b-mr-1 b-mt-1 sm:b-mr-4 sm:b-mt-4";
+                    return "b-top-0 b-right-0 b-mr-1";
                 case CordinalPosition.Bottom:
-                    return "b-bottom-0 b-inset-x-1/2 b-mb-1 sm:b-mb-4";
+                    return "b-bottom-0 b-inset-x-1/2";
                 case CordinalPosition.BottomLeft:
-                    return "b-bottom-0 b-left-0 b-ml-1 b-mb-1 sm:b-ml-4 sm:b-mb-4";
+                    return "b-bottom-0 b-left-0";
                 case CordinalPosition.BottomRight:
-                    return "b-bottom-0 b-right-0 b-mr-1 b-mb-1 sm:b-mr-4 sm:b-mb-4";
+                    return "b-bottom-0 b-right-0";
                 case CordinalPosition.Left:
-                    return "b-left-0 b-inset-y-1/2 b-ml-1 sm:b-ml-4";
+                    return "b-left-0 b-inset-y-1/2";
                 case CordinalPosition.Right:
-                    return "b-right-0 b-inset-y-1/2 b-mr-1 sm:b-mr-4";
+                    return "b-right-0 b-inset-y-1/2";
                 case CordinalPosition.Center:
                     return "b-inset-1/2";
                 default:
@@ -110,10 +110,7 @@ namespace Blatomic.Utils
                     return string.Empty;
             }
         }
-    }
 
-    public static class Tooltip
-    {
         public static string ArrowStyle(this Position position)
         {
             var defaults = "after:b-absolute after:b-border-8 after:b-border-solid";

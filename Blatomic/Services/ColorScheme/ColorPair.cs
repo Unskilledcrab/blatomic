@@ -15,12 +15,19 @@ namespace Blatomic.Services.ColorScheme
             Dark = dark;
         }
 
+        public ColorPair(string light)
+        {
+            Light = light;
+        }
+
         public string Light { get; set; } = string.Empty;
         public string Dark { get; set; } = string.Empty;
 
+        public string All => ToString();
+
         public override string ToString()
         {
-            return $"{Light} {Dark}";
+            return $"{string.Join(' ', Light, Dark)}";
         }
 
         public void Copy(ColorPair colorPair)

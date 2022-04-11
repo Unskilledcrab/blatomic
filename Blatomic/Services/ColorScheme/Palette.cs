@@ -7,12 +7,29 @@
         public ColorPair Border { get; set; } = new();
         public ColorPair Outline { get; set; } = new();
         public ColorPair Ring { get; set; } = new();
+        public ColorPair Accent { get; set; } = new();
+        public ColorPair Decoration { get; set; } = new("b-decoration-sky-500");
         public Dictionary<string, ColorPair> Custom { get; set; } = new();
 
-        public string All => $"{ToString()} {string.Join(" ", Custom.Values.ToList())}";
+        public IEnumerable<ColorPair> GetColorPairs()
+        {
+            yield return Text;
+            yield return Background;
+            yield return Border;
+            yield return Outline;
+            yield return Ring;
+            yield return Accent;
+            yield return Decoration;
+            foreach (var colorPair in Custom)
+            {
+                yield return colorPair.Value;
+            }
+        }
+
+        public string All => $"{ToString()}";
         public override string ToString()
         {
-            return $"{Text} {Background} {Border} {Outline} {Ring}";
+            return $"{string.Join(' ',GetColorPairs())}";
         }
     }
 

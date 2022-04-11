@@ -35,4 +35,15 @@
             return string.Empty;
         }
     }
+
+    public static class Hover
+    {
+        public static string UnderlineAfter(bool showing = false)
+        {
+            var showingStyle = showing ? "after:b-scale-x-100" : "after:b-scale-x-0";
+            var content = "b-relative";
+            var after = $"after:b-absolute after:b-transition after:b-w-full after:b-bg-current after:b-bottom-0 after:b-left-0 after:b-h-0.5 {showingStyle}";
+            return $"{content} {after}";
+        }
+    }
 }

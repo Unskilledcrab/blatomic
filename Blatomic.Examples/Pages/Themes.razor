@@ -109,7 +109,6 @@ Theme.Add(""SuperButton"", new Palette()
     });";
     private string themeUpdateCode => @"@inject ThemeService ThemeService
 @inject ITheme Theme
-@inject NavigationManager Nav
 
 <Button OnClickedAsync=""UpdateTheme"">Update Primary Theme</Button>
 <Button OnClickedAsync=""ResetTheme"">Reset Primary Theme</Button>

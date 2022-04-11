@@ -10,11 +10,11 @@ namespace Blatomic.Extensions
     {
         public static bool IsNullOrEmpty<T>(this IEnumerable<T>? data)
         {
-            return data == null || !data.Any();
+            return data is null || !data.Any();
         }
         public static bool HasAny<T>(this IEnumerable<T>? data)
         {
-            return data != null && data.Any();
+            return data is not null && data.Any();
         }
     }
 }

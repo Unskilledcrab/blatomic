@@ -7,7 +7,8 @@
      @onfocusout="(() => BoundIsOpen = false)">
     <Dropdown @bind-IsOpen="BoundIsOpen"
               Palette="Palette"
-              Position="Position">
+              Position="Position"
+              DropdownCss="b-w-full">
         <ChildContent>
             <div class="b-flex b-justify-between b-items-center">
                 <div>
@@ -39,16 +40,18 @@
             </div>
         </ChildContent>
         <DropdownContent>
-            @if (ItemTemplate != null && Items != null)
-            {
-                @foreach (var item in internalItems)
+            <div class="b-max-h-48 b-overflow-auto">
+                @if (ItemTemplate != null && Items != null)
                 {
-                    <div @onclick="(() => OnSelectedItem(item))"
-                         class="@(item.IsSelected ? SelectedPalette?.All : DefaultStyle) b-cursor-pointer">
-                        @ItemTemplate(item)
-                    </div>
+                    @foreach (var item in internalItems)
+                    {
+                        <div @onclick="(() => OnSelectedItem(item))"
+                             class="@(item.IsSelected ? SelectedPalette?.All : DefaultStyle) b-cursor-pointer">
+                            @ItemTemplate(item)
+                        </div>
+                    }
                 }
-            }
+            </div>
         </DropdownContent>
     </Dropdown>
 </div>

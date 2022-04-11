@@ -1,0 +1,80 @@
+﻿@inject ITheme Theme
+
+<CascadingValue Value="this">
+    @ChildContent
+    <div class="b-flex b-overflow-x">
+        @for (var tabIndex = 0; tabIndex < tabs.Count; tabIndex++)
+        {
+            if (tabs[tabIndex].HeaderContent != null)
+            {
+                var tabIndexCache = tabIndex;
+                var palette = tabs[tabIndex].PaletteHeader ?? PaletteHeader;
+                var activeTab = tabIndex == currentTabIndex ? Hover.UnderlineAfter(true) : Hover.UnderlineAfter(false);
+                <div @onclick="(() => GoToTab(tabIndexCache))"
+                     class="b-grow @activeTab @palette?.All">
+                    @tabs[tabIndex].HeaderContent
+                </div>
+            }
+        }
+    </div>
+    <div class="@paletteContent?.All">
+        @ContentArea
+    </div>
+</CascadingValue>
+
+@code {
+    [Parameter] public Palette? PaletteHeader { get; set; }
+    [Parameter] public Palette? PaletteContent { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    private int currentTabIndex = 0;
+    private List<Tab> tabs = new();
+    private RenderFragment? ContentArea { get; set; }
+    private Palette? paletteContent { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if (PaletteHeader is null)
+        {
+            PaletteHeader = Theme.Primary;
+        }
+        if (PaletteContent is null)
+        {
+            PaletteContent = Theme.Primary;
+        }
+        base.OnInitialized();
+    }
+
+    public void GoToTab(int tabIndex)
+    {
+        if (tabIndex < 0 || tabIndex >= tabs.Count)
+        {
+            return;
+        }
+        currentTabIndex = tabIndex;
+        RenderTab();
+    }
+
+    private void RenderTab()
+    {
+        var currentStep = tabs[currentTabIndex];
+        paletteContent = currentStep.PaletteContent ?? PaletteContent;
+        ContentArea = currentStep.ChildContent;
+        StateHasChanged();
+    }
+
+    public void AddTab(Tab tab)
+    {
+        tabs.Add(tab);
+        if (currentTabIndex == tabs.Count - 1)
+        {
+            RenderTab();
+        }
+        StateHasChanged();
+    }
+
+    public void Refresh()
+    {
+        StateHasChanged();
+    }
+}

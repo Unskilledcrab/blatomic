@@ -4,15 +4,15 @@
 @if (Items != null && ItemsTemplate != null)
 {
     <div class="Palette?.All">
-        @foreach (var item in Items.GetChildrenItems())
+        @foreach (var parent in Items)
         {
-            <TreeItemView TData="TData" CollapseAll="CollapseAll" ItemTemplate="ItemsTemplate" OpenTemplate="OpenTemplate" CloseTemplate="CloseTemplate" Item="item" />
+            <TreeItemView TData="TData" CollapseAll="CollapseAll" ItemTemplate="ItemsTemplate" OpenTemplate="OpenTemplate" CloseTemplate="CloseTemplate" Item="parent" />
         }
     </div>
 }
 
 @code {
-    [Parameter] public ITree<TData>? Items { get; set; }
+    [Parameter] public IEnumerable<IHierarchyNode<TData>>? Items { get; set; }
     [Parameter] public RenderFragment<TData>? ItemsTemplate { get; set; }
     [Parameter] public RenderFragment<TData>? OpenTemplate { get; set; }
     [Parameter] public RenderFragment<TData>? CloseTemplate { get; set; }

@@ -1,0 +1,13 @@
+﻿<ThemeSelector @bind-SelectedPalette="selectedPalette" />
+
+<EditForm Model="isChecked">
+    <Checkbox @bind-Checked="@isChecked" Palette="selectedPalette">
+        This is a checkbox, yay!!
+    </Checkbox>
+</EditForm>
+
+@code {
+    private bool isChecked = true;
+
+    private Palette? selectedPalette; 
+}

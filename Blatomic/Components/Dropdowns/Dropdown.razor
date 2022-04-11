@@ -5,7 +5,7 @@
      @onclick="(() => BoundIsOpen = !BoundIsOpen)"
      @onfocusout="(() => BoundIsOpen = false)">
         @ChildContent
-    <div class="b-absolute b-cursor-auto @Palette?.All @Shadow.Standard(ShadowType.Regular) @Position.AbsoluteStyle() @display"         
+    <div class="b-absolute b-cursor-auto b-z-10 @DropdownCss @Palette?.All @Shadow.Standard(ShadowType.Regular) @Position.AbsoluteStyle() @display"         
          @onclick:stopPropagation>
         @DropdownContent
     </div>
@@ -15,6 +15,7 @@
     [Parameter] public Position Position { get; set; } = Position.Bottom;
     [Parameter] public RenderFragment? ChildContent { get; set; }
     [Parameter] public RenderFragment? DropdownContent { get; set; }
+    [Parameter] public string? DropdownCss { get; set; }
     /// <summary>
     /// This palette is used to style the dropdown content since it is 
     /// absolutely positioned and can not inherit styling

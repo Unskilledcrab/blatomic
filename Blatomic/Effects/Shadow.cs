@@ -49,7 +49,18 @@ namespace Blatomic.Effects
     {
         public static string Standard(ShadowType shadowType)
         {
-            return $"{shadowType.GetStyle()} b-shadow-black/50 dark:b-shadow-white/25";
+            return $"{shadowType.GetStyle()} b-shadow-black/5 dark:b-shadow-white/20";
+        }
+        public static string AfterStandard()
+        {
+            return $"after:b-shadow-md after:b-shadow-black/5 dark:after:b-shadow-white/20";
+        }
+
+        public static string Lift()
+        {
+            var content = $"b-transition b-relative {Standard(ShadowType.Regular)} hover:b--translate-y-2 hover:b-scale-105 ";
+            var after = $"after:b--z-10 after:b-transition after:b-absolute after:b-inset-0 {AfterStandard()} after:b-opacity-0 hover:after:b-opacity-100";
+            return $"{content} {after}";
         }
     }
 }

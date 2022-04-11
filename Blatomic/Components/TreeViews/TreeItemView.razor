@@ -4,7 +4,7 @@
 {
     <div class="b-pl-3 @borderStyle">
         <div>
-            @if (Item.HasChildren())
+            @if (Item.Children.Any())
             {
                 <div class="inline b-cursor-pointer" @onclick="(() => ToggleCollapse())" @onclick:stopPropagation="true">
                 @if (isCollapsed)
@@ -38,7 +38,7 @@
             }
         </div>
         <div>
-            @foreach (var child in Item.GetChildrenItems())
+            @foreach (var child in Item.Children)
             {
                 <div class="b-ml-2 @collapsedStyle">
                     <TreeItemView CollapseAll="CollapseAll" ItemTemplate="ItemTemplate" OpenTemplate="OpenTemplate" CloseTemplate="CloseTemplate" Item="@child" />
@@ -49,7 +49,7 @@
 }
 
 @code {
-    [Parameter] public ITreeItem<TData>? Item { get; set; }
+    [Parameter] public IHierarchyNode<TData>? Item { get; set; }
     [Parameter] public RenderFragment<TData>? ItemTemplate { get; set; }
     [Parameter] public RenderFragment<TData>? OpenTemplate { get; set; }
     [Parameter] public RenderFragment<TData>? CloseTemplate { get; set; }
